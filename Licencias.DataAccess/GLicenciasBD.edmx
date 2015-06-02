@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GLicenciasBD.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="GLicenciasBDStoreContainer">
+    <EntitySet Name="Usuario" EntityType="GLicenciasBD.Store.Usuario" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Rol" EntityType="GLicenciasBD.Store.Rol" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RolUsuario" EntityType="GLicenciasBD.Store.RolUsuario" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CronogramaFiscalizacion" EntityType="GLicenciasBD.Store.CronogramaFiscalizacion" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Local" EntityType="GLicenciasBD.Store.Local" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Licencia" EntityType="GLicenciasBD.Store.Licencia" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="UsuarioRolUsuario" Association="GLicenciasBD.Store.UsuarioRolUsuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="RolUsuario" EntitySet="RolUsuario" />
+    </AssociationSet>
+    <AssociationSet Name="RolRolUsuario" Association="GLicenciasBD.Store.RolRolUsuario">
+      <End Role="Rol" EntitySet="Rol" />
+      <End Role="RolUsuario" EntitySet="RolUsuario" />
+    </AssociationSet>
+    <AssociationSet Name="UsuarioCronogramaFiscalizacion" Association="GLicenciasBD.Store.UsuarioCronogramaFiscalizacion">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
+    </AssociationSet>
+    <AssociationSet Name="LocalLicencia" Association="GLicenciasBD.Store.LocalLicencia">
+      <End Role="Local" EntitySet="Local" />
+      <End Role="Licencia" EntitySet="Licencia" />
+    </AssociationSet>
+    <AssociationSet Name="LicenciaCronogramaFiscalizacion" Association="GLicenciasBD.Store.LicenciaCronogramaFiscalizacion">
+      <End Role="Licencia" EntitySet="Licencia" />
+      <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Usuario">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Rol">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="RolUsuario">
+    <Key>
+      <PropertyRef Name="UsuarioId" />
+      <PropertyRef Name="RolId" />
+    </Key>
+    <Property Name="UsuarioId" Type="int" Nullable="false" />
+    <Property Name="RolId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CronogramaFiscalizacion">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FechaFiscalizacion" Type="datetime" Nullable="false" />
+    <Property Name="Fiscalizador" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UsuarioId" Type="int" Nullable="false" />
+    <Property Name="Comentario" Type="nvarchar" Nullable="true" MaxLength="500" />
+    <Property Name="LicenciaId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Local">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Direccion" Type="nvarchar" Nullable="false" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="Licencia">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LocalId" Type="int" Nullable="false" />
+    <Property Name="Responsable" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="NumLicencia" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaLicencia" Type="datetime" Nullable="false" />
+  </EntityType>
+  <Association Name="UsuarioRolUsuario">
+    <End Role="Usuario" Type="GLicenciasBD.Store.Usuario" Multiplicity="1" />
+    <End Role="RolUsuario" Type="GLicenciasBD.Store.RolUsuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RolUsuario">
+        <PropertyRef Name="UsuarioId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RolRolUsuario">
+    <End Role="Rol" Type="GLicenciasBD.Store.Rol" Multiplicity="1" />
+    <End Role="RolUsuario" Type="GLicenciasBD.Store.RolUsuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rol">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RolUsuario">
+        <PropertyRef Name="RolId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsuarioCronogramaFiscalizacion">
+    <End Role="Usuario" Type="GLicenciasBD.Store.Usuario" Multiplicity="1" />
+    <End Role="CronogramaFiscalizacion" Type="GLicenciasBD.Store.CronogramaFiscalizacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CronogramaFiscalizacion">
+        <PropertyRef Name="UsuarioId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="LocalLicencia">
+    <End Role="Local" Type="GLicenciasBD.Store.Local" Multiplicity="1" />
+    <End Role="Licencia" Type="GLicenciasBD.Store.Licencia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Local">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Licencia">
+        <PropertyRef Name="LocalId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="LicenciaCronogramaFiscalizacion">
+    <End Role="Licencia" Type="GLicenciasBD.Store.Licencia" Multiplicity="1" />
+    <End Role="CronogramaFiscalizacion" Type="GLicenciasBD.Store.CronogramaFiscalizacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Licencia">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CronogramaFiscalizacion">
+        <PropertyRef Name="LicenciaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="GLicenciasBD" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="GLicenciasBDContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Usuario" EntityType="GLicenciasBD.Usuario" />
+          <EntitySet Name="Rol" EntityType="GLicenciasBD.Rol" />
+          <EntitySet Name="RolUsuario" EntityType="GLicenciasBD.RolUsuario" />
+          <AssociationSet Name="UsuarioRolUsuario" Association="GLicenciasBD.UsuarioRolUsuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="RolUsuario" EntitySet="RolUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="RolRolUsuario" Association="GLicenciasBD.RolRolUsuario">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="RolUsuario" EntitySet="RolUsuario" />
+          </AssociationSet>
+          <EntitySet Name="CronogramaFiscalizacion" EntityType="GLicenciasBD.CronogramaFiscalizacion" />
+          <AssociationSet Name="UsuarioCronogramaFiscalizacion" Association="GLicenciasBD.UsuarioCronogramaFiscalizacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
+          </AssociationSet>
+          <EntitySet Name="Local" EntityType="GLicenciasBD.Local" />
+          <EntitySet Name="Licencia" EntityType="GLicenciasBD.Licencia" />
+          <AssociationSet Name="LocalLicencia" Association="GLicenciasBD.LocalLicencia">
+            <End Role="Local" EntitySet="Local" />
+            <End Role="Licencia" EntitySet="Licencia" />
+          </AssociationSet>
+          <AssociationSet Name="LicenciaCronogramaFiscalizacion" Association="GLicenciasBD.LicenciaCronogramaFiscalizacion">
+            <End Role="Licencia" EntitySet="Licencia" />
+            <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="20" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" />
+          <NavigationProperty Name="RolUsuarios" Relationship="GLicenciasBD.UsuarioRolUsuario" FromRole="Usuario" ToRole="RolUsuario" />
+          <NavigationProperty Name="CronogramaFiscalizacions" Relationship="GLicenciasBD.UsuarioCronogramaFiscalizacion" FromRole="Usuario" ToRole="CronogramaFiscalizacion" />
+        </EntityType>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" />
+          <NavigationProperty Name="RolUsuarios" Relationship="GLicenciasBD.RolRolUsuario" FromRole="Rol" ToRole="RolUsuario" />
+        </EntityType>
+        <EntityType Name="RolUsuario" >
+          <Key>
+            <PropertyRef Name="UsuarioId" />
+            <PropertyRef Name="RolId" />
+          </Key>
+          <NavigationProperty Name="Usuario" Relationship="GLicenciasBD.UsuarioRolUsuario" FromRole="RolUsuario" ToRole="Usuario" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Rol" Relationship="GLicenciasBD.RolRolUsuario" FromRole="RolUsuario" ToRole="Rol" />
+          <Property Name="RolId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="UsuarioRolUsuario">
+          <End Type="GLicenciasBD.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="GLicenciasBD.RolUsuario" Role="RolUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RolUsuario">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RolRolUsuario">
+          <End Type="GLicenciasBD.Rol" Role="Rol" Multiplicity="1" />
+          <End Type="GLicenciasBD.RolUsuario" Role="RolUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RolUsuario">
+              <PropertyRef Name="RolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CronogramaFiscalizacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaFiscalizacion" Type="DateTime" Nullable="false" />
+          <Property Name="Fiscalizador" Type="String" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="GLicenciasBD.UsuarioCronogramaFiscalizacion" FromRole="CronogramaFiscalizacion" ToRole="Usuario" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
+          <Property Name="Comentario" Type="String" Nullable="true" MaxLength="500" />
+          <NavigationProperty Name="Licencia" Relationship="GLicenciasBD.LicenciaCronogramaFiscalizacion" FromRole="CronogramaFiscalizacion" ToRole="Licencia" />
+          <Property Name="LicenciaId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="UsuarioCronogramaFiscalizacion">
+          <End Type="GLicenciasBD.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="GLicenciasBD.CronogramaFiscalizacion" Role="CronogramaFiscalizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CronogramaFiscalizacion">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Local">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Direccion" Type="String" Nullable="false" MaxLength="200" />
+          <NavigationProperty Name="Licencias" Relationship="GLicenciasBD.LocalLicencia" FromRole="Local" ToRole="Licencia" />
+        </EntityType>
+        <EntityType Name="Licencia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Local" Relationship="GLicenciasBD.LocalLicencia" FromRole="Licencia" ToRole="Local" />
+          <Property Name="LocalId" Type="Int32" Nullable="false" />
+          <Property Name="Responsable" Type="String" Nullable="false" MaxLength="100" />
+          <Property Name="NumLicencia" Type="String" Nullable="false" />
+          <Property Name="FechaLicencia" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="CronogramaFiscalizacions" Relationship="GLicenciasBD.LicenciaCronogramaFiscalizacion" FromRole="Licencia" ToRole="CronogramaFiscalizacion" />
+        </EntityType>
+        <Association Name="LocalLicencia">
+          <End Type="GLicenciasBD.Local" Role="Local" Multiplicity="1" />
+          <End Type="GLicenciasBD.Licencia" Role="Licencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Local">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Licencia">
+              <PropertyRef Name="LocalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LicenciaCronogramaFiscalizacion">
+          <End Type="GLicenciasBD.Licencia" Role="Licencia" Multiplicity="1" />
+          <End Type="GLicenciasBD.CronogramaFiscalizacion" Role="CronogramaFiscalizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Licencia">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CronogramaFiscalizacion">
+              <PropertyRef Name="LicenciaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="GLicenciasBDStoreContainer" CdmEntityContainer="GLicenciasBDContainer">
+    <EntitySetMapping Name="Usuario">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.Usuario)">
+        <MappingFragment StoreEntitySet="Usuario">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rol">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.Rol)">
+        <MappingFragment StoreEntitySet="Rol">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RolUsuario">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.RolUsuario)">
+        <MappingFragment StoreEntitySet="RolUsuario">
+          <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+          <ScalarProperty Name="RolId" ColumnName="RolId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CronogramaFiscalizacion">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.CronogramaFiscalizacion)">
+        <MappingFragment StoreEntitySet="CronogramaFiscalizacion">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FechaFiscalizacion" ColumnName="FechaFiscalizacion" />
+          <ScalarProperty Name="Fiscalizador" ColumnName="Fiscalizador" />
+          <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+          <ScalarProperty Name="Comentario" ColumnName="Comentario" />
+          <ScalarProperty Name="LicenciaId" ColumnName="LicenciaId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Local">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.Local)">
+        <MappingFragment StoreEntitySet="Local">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Licencia">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.Licencia)">
+        <MappingFragment StoreEntitySet="Licencia">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="LocalId" ColumnName="LocalId" />
+          <ScalarProperty Name="Responsable" ColumnName="Responsable" />
+          <ScalarProperty Name="NumLicencia" ColumnName="NumLicencia" />
+          <ScalarProperty Name="FechaLicencia" ColumnName="FechaLicencia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

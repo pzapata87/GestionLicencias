@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fc2f5f7c402f47b38a5371e44c831066" Name="Diagram1" >
+        <EntityTypeShape EntityType="GLicenciasBD.Usuario" Width="1.5" PointX="0.75" PointY="0.5" />
+        <EntityTypeShape EntityType="GLicenciasBD.Rol" Width="1.5" PointX="3.25" PointY="4.5" />
+        <EntityTypeShape EntityType="GLicenciasBD.RolUsuario" Width="1.5" PointX="0.625" PointY="3.5" />
+        <AssociationConnector Association="GLicenciasBD.UsuarioRolUsuario" />
+        <AssociationConnector Association="GLicenciasBD.RolRolUsuario" />
+        <EntityTypeShape EntityType="GLicenciasBD.CronogramaFiscalizacion" Width="1.875" PointX="9.125" PointY="3.625" />
+        <AssociationConnector Association="GLicenciasBD.UsuarioCronogramaFiscalizacion" ManuallyRouted="false" >
+        </AssociationConnector>
+        <EntityTypeShape EntityType="GLicenciasBD.Local" Width="1.5" PointX="6.5" PointY="0.5" />
+        <EntityTypeShape EntityType="GLicenciasBD.Licencia" Width="2" PointX="9" PointY="0.5" />
+        <AssociationConnector Association="GLicenciasBD.LocalLicencia" />
+        <AssociationConnector Association="GLicenciasBD.LicenciaCronogramaFiscalizacion" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
