@@ -134,6 +134,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CronogramaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Core\JsonResponse.cs" />
     <Compile Include="Core\Utils.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -150,6 +151,23 @@
     <Content Include="Content\bootstrap\js\npm.js" />
     <Content Include="Content\css\AdminLTE.css" />
     <Content Include="Content\css\AdminLTE.min.css" />
+    <Content Include="Content\css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\css\images\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="Content\css\images\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="Content\css\images\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="Content\css\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\css\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="Content\css\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="Content\css\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Content\css\images\ui-icons_217bc0_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_469bdd_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_6da8d5_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_f9bd01_256x240.png" />
+    <Content Include="Content\css\jquery-ui.min.css" />
+    <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\css\skins\skin-black-light.css" />
     <Content Include="Content\css\skins\skin-black-light.min.css" />
     <Content Include="Content\css\skins\skin-black.css" />
@@ -191,7 +209,15 @@
     <Content Include="Content\js\app.js" />
     <Content Include="Content\js\app.min.js" />
     <Content Include="Content\js\demo.js" />
+    <Content Include="Content\js\i18n\es.js" />
+    <Content Include="Content\js\jquery.validate.min.js" />
+    <Content Include="Content\js\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Content\js\jQuery\datepicker-es.js" />
     <Content Include="Content\js\jQuery\jQuery-2.1.4.min.js" />
+    <Content Include="Content\js\jQuery\jquery-ui.min.js" />
+    <Content Include="Content\js\select2.full.min.js" />
+    <Content Include="Content\js\select2.min.js" />
+    <Content Include="Content\js\webApp.js" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\bootstrap\css\bootstrap.css.map" />
@@ -200,6 +226,7 @@
     <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\datatables\languages\dataTables.es.json" />
+    <Content Include="Content\css\images\Thumbs.db" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\_references.js" />
@@ -220,6 +247,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Cronograma\Index.cshtml" />
+    <Content Include="Views\Cronograma\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

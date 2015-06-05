@@ -1,0 +1,143 @@
+﻿@model Licencias.Presentation.Models.CronogramaFiscalizacionModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+@section StyleContent
+{
+    <link href="@Url.Content("~/Content/css/select2.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/css/jquery-ui.min.css")" rel="stylesheet" type="text/css" />
+}
+
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Actualizar Cronograma</h3>
+    </div>
+    @using (Html.BeginForm(Model.Accion, "Cronograma", new {area = ""}, FormMethod.Post, new {id = "frmCronograma", @class = "form-horizontal"}))
+    {
+        <div class="box-body">
+            <div class="form-group">
+                @Html.LabelFor(p => p.NumLicencia, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(p => p.NumLicencia, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.LocalNombre, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(p => p.LocalNombre, new { @class = "form-control", @maxlength = 10 })
+                    <input type="hidden" id="personas" class="width100p" />
+                    <div class="help-block">@Html.ValidationMessageFor(p => p.LocalNombre)</div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.FechaFiscalizacion, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(p => p.FechaFiscalizacion, new { @class = "form-control", @maxlength = 10 })
+                    <div class="help-block">@Html.ValidationMessageFor(p => p.FechaFiscalizacion)</div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.Fiscalizador, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(p => p.Fiscalizador, new { @class = "form-control", @maxlength = 10 })
+                    <div class="help-block">@Html.ValidationMessageFor(p => p.Fiscalizador)</div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.Comentario, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-8">
+                    @Html.TextAreaFor(p => p.Comentario, new { @class = "form-control", @maxlength = 10 })
+                    <div class="help-block">@Html.ValidationMessageFor(p => p.Comentario)</div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="col-md-offset-3 col-md-9">
+                <a class="btn btn-default" href="@Url.Action("Index", "Cronograma")">
+                    <i class="fa fa-reply"></i>
+                    Regresar
+                </a>
+                &nbsp; &nbsp; &nbsp;
+                <button type="submit" class="btn btn-info">
+                    <i class="fa fa-floppy-o"></i>
+                    Guardar
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+@section ScriptContent
+{
+    <script src="@Url.Content("~/Content/js/select2.min.js")"></script>
+    <script src="@Url.Content("~/Content/js/i18n/es.js")"></script>
+    <script src="@Url.Content("~/Content/js/jQuery/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/Content/js/jQuery/datepicker-es.js")" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $("#frmCronograma").on("submit", function (e) {
+            if (!$(this).valid()) {
+                e.preventDefault();
+                return;
+            }
+
+            var form = webApp.getDataForm(this);
+
+            webApp.showConfirmDialog(function () {
+                $.ajax({
+                    url: form.url,
+                    type: form.type,
+                    data: form.data,
+                    success: function (response) {
+                        if (response.Success === true) {
+                            webApp.showMessageDialog(response.Message);
+                        }
+                        else
+                            webApp.showMessageDialog(response.Message);
+                    },
+                    error: function (x, xh, xhr) {
+                        console.error(xh);
+                    },
+                    complete: function () { }
+                });
+            });
+
+            e.preventDefault();
+        });
+        
+        $("#FechaFiscalizacion").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            option: $.datepicker.regional['es'],
+            yearRange: "@DateTime.Today.Year:+0"
+        });
+        
+        $("#personas").select2({
+            placeholder: ParametrosPaquete.placeHolderReceptor,
+            minimumInputLength: 3,
+            minimumResultsForSearch: 10,
+            allowClear: true,
+            ajax: {
+                url: ParametrosPaquete.urlReceptoresSearch,
+                dataType: 'json',
+                type: "POST",
+                quietMillis: 250,
+                data: function (term, page) {
+                    return { search: term };
+                },
+                results: function (data, page) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.Nombre,
+                                id: item.Id
+                            };
+                        })
+                    };
+                }
+            }
+        });
+    </script>
+}
