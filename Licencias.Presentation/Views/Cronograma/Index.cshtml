@@ -33,10 +33,12 @@
         <table id="grilla" class="table table-bordered table-responsive">
             <thead>
                 <tr>
-                    <th style="width: 5%;"></th>
+                    <th></th>
                     <th style="width: 30%;">Nombre</th>
                     <th style="width: 20%;">Fecha Fiscalización</th>
                     <th style="width: 45%;">Nº Licencia</th>
+                    <th style="width: 3%;"></th>
+                    <th style="width: 3%;"></th>
                 </tr>
             </thead>
         </table>
@@ -49,31 +51,45 @@
     <script src="@Url.Content("~/Content/datatables/dataTables.bootstrap.min.js")" type="text/javascript"></script>
 
     <script type="text/javascript">
-        $(document).ready(function() {
-            var dataSet = JSON.parse('@Html.Raw(Json.Encode(Model))');
+    $(document).ready(function () {
+        var dataSet = JSON.parse('@Html.Raw(Json.Encode(Model))');
 
-            var grilla = jQuery('#grilla').DataTable({
-                //dom: '<"left"f><"right"l>trip',
-                responsive: true,
-                language: {
-                    "url": "@Url.Content("~/Content/datatables/languages/dataTables.es.json")"
+        var grilla = jQuery('#grilla').DataTable({
+            //dom: '<"left"f><"right"l>trip',
+            responsive: true,
+            language: {
+                "url": "@Url.Content("~/Content/datatables/languages/dataTables.es.json")"
+            },
+            data: dataSet,
+            columns: [
+                { "data": "Id" },
+                { "data": "FiscalizadorNombre" },
+                { "data": "FechaFiscalizacion" },
+                { "data": "NumLicencia" },
+                {
+                    "data": function(oObj) {
+                        return '<a href="@Url.Action("Editar", "Cronograma")/' + oObj.Id + '" title="Editar"><i class="fa fa-edit"></i></a>';
+                    },
+                    "orderable": false,
+                    "searchable": false
                 },
-                data: dataSet,
-                columns: [
-                    { "data": "Id" },
-                    { "data": "Fiscalizador" },
-                    { "data": "FechaFiscalizacion" },
-                    { "data": "NumLicencia" }
-                ],
-                "columnDefs": [
-                    {
-                        "targets": [0],
-                        "visible": false,
-                        "searchable": false
-                    }
-                ],
-                "order": [[1, 'asc']]
-            });
+                {
+                    "data": function(oObj) {
+                        return '<a href="@Url.Action("Ver", "Cronograma")/' + oObj.Id + '" title="Ver"><i class="fa fa-eye"></i></a>';
+                    },
+                    "orderable": false,
+                    "searchable": false
+                }
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            "order": [[1, 'asc']]
         });
+    });
     </script>
 }

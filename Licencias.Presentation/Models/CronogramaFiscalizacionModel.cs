@@ -11,12 +11,16 @@ namespace Licencias.Presentation.Models
         [DisplayName("Fecha Fiscalización")]
         public string FechaFiscalizacion { get; set; }
 
+        public string FiscalizadorNombre { get; set; }
+
         [Required]
         [DisplayName("Fiscalizador")]
-        public string Fiscalizador { get; set; }
+        public int FiscalizadorId { get; set; }
 
         [Required]
         [DisplayName("Local")]
+        public int LocalId { get; set; }
+
         public string LocalNombre { get; set; }
 
         public int UsuarioId { get; set; }

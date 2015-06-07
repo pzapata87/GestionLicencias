@@ -2,11 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/02/2015 08:05:04
+-- Date Created: 06/07/2015 11:34:14
 -- Generated from EDMX file: D:\Proyectos\Academico - Servicio Web\GestionLicencias\GestionLicencias\Licencias.DataAccess\GLicenciasBD.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
+GO
+CREATE DATABASE [GLicenciasBD];
 GO
 USE [GLicenciasBD];
 GO
@@ -23,14 +25,14 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_RolRolUsuario]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RolUsuario] DROP CONSTRAINT [FK_RolRolUsuario];
 GO
-IF OBJECT_ID(N'[dbo].[FK_UsuarioCronogramaFiscalizacion]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[CronogramaFiscalizacions] DROP CONSTRAINT [FK_UsuarioCronogramaFiscalizacion];
-GO
 IF OBJECT_ID(N'[dbo].[FK_LocalLicencia]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Licencias] DROP CONSTRAINT [FK_LocalLicencia];
+    ALTER TABLE [dbo].[Licencia] DROP CONSTRAINT [FK_LocalLicencia];
 GO
 IF OBJECT_ID(N'[dbo].[FK_LicenciaCronogramaFiscalizacion]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[CronogramaFiscalizacions] DROP CONSTRAINT [FK_LicenciaCronogramaFiscalizacion];
+    ALTER TABLE [dbo].[CronogramaFiscalizacion] DROP CONSTRAINT [FK_LicenciaCronogramaFiscalizacion];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FiscalizadorCronogramaFiscalizacion]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CronogramaFiscalizacion] DROP CONSTRAINT [FK_FiscalizadorCronogramaFiscalizacion];
 GO
 
 -- --------------------------------------------------
@@ -46,14 +48,17 @@ GO
 IF OBJECT_ID(N'[dbo].[RolUsuario]', 'U') IS NOT NULL
     DROP TABLE [dbo].[RolUsuario];
 GO
-IF OBJECT_ID(N'[dbo].[CronogramaFiscalizacions]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[CronogramaFiscalizacions];
+IF OBJECT_ID(N'[dbo].[CronogramaFiscalizacion]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CronogramaFiscalizacion];
 GO
-IF OBJECT_ID(N'[dbo].[Locals]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Locals];
+IF OBJECT_ID(N'[dbo].[Local]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Local];
 GO
-IF OBJECT_ID(N'[dbo].[Licencias]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Licencias];
+IF OBJECT_ID(N'[dbo].[Licencia]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Licencia];
+GO
+IF OBJECT_ID(N'[dbo].[Fiscalizador]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Fiscalizador];
 GO
 
 -- --------------------------------------------------
@@ -86,10 +91,9 @@ GO
 CREATE TABLE [dbo].[CronogramaFiscalizacion] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [FechaFiscalizacion] datetime  NOT NULL,
-    [Fiscalizador] nvarchar(max)  NOT NULL,
-    [UsuarioId] int  NOT NULL,
     [Comentario] nvarchar(500)  NULL,
-    [LicenciaId] int  NOT NULL
+    [LicenciaId] int  NOT NULL,
+    [FiscalizadorId] int  NOT NULL
 );
 GO
 
@@ -107,6 +111,14 @@ CREATE TABLE [dbo].[Licencia] (
     [Responsable] nvarchar(100)  NOT NULL,
     [NumLicencia] nvarchar(max)  NOT NULL,
     [FechaLicencia] datetime  NOT NULL
+);
+GO
+
+-- Creating table 'Fiscalizador'
+CREATE TABLE [dbo].[Fiscalizador] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Nombre] nvarchar(50)  NOT NULL,
+    [Apellido] nvarchar(50)  NOT NULL
 );
 GO
 
@@ -150,6 +162,12 @@ ADD CONSTRAINT [PK_Licencia]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
+-- Creating primary key on [Id] in table 'Fiscalizador'
+ALTER TABLE [dbo].[Fiscalizador]
+ADD CONSTRAINT [PK_Fiscalizador]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
@@ -176,21 +194,6 @@ GO
 CREATE INDEX [IX_FK_RolRolUsuario]
 ON [dbo].[RolUsuario]
     ([RolId]);
-GO
-
--- Creating foreign key on [UsuarioId] in table 'CronogramaFiscalizacion'
-ALTER TABLE [dbo].[CronogramaFiscalizacion]
-ADD CONSTRAINT [FK_UsuarioCronogramaFiscalizacion]
-    FOREIGN KEY ([UsuarioId])
-    REFERENCES [dbo].[Usuario]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_UsuarioCronogramaFiscalizacion'
-CREATE INDEX [IX_FK_UsuarioCronogramaFiscalizacion]
-ON [dbo].[CronogramaFiscalizacion]
-    ([UsuarioId]);
 GO
 
 -- Creating foreign key on [LocalId] in table 'Licencia'
@@ -221,6 +224,21 @@ GO
 CREATE INDEX [IX_FK_LicenciaCronogramaFiscalizacion]
 ON [dbo].[CronogramaFiscalizacion]
     ([LicenciaId]);
+GO
+
+-- Creating foreign key on [FiscalizadorId] in table 'CronogramaFiscalizacion'
+ALTER TABLE [dbo].[CronogramaFiscalizacion]
+ADD CONSTRAINT [FK_FiscalizadorCronogramaFiscalizacion]
+    FOREIGN KEY ([FiscalizadorId])
+    REFERENCES [dbo].[Fiscalizador]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_FiscalizadorCronogramaFiscalizacion'
+CREATE INDEX [IX_FK_FiscalizadorCronogramaFiscalizacion]
+ON [dbo].[CronogramaFiscalizacion]
+    ([FiscalizadorId]);
 GO
 
 -- --------------------------------------------------

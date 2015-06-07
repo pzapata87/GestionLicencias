@@ -107,9 +107,17 @@
 
             popup.modal('show');
         },
-        showMessageDialog: function (message) {
+        showMessageDialog: function (fnSuccess, message) {
+            var popup = $('#' + _popupMensaje);
+            var btnSuccess = $(popup).find('.btn-success');
+
+            btnSuccess.off('click');
+            if ($.isFunction(fnSuccess)) {
+                btnSuccess.on('click', function () { fnSuccess(); });
+            }
+            
             $('#' + _popupMensaje + ' .modal-body').html(message);
-            $('#' + _popupMensaje).modal('show');
+            popup.modal('show');
         }
     };
 }();

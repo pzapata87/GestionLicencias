@@ -53,6 +53,9 @@
     <Compile Include="CronogramaFiscalizacion.cs">
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
     </Compile>
+    <Compile Include="Fiscalizador.cs">
+      <DependentUpon>GLicenciasBD.tt</DependentUpon>
+    </Compile>
     <Compile Include="GLicenciasBD.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

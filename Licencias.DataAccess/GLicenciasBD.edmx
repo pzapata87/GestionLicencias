@@ -12,6 +12,7 @@
     <EntitySet Name="CronogramaFiscalizacion" EntityType="GLicenciasBD.Store.CronogramaFiscalizacion" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Local" EntityType="GLicenciasBD.Store.Local" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Licencia" EntityType="GLicenciasBD.Store.Licencia" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Fiscalizador" EntityType="GLicenciasBD.Store.Fiscalizador" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="UsuarioRolUsuario" Association="GLicenciasBD.Store.UsuarioRolUsuario">
       <End Role="Usuario" EntitySet="Usuario" />
       <End Role="RolUsuario" EntitySet="RolUsuario" />
@@ -20,16 +21,16 @@
       <End Role="Rol" EntitySet="Rol" />
       <End Role="RolUsuario" EntitySet="RolUsuario" />
     </AssociationSet>
-    <AssociationSet Name="UsuarioCronogramaFiscalizacion" Association="GLicenciasBD.Store.UsuarioCronogramaFiscalizacion">
-      <End Role="Usuario" EntitySet="Usuario" />
-      <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
-    </AssociationSet>
     <AssociationSet Name="LocalLicencia" Association="GLicenciasBD.Store.LocalLicencia">
       <End Role="Local" EntitySet="Local" />
       <End Role="Licencia" EntitySet="Licencia" />
     </AssociationSet>
     <AssociationSet Name="LicenciaCronogramaFiscalizacion" Association="GLicenciasBD.Store.LicenciaCronogramaFiscalizacion">
       <End Role="Licencia" EntitySet="Licencia" />
+      <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
+    </AssociationSet>
+    <AssociationSet Name="FiscalizadorCronogramaFiscalizacion" Association="GLicenciasBD.Store.FiscalizadorCronogramaFiscalizacion">
+      <End Role="Fiscalizador" EntitySet="Fiscalizador" />
       <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
     </AssociationSet>
   </EntityContainer>
@@ -62,10 +63,9 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="FechaFiscalizacion" Type="datetime" Nullable="false" />
-    <Property Name="Fiscalizador" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="UsuarioId" Type="int" Nullable="false" />
     <Property Name="Comentario" Type="nvarchar" Nullable="true" MaxLength="500" />
     <Property Name="LicenciaId" Type="int" Nullable="false" />
+    <Property Name="FiscalizadorId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Local">
     <Key>
@@ -83,6 +83,14 @@
     <Property Name="Responsable" Type="nvarchar" Nullable="false" MaxLength="100" />
     <Property Name="NumLicencia" Type="nvarchar(max)" Nullable="false" />
     <Property Name="FechaLicencia" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Fiscalizador">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Apellido" Type="nvarchar" Nullable="false" MaxLength="50" />
   </EntityType>
   <Association Name="UsuarioRolUsuario">
     <End Role="Usuario" Type="GLicenciasBD.Store.Usuario" Multiplicity="1" />
@@ -105,18 +113,6 @@
       </Principal>
       <Dependent Role="RolUsuario">
         <PropertyRef Name="RolId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="UsuarioCronogramaFiscalizacion">
-    <End Role="Usuario" Type="GLicenciasBD.Store.Usuario" Multiplicity="1" />
-    <End Role="CronogramaFiscalizacion" Type="GLicenciasBD.Store.CronogramaFiscalizacion" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Usuario">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="CronogramaFiscalizacion">
-        <PropertyRef Name="UsuarioId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -144,6 +140,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FiscalizadorCronogramaFiscalizacion">
+    <End Role="Fiscalizador" Type="GLicenciasBD.Store.Fiscalizador" Multiplicity="1" />
+    <End Role="CronogramaFiscalizacion" Type="GLicenciasBD.Store.CronogramaFiscalizacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Fiscalizador">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CronogramaFiscalizacion">
+        <PropertyRef Name="FiscalizadorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -161,10 +169,6 @@
             <End Role="RolUsuario" EntitySet="RolUsuario" />
           </AssociationSet>
           <EntitySet Name="CronogramaFiscalizacion" EntityType="GLicenciasBD.CronogramaFiscalizacion" />
-          <AssociationSet Name="UsuarioCronogramaFiscalizacion" Association="GLicenciasBD.UsuarioCronogramaFiscalizacion">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
-          </AssociationSet>
           <EntitySet Name="Local" EntityType="GLicenciasBD.Local" />
           <EntitySet Name="Licencia" EntityType="GLicenciasBD.Licencia" />
           <AssociationSet Name="LocalLicencia" Association="GLicenciasBD.LocalLicencia">
@@ -173,6 +177,11 @@
           </AssociationSet>
           <AssociationSet Name="LicenciaCronogramaFiscalizacion" Association="GLicenciasBD.LicenciaCronogramaFiscalizacion">
             <End Role="Licencia" EntitySet="Licencia" />
+            <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
+          </AssociationSet>
+          <EntitySet Name="Fiscalizador" EntityType="GLicenciasBD.Fiscalizador" />
+          <AssociationSet Name="FiscalizadorCronogramaFiscalizacion" Association="GLicenciasBD.FiscalizadorCronogramaFiscalizacion">
+            <End Role="Fiscalizador" EntitySet="Fiscalizador" />
             <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
           </AssociationSet>
         </EntityContainer>
@@ -184,7 +193,6 @@
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="20" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="50" />
           <NavigationProperty Name="RolUsuarios" Relationship="GLicenciasBD.UsuarioRolUsuario" FromRole="Usuario" ToRole="RolUsuario" />
-          <NavigationProperty Name="CronogramaFiscalizacions" Relationship="GLicenciasBD.UsuarioCronogramaFiscalizacion" FromRole="Usuario" ToRole="CronogramaFiscalizacion" />
         </EntityType>
         <EntityType Name="Rol">
           <Key>
@@ -234,25 +242,12 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FechaFiscalizacion" Type="DateTime" Nullable="false" />
-          <Property Name="Fiscalizador" Type="String" Nullable="false" />
-          <NavigationProperty Name="Usuario" Relationship="GLicenciasBD.UsuarioCronogramaFiscalizacion" FromRole="CronogramaFiscalizacion" ToRole="Usuario" />
-          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
           <Property Name="Comentario" Type="String" Nullable="true" MaxLength="500" />
           <NavigationProperty Name="Licencia" Relationship="GLicenciasBD.LicenciaCronogramaFiscalizacion" FromRole="CronogramaFiscalizacion" ToRole="Licencia" />
           <Property Name="LicenciaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fiscalizador" Relationship="GLicenciasBD.FiscalizadorCronogramaFiscalizacion" FromRole="CronogramaFiscalizacion" ToRole="Fiscalizador" />
+          <Property Name="FiscalizadorId" Type="Int32" Nullable="false" />
         </EntityType>
-        <Association Name="UsuarioCronogramaFiscalizacion">
-          <End Type="GLicenciasBD.Usuario" Role="Usuario" Multiplicity="1" />
-          <End Type="GLicenciasBD.CronogramaFiscalizacion" Role="CronogramaFiscalizacion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CronogramaFiscalizacion">
-              <PropertyRef Name="UsuarioId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Local">
           <Key>
             <PropertyRef Name="Id" />
@@ -297,6 +292,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Fiscalizador">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" />
+          <Property Name="Apellido" Type="String" Nullable="false" MaxLength="50" />
+          <NavigationProperty Name="CronogramaFiscalizacions" Relationship="GLicenciasBD.FiscalizadorCronogramaFiscalizacion" FromRole="Fiscalizador" ToRole="CronogramaFiscalizacion" />
+        </EntityType>
+        <Association Name="FiscalizadorCronogramaFiscalizacion">
+          <End Type="GLicenciasBD.Fiscalizador" Role="Fiscalizador" Multiplicity="1" />
+          <End Type="GLicenciasBD.CronogramaFiscalizacion" Role="CronogramaFiscalizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fiscalizador">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CronogramaFiscalizacion">
+              <PropertyRef Name="FiscalizadorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -333,10 +349,9 @@
         <MappingFragment StoreEntitySet="CronogramaFiscalizacion">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="FechaFiscalizacion" ColumnName="FechaFiscalizacion" />
-          <ScalarProperty Name="Fiscalizador" ColumnName="Fiscalizador" />
-          <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
           <ScalarProperty Name="Comentario" ColumnName="Comentario" />
           <ScalarProperty Name="LicenciaId" ColumnName="LicenciaId" />
+          <ScalarProperty Name="FiscalizadorId" ColumnName="FiscalizadorId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -356,6 +371,15 @@
           <ScalarProperty Name="Responsable" ColumnName="Responsable" />
           <ScalarProperty Name="NumLicencia" ColumnName="NumLicencia" />
           <ScalarProperty Name="FechaLicencia" ColumnName="FechaLicencia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Fiscalizador">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.Fiscalizador)">
+        <MappingFragment StoreEntitySet="Fiscalizador">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Apellido" ColumnName="Apellido" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

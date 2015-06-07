@@ -11,12 +11,12 @@
         <AssociationConnector Association="GLicenciasBD.UsuarioRolUsuario" />
         <AssociationConnector Association="GLicenciasBD.RolRolUsuario" />
         <EntityTypeShape EntityType="GLicenciasBD.CronogramaFiscalizacion" Width="1.875" PointX="9.125" PointY="3.625" />
-        <AssociationConnector Association="GLicenciasBD.UsuarioCronogramaFiscalizacion" ManuallyRouted="false" >
-        </AssociationConnector>
         <EntityTypeShape EntityType="GLicenciasBD.Local" Width="1.5" PointX="6.5" PointY="0.5" />
         <EntityTypeShape EntityType="GLicenciasBD.Licencia" Width="2" PointX="9" PointY="0.5" />
         <AssociationConnector Association="GLicenciasBD.LocalLicencia" />
         <AssociationConnector Association="GLicenciasBD.LicenciaCronogramaFiscalizacion" />
+        <EntityTypeShape EntityType="GLicenciasBD.Fiscalizador" Width="1.5" PointX="3.625" PointY="0.5" />
+        <AssociationConnector Association="GLicenciasBD.FiscalizadorCronogramaFiscalizacion" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

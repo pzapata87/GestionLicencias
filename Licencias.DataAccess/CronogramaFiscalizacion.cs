@@ -16,12 +16,11 @@ namespace Licencias.DataAccess
     {
         public int Id { get; set; }
         public System.DateTime FechaFiscalizacion { get; set; }
-        public string Fiscalizador { get; set; }
-        public int UsuarioId { get; set; }
         public string Comentario { get; set; }
         public int LicenciaId { get; set; }
+        public int FiscalizadorId { get; set; }
     
-        public virtual Usuario Usuario { get; set; }
         public virtual Licencia Licencia { get; set; }
+        public virtual Fiscalizador Fiscalizador { get; set; }
     }
 }

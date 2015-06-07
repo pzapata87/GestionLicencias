@@ -31,5 +31,6 @@ namespace Licencias.DataAccess
         public virtual DbSet<CronogramaFiscalizacion> CronogramaFiscalizacion { get; set; }
         public virtual DbSet<Local> Local { get; set; }
         public virtual DbSet<Licencia> Licencia { get; set; }
+        public virtual DbSet<Fiscalizador> Fiscalizador { get; set; }
     }
 }
