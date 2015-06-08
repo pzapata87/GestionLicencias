@@ -3,7 +3,7 @@
     public enum EstadoFiscalizacion
     {
         Pendiente = 1,
-        EnProceso,
+        NoEncontrado,
         Finalizado
     }
 }

@@ -13,10 +13,7 @@ namespace Licencias.Presentation.Models
 
         public string FiscalizadorNombre { get; set; }
 
-        [Required]
         [DisplayName("Local")]
-        public int LocalId { get; set; }
-
         public string LocalDireccion { get; set; }
 
         [DisplayName("Detalle")]
@@ -27,6 +24,15 @@ namespace Licencias.Presentation.Models
         [DisplayName("Número de Licencia")]
         public string NumLicencia { get; set; }
 
+        [Required]
+        [DisplayName("Estado")]
+        public string EstadoId { get; set; }
+
         public string EstadoNombre { get; set; }
+
+        [DisplayName("Observación")]
+        public string Observacion { get; set; }
+
+        public string UriImagen { get; set; }
     }
 }

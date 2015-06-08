@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using Licencias.Presentation.Core.Enums;
 
 namespace Licencias.Presentation.Core
 {
     public static class Utils
     {
+        public static Dictionary<string, string> EstadoFiscalizacionList { get; private set; }
+
         #region Métodos adicionales y de extensión para fechas
 
         /// <summary>
@@ -75,5 +81,33 @@ namespace Licencias.Presentation.Core
         }
 
         #endregion Métodos adicionales y de extensión para fechas
+
+        public static void AsignarEstadoFiscalizacion()
+        {
+            EstadoFiscalizacionList = new Dictionary<string, string>
+            {
+                {Convert.ToString((int) EstadoFiscalizacion.Pendiente), "Pendiente"},
+                {Convert.ToString((int) EstadoFiscalizacion.NoEncontrado), "No Encontrado"},
+                {Convert.ToString((int) EstadoFiscalizacion.Finalizado), "Finalizado"}
+            };
+        }
+
+        public static List<SelectListItem> SelectEstadoFiscalizacion()
+        {
+            var list = EstadoFiscalizacionList.Where(p => p.Key != Convert.ToString((int) EstadoFiscalizacion.Pendiente))
+                .Select(p => new SelectListItem
+                {
+                    Text = p.Value,
+                    Value = p.Key
+                }).ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "--Seleccionar--",
+                Value = ""
+            });
+
+            return list;
+        }
     }
 }

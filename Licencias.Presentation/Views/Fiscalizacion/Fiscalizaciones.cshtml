@@ -1,4 +1,5 @@
-﻿@model List<Licencias.Presentation.Models.FiscalizacionModel>
+﻿@using Licencias.Presentation.Core.Enums
+@model List<Licencias.Presentation.Models.FiscalizacionModel>
 
 @{
     ViewBag.Title = "Fiscalizaciones";
@@ -22,20 +23,14 @@
 }
 
 <div class="box box-info">
-    <div class="box-header with-border">
-        <a class="btn btn-info pull-right" href="@Url.Action("Crear")">
-            <i class="fa fa-edit"></i>
-            Nuevo
-        </a>
-    </div>
     <div class="box-body">
         <table id="grilla" class="table table-bordered table-responsive">
             <thead>
                 <tr>
                     <th></th>
-                    <th style="width: 30%;">Dirección</th>
+                    <th style="width: 40%;">Dirección</th>
                     <th style="width: 20%;">Fecha Fiscalización</th>
-                    <th style="width: 45%;">Nº Licencia</th>
+                    <th style="width: 14%;">Nº Licencia</th>
                     <th style="width: 20%;">Estado</th>
                     <th style="width: 3%;"></th>
                     <th style="width: 3%;"></th>
@@ -53,8 +48,9 @@
     <script type="text/javascript">
     $(document).ready(function () {
         var dataSet = JSON.parse('@Html.Raw(Json.Encode(Model))');
+        var estadoPendiente = '@Convert.ToInt32(EstadoFiscalizacion.Pendiente)';
 
-        var grilla = jQuery('#grilla').DataTable({
+        jQuery('#grilla').DataTable({
             //dom: '<"left"f><"right"l>trip',
             responsive: true,
             language: {
@@ -68,15 +64,18 @@
                 { "data": "NumLicencia" },
                 { "data": "EstadoNombre" },
                 {
-                    "data": function(oObj) {
-                        return '<a href="@Url.Action("Editar", "Fiscalizacion")/' + oObj.Id + '" title="Editar"><i class="fa fa-edit"></i></a>';
+                    "data": function (oObj) {
+                        if (oObj.EstadoId == estadoPendiente)
+                            return '<a href="@Url.Action("EditarFiscalizacion", "Fiscalizacion")/' + oObj.Id + '" title="Editar"><i class="fa fa-edit"></i></a>';
+                        
+                        return '<a href="@Url.Action("VerFiscalizacion", "Fiscalizacion")/' + oObj.Id + '" title="Editar"><i class="fa fa-edit"></i></a>';
                     },
                     "orderable": false,
                     "searchable": false
                 },
                 {
                     "data": function(oObj) {
-                        return '<a href="@Url.Action("Ver", "Fiscalizacion")/' + oObj.Id + '" title="Ver"><i class="fa fa-eye"></i></a>';
+                        return '<a href="@Url.Action("VerFiscalizacion", "Fiscalizacion")/' + oObj.Id + '" title="Ver"><i class="fa fa-eye"></i></a>';
                     },
                     "orderable": false,
                     "searchable": false
@@ -92,5 +91,5 @@
             "order": [[1, 'asc']]
         });
     });
-    </script>
+</script>
 }

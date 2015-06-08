@@ -1,7 +1,7 @@
 ﻿@model Licencias.Presentation.Models.CronogramaFiscalizacionModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar";
 }
 
 @section StyleContent
@@ -21,6 +21,8 @@
     </div>
     @using (Html.BeginForm(Model.Accion, "Fiscalizacion", new {area = ""}, FormMethod.Post, new {id = "frmCronograma", @class = "form-horizontal"}))
     {
+        @Html.AntiForgeryToken()
+        
         <div class="box-body">
             <div class="form-group">
                 @Html.LabelFor(p => p.NumLicencia, new {@class = "col-sm-2 control-label"})
@@ -182,7 +184,7 @@
         
         $("#FiscalizadorId").select2({
             language: "es",
-            placeholder: 'Ficalizador',
+            placeholder: 'Fiscalizador',
             minimumInputLength: 3,
             minimumResultsForSearch: 10,
             delay: 250,

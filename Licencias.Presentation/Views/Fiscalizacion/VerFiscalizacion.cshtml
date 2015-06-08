@@ -1,0 +1,62 @@
+﻿@model Licencias.Presentation.Models.FiscalizacionModel
+
+@{
+    ViewBag.Title = "Ver";
+}
+
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Actualizar Fiscalización</h3>
+    </div>
+    <div class="form-horizontal">
+        <div class="box-body">
+            <div class="form-group">
+                @Html.LabelFor(p => p.NumLicencia, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(p => p.NumLicencia, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+                <a class="btn btn-social btn-success" href="@Model.UriImagen">
+                    <i class="fa fa-instagram"></i> Ver Imagen
+                </a>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.LocalDireccion, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(p => p.LocalDireccion, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.EstadoId, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(p => p.EstadoNombre, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.FechaFiscalizacion, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(p => p.FechaFiscalizacion, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.Detalle, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-8">
+                    @Html.TextAreaFor(p => p.Detalle, new { @class = "form-control", @maxlength = 1000, @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.Observacion, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-8">
+                    @Html.TextAreaFor(p => p.Observacion, new { @class = "form-control", @maxlength = 1000, @disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-footer">
+        <div class="col-md-offset-3 col-md-9">
+            <a class="btn btn-default" href="@Url.Action("Fiscalizaciones", "Fiscalizacion")">
+                <i class="fa fa-reply"></i>
+                Regresar
+            </a>
+        </div>
+    </div>
+</div>

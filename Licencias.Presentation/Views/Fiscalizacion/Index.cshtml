@@ -53,7 +53,7 @@
     $(document).ready(function () {
         var dataSet = JSON.parse('@Html.Raw(Json.Encode(Model))');
 
-        var grilla = jQuery('#grilla').DataTable({
+        jQuery('#grilla').DataTable({
             //dom: '<"left"f><"right"l>trip',
             responsive: true,
             language: {

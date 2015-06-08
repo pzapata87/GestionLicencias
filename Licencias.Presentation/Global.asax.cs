@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Licencias.Presentation.Core;
 
 namespace Licencias.Presentation
 {
@@ -16,6 +17,8 @@ namespace Licencias.Presentation
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            Utils.AsignarEstadoFiscalizacion();
         }
     }
 }

@@ -1,0 +1,9 @@
+﻿.skin-blue-light .main-header .navbar {
+  background-color: #788F27 !important;
+}
+.skin-blue-light .main-header .logo {
+    background-color: #788F27 !important;
+}
+.user-panel>.image>img {
+    max-width: 100%;
+}
