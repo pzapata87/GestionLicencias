@@ -9,7 +9,7 @@
     <EntitySet Name="Usuario" EntityType="GLicenciasBD.Store.Usuario" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Rol" EntityType="GLicenciasBD.Store.Rol" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="RolUsuario" EntityType="GLicenciasBD.Store.RolUsuario" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="CronogramaFiscalizacion" EntityType="GLicenciasBD.Store.CronogramaFiscalizacion" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Fiscalizacion" EntityType="GLicenciasBD.Store.Fiscalizacion" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Local" EntityType="GLicenciasBD.Store.Local" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Licencia" EntityType="GLicenciasBD.Store.Licencia" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Fiscalizador" EntityType="GLicenciasBD.Store.Fiscalizador" store:Type="Tables" Schema="dbo" />
@@ -25,13 +25,13 @@
       <End Role="Local" EntitySet="Local" />
       <End Role="Licencia" EntitySet="Licencia" />
     </AssociationSet>
-    <AssociationSet Name="LicenciaCronogramaFiscalizacion" Association="GLicenciasBD.Store.LicenciaCronogramaFiscalizacion">
-      <End Role="Licencia" EntitySet="Licencia" />
-      <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
-    </AssociationSet>
-    <AssociationSet Name="FiscalizadorCronogramaFiscalizacion" Association="GLicenciasBD.Store.FiscalizadorCronogramaFiscalizacion">
+    <AssociationSet Name="FiscalizadorFiscalizacion" Association="GLicenciasBD.Store.FiscalizadorFiscalizacion">
       <End Role="Fiscalizador" EntitySet="Fiscalizador" />
-      <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
+      <End Role="Fiscalizacion" EntitySet="Fiscalizacion" />
+    </AssociationSet>
+    <AssociationSet Name="LicenciaFiscalizacion" Association="GLicenciasBD.Store.LicenciaFiscalizacion">
+      <End Role="Licencia" EntitySet="Licencia" />
+      <End Role="Fiscalizacion" EntitySet="Fiscalizacion" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Usuario">
@@ -57,15 +57,19 @@
     <Property Name="UsuarioId" Type="int" Nullable="false" />
     <Property Name="RolId" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="CronogramaFiscalizacion">
+  <EntityType Name="Fiscalizacion">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="FechaFiscalizacion" Type="datetime" Nullable="false" />
+    <Property Name="FechaProgramada" Type="datetime" Nullable="false" />
     <Property Name="Comentario" Type="nvarchar" Nullable="true" MaxLength="500" />
-    <Property Name="LicenciaId" Type="int" Nullable="false" />
     <Property Name="FiscalizadorId" Type="int" Nullable="false" />
+    <Property Name="LicenciaId" Type="int" Nullable="false" />
+    <Property Name="Estado" Type="nvarchar" Nullable="false" MaxLength="1" />
+    <Property Name="Observacion" Type="nvarchar" Nullable="true" MaxLength="1000" />
+    <Property Name="Detalle" Type="nvarchar" Nullable="true" MaxLength="1000" />
+    <Property Name="FechaReal" Type="datetime" Nullable="true" />
   </EntityType>
   <EntityType Name="Local">
     <Key>
@@ -83,6 +87,7 @@
     <Property Name="Responsable" Type="nvarchar" Nullable="false" MaxLength="100" />
     <Property Name="NumLicencia" Type="nvarchar(max)" Nullable="false" />
     <Property Name="FechaLicencia" Type="datetime" Nullable="false" />
+    <Property Name="UriImagen" Type="nvarchar" Nullable="true" MaxLength="100" />
   </EntityType>
   <EntityType Name="Fiscalizador">
     <Key>
@@ -128,27 +133,27 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="LicenciaCronogramaFiscalizacion">
-    <End Role="Licencia" Type="GLicenciasBD.Store.Licencia" Multiplicity="1" />
-    <End Role="CronogramaFiscalizacion" Type="GLicenciasBD.Store.CronogramaFiscalizacion" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Licencia">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="CronogramaFiscalizacion">
-        <PropertyRef Name="LicenciaId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FiscalizadorCronogramaFiscalizacion">
+  <Association Name="FiscalizadorFiscalizacion">
     <End Role="Fiscalizador" Type="GLicenciasBD.Store.Fiscalizador" Multiplicity="1" />
-    <End Role="CronogramaFiscalizacion" Type="GLicenciasBD.Store.CronogramaFiscalizacion" Multiplicity="*" />
+    <End Role="Fiscalizacion" Type="GLicenciasBD.Store.Fiscalizacion" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Fiscalizador">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="CronogramaFiscalizacion">
+      <Dependent Role="Fiscalizacion">
         <PropertyRef Name="FiscalizadorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="LicenciaFiscalizacion">
+    <End Role="Licencia" Type="GLicenciasBD.Store.Licencia" Multiplicity="1" />
+    <End Role="Fiscalizacion" Type="GLicenciasBD.Store.Fiscalizacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Licencia">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Fiscalizacion">
+        <PropertyRef Name="LicenciaId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -168,21 +173,21 @@
             <End Role="Rol" EntitySet="Rol" />
             <End Role="RolUsuario" EntitySet="RolUsuario" />
           </AssociationSet>
-          <EntitySet Name="CronogramaFiscalizacion" EntityType="GLicenciasBD.CronogramaFiscalizacion" />
+          <EntitySet Name="Fiscalizacion" EntityType="GLicenciasBD.Fiscalizacion" />
           <EntitySet Name="Local" EntityType="GLicenciasBD.Local" />
           <EntitySet Name="Licencia" EntityType="GLicenciasBD.Licencia" />
           <AssociationSet Name="LocalLicencia" Association="GLicenciasBD.LocalLicencia">
             <End Role="Local" EntitySet="Local" />
             <End Role="Licencia" EntitySet="Licencia" />
           </AssociationSet>
-          <AssociationSet Name="LicenciaCronogramaFiscalizacion" Association="GLicenciasBD.LicenciaCronogramaFiscalizacion">
-            <End Role="Licencia" EntitySet="Licencia" />
-            <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
-          </AssociationSet>
           <EntitySet Name="Fiscalizador" EntityType="GLicenciasBD.Fiscalizador" />
-          <AssociationSet Name="FiscalizadorCronogramaFiscalizacion" Association="GLicenciasBD.FiscalizadorCronogramaFiscalizacion">
+          <AssociationSet Name="FiscalizadorFiscalizacion" Association="GLicenciasBD.FiscalizadorFiscalizacion">
             <End Role="Fiscalizador" EntitySet="Fiscalizador" />
-            <End Role="CronogramaFiscalizacion" EntitySet="CronogramaFiscalizacion" />
+            <End Role="Fiscalizacion" EntitySet="Fiscalizacion" />
+          </AssociationSet>
+          <AssociationSet Name="LicenciaFiscalizacion" Association="GLicenciasBD.LicenciaFiscalizacion">
+            <End Role="Licencia" EntitySet="Licencia" />
+            <End Role="Fiscalizacion" EntitySet="Fiscalizacion" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Usuario">
@@ -236,17 +241,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CronogramaFiscalizacion">
+        <EntityType Name="Fiscalizacion">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FechaFiscalizacion" Type="DateTime" Nullable="false" />
+          <Property Name="FechaProgramada" Type="DateTime" Nullable="false" />
           <Property Name="Comentario" Type="String" Nullable="true" MaxLength="500" />
-          <NavigationProperty Name="Licencia" Relationship="GLicenciasBD.LicenciaCronogramaFiscalizacion" FromRole="CronogramaFiscalizacion" ToRole="Licencia" />
-          <Property Name="LicenciaId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Fiscalizador" Relationship="GLicenciasBD.FiscalizadorCronogramaFiscalizacion" FromRole="CronogramaFiscalizacion" ToRole="Fiscalizador" />
+          <NavigationProperty Name="Fiscalizador" Relationship="GLicenciasBD.FiscalizadorFiscalizacion" FromRole="Fiscalizacion" ToRole="Fiscalizador" />
           <Property Name="FiscalizadorId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Licencia" Relationship="GLicenciasBD.LicenciaFiscalizacion" FromRole="Fiscalizacion" ToRole="Licencia" />
+          <Property Name="LicenciaId" Type="Int32" Nullable="false" />
+          <Property Name="Estado" Type="String" Nullable="false" MaxLength="1" />
+          <Property Name="Observacion" Type="String" Nullable="true" MaxLength="1000" />
+          <Property Name="Detalle" Type="String" Nullable="true" MaxLength="1000" />
+          <Property Name="FechaReal" Type="DateTime" Nullable="true" />
         </EntityType>
         <EntityType Name="Local">
           <Key>
@@ -266,7 +275,8 @@
           <Property Name="Responsable" Type="String" Nullable="false" MaxLength="100" />
           <Property Name="NumLicencia" Type="String" Nullable="false" />
           <Property Name="FechaLicencia" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="CronogramaFiscalizacions" Relationship="GLicenciasBD.LicenciaCronogramaFiscalizacion" FromRole="Licencia" ToRole="CronogramaFiscalizacion" />
+          <NavigationProperty Name="Fiscalizacions" Relationship="GLicenciasBD.LicenciaFiscalizacion" FromRole="Licencia" ToRole="Fiscalizacion" />
+          <Property Name="UriImagen" Type="String" Nullable="true" MaxLength="100" />
         </EntityType>
         <Association Name="LocalLicencia">
           <End Type="GLicenciasBD.Local" Role="Local" Multiplicity="1" />
@@ -280,18 +290,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="LicenciaCronogramaFiscalizacion">
-          <End Type="GLicenciasBD.Licencia" Role="Licencia" Multiplicity="1" />
-          <End Type="GLicenciasBD.CronogramaFiscalizacion" Role="CronogramaFiscalizacion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Licencia">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CronogramaFiscalizacion">
-              <PropertyRef Name="LicenciaId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Fiscalizador">
           <Key>
             <PropertyRef Name="Id" />
@@ -299,17 +297,29 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" />
           <Property Name="Apellido" Type="String" Nullable="false" MaxLength="50" />
-          <NavigationProperty Name="CronogramaFiscalizacions" Relationship="GLicenciasBD.FiscalizadorCronogramaFiscalizacion" FromRole="Fiscalizador" ToRole="CronogramaFiscalizacion" />
+          <NavigationProperty Name="Fiscalizacions" Relationship="GLicenciasBD.FiscalizadorFiscalizacion" FromRole="Fiscalizador" ToRole="Fiscalizacion" />
         </EntityType>
-        <Association Name="FiscalizadorCronogramaFiscalizacion">
+        <Association Name="FiscalizadorFiscalizacion">
           <End Type="GLicenciasBD.Fiscalizador" Role="Fiscalizador" Multiplicity="1" />
-          <End Type="GLicenciasBD.CronogramaFiscalizacion" Role="CronogramaFiscalizacion" Multiplicity="*" />
+          <End Type="GLicenciasBD.Fiscalizacion" Role="Fiscalizacion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Fiscalizador">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CronogramaFiscalizacion">
+            <Dependent Role="Fiscalizacion">
               <PropertyRef Name="FiscalizadorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LicenciaFiscalizacion">
+          <End Type="GLicenciasBD.Licencia" Role="Licencia" Multiplicity="1" />
+          <End Type="GLicenciasBD.Fiscalizacion" Role="Fiscalizacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Licencia">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Fiscalizacion">
+              <PropertyRef Name="LicenciaId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -344,14 +354,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="CronogramaFiscalizacion">
-      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.CronogramaFiscalizacion)">
-        <MappingFragment StoreEntitySet="CronogramaFiscalizacion">
+    <EntitySetMapping Name="Fiscalizacion">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.Fiscalizacion)">
+        <MappingFragment StoreEntitySet="Fiscalizacion">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="FechaFiscalizacion" ColumnName="FechaFiscalizacion" />
+          <ScalarProperty Name="FechaProgramada" ColumnName="FechaProgramada" />
           <ScalarProperty Name="Comentario" ColumnName="Comentario" />
-          <ScalarProperty Name="LicenciaId" ColumnName="LicenciaId" />
           <ScalarProperty Name="FiscalizadorId" ColumnName="FiscalizadorId" />
+          <ScalarProperty Name="LicenciaId" ColumnName="LicenciaId" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Observacion" ColumnName="Observacion" />
+          <ScalarProperty Name="Detalle" ColumnName="Detalle" />
+          <ScalarProperty Name="FechaReal" ColumnName="FechaReal" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -371,6 +385,7 @@
           <ScalarProperty Name="Responsable" ColumnName="Responsable" />
           <ScalarProperty Name="NumLicencia" ColumnName="NumLicencia" />
           <ScalarProperty Name="FechaLicencia" ColumnName="FechaLicencia" />
+          <ScalarProperty Name="UriImagen" ColumnName="UriImagen" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

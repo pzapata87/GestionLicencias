@@ -19,7 +19,7 @@
     <div class="box-header with-border">
         <h3 class="box-title">Actualizar Cronograma</h3>
     </div>
-    @using (Html.BeginForm(Model.Accion, "Cronograma", new {area = ""}, FormMethod.Post, new {id = "frmCronograma", @class = "form-horizontal"}))
+    @using (Html.BeginForm(Model.Accion, "Fiscalizacion", new {area = ""}, FormMethod.Post, new {id = "frmCronograma", @class = "form-horizontal"}))
     {
         <div class="box-body">
             <div class="form-group">
@@ -34,13 +34,13 @@
                     @{
                         var list = new List<SelectListItem>();
 
-                        if (!string.IsNullOrEmpty(Model.LocalNombre))
+                        if (!string.IsNullOrEmpty(Model.LocalDireccion))
                         {
                             list.Add(
                                 new SelectListItem
                                 {
                                     Value = Convert.ToString(Model.LocalId),
-                                    Text = Model.LocalNombre
+                                    Text = Model.LocalDireccion
                                 });
                         }
                     }
@@ -91,7 +91,7 @@
         </div>
         <div class="box-footer">
             <div class="col-md-offset-3 col-md-9">
-                <a class="btn btn-default" href="@Url.Action("Index", "Cronograma")">
+                <a class="btn btn-default" href="@Url.Action("Index", "Fiscalizacion")">
                     <i class="fa fa-reply"></i>
                     Regresar
                 </a>
@@ -131,7 +131,7 @@
                     success: function(response) {
                         if (response.Success === true) {
                             webApp.showMessageDialog(function() {
-                                window.location.href = "@Url.Action("Index", "Cronograma")";
+                                window.location.href = "@Url.Action("Index", "Fiscalizacion")";
                             }, response.Message);
                         } else
                             webApp.showMessageDialog(function() {}, response.Message);
@@ -162,7 +162,7 @@
             delay: 250,
             allowClear: true,
             ajax: {
-                url: '@Url.Action("GetLicencias", "Cronograma")',
+                url: '@Url.Action("GetLicencias", "Fiscalizacion")',
                 dataType: 'json',
                 type: "POST",
                 quietMillis: 250,
@@ -188,7 +188,7 @@
             delay: 250,
             allowClear: true,
             ajax: {
-                url: '@Url.Action("GetFiscalizadores", "Cronograma")',
+                url: '@Url.Action("GetFiscalizadores", "Fiscalizacion")',
                 dataType: 'json',
                 type: "POST",
                 quietMillis: 250,

@@ -16,13 +16,13 @@ namespace Licencias.DataAccess
     {
         public Fiscalizador()
         {
-            this.CronogramaFiscalizacions = new HashSet<CronogramaFiscalizacion>();
+            this.Fiscalizacions = new HashSet<Fiscalizacion>();
         }
     
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
     
-        public virtual ICollection<CronogramaFiscalizacion> CronogramaFiscalizacions { get; set; }
+        public virtual ICollection<Fiscalizacion> Fiscalizacions { get; set; }
     }
 }

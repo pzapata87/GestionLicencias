@@ -28,7 +28,7 @@ namespace Licencias.DataAccess
         public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<Rol> Rol { get; set; }
         public virtual DbSet<RolUsuario> RolUsuario { get; set; }
-        public virtual DbSet<CronogramaFiscalizacion> CronogramaFiscalizacion { get; set; }
+        public virtual DbSet<Fiscalizacion> Fiscalizacion { get; set; }
         public virtual DbSet<Local> Local { get; set; }
         public virtual DbSet<Licencia> Licencia { get; set; }
         public virtual DbSet<Fiscalizador> Fiscalizador { get; set; }

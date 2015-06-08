@@ -51,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CronogramaFiscalizacionBusiness.cs" />
+    <Compile Include="FiscalizacionBusiness.cs" />
     <Compile Include="FiscalizadorBusiness.cs" />
     <Compile Include="LicenciaBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

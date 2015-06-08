@@ -16,7 +16,7 @@ namespace Licencias.DataAccess
     {
         public Licencia()
         {
-            this.CronogramaFiscalizacions = new HashSet<CronogramaFiscalizacion>();
+            this.Fiscalizacions = new HashSet<Fiscalizacion>();
         }
     
         public int Id { get; set; }
@@ -24,8 +24,9 @@ namespace Licencias.DataAccess
         public string Responsable { get; set; }
         public string NumLicencia { get; set; }
         public System.DateTime FechaLicencia { get; set; }
+        public string UriImagen { get; set; }
     
         public virtual Local Local { get; set; }
-        public virtual ICollection<CronogramaFiscalizacion> CronogramaFiscalizacions { get; set; }
+        public virtual ICollection<Fiscalizacion> Fiscalizacions { get; set; }
     }
 }

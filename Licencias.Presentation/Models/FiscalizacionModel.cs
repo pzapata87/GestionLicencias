@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Licencias.Presentation.Models
 {
-    public class CronogramaFiscalizacionModel
+    public class FiscalizacionModel
     {
         public int Id { get; set; }
 
@@ -14,23 +14,19 @@ namespace Licencias.Presentation.Models
         public string FiscalizadorNombre { get; set; }
 
         [Required]
-        [DisplayName("Fiscalizador")]
-        public int FiscalizadorId { get; set; }
-
-        [Required]
         [DisplayName("Local")]
         public int LocalId { get; set; }
 
         public string LocalDireccion { get; set; }
 
-        [DisplayName("Comentario")]
-        public string Comentario { get; set; }
+        [DisplayName("Detalle")]
+        public string Detalle { get; set; }
 
         public int LicenciaId { get; set; }
 
         [DisplayName("Número de Licencia")]
         public string NumLicencia { get; set; }
 
-        public string Accion { get; set; }
+        public string EstadoNombre { get; set; }
     }
 }

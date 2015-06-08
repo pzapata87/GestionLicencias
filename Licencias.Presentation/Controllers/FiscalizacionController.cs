@@ -4,15 +4,16 @@ using System.Web.Mvc;
 using Licencias.Bussines;
 using Licencias.DataAccess;
 using Licencias.Presentation.Core;
+using Licencias.Presentation.Core.Enums;
 using Licencias.Presentation.Models;
 
 namespace Licencias.Presentation.Controllers
 {
-    public class CronogramaController : Controller
+    public class FiscalizacionController : Controller
     {
         #region Variables
 
-        private readonly CronogramaFiscalizacionBusiness _cronogramaBusiness;
+        private readonly FiscalizacionBusiness _cronogramaBusiness;
         private readonly LicenciaBusiness _licenciaBusiness;
         private readonly FiscalizadorBusiness _fiscalizadorBusiness;
 
@@ -20,9 +21,9 @@ namespace Licencias.Presentation.Controllers
 
         #region Constructor
 
-        public CronogramaController()
+        public FiscalizacionController()
         {
-            _cronogramaBusiness = new CronogramaFiscalizacionBusiness();
+            _cronogramaBusiness = new FiscalizacionBusiness();
             _licenciaBusiness = new LicenciaBusiness();
             _fiscalizadorBusiness = new FiscalizadorBusiness();
         }
@@ -31,6 +32,8 @@ namespace Licencias.Presentation.Controllers
 
         #region Metodos Publicos
 
+        #region Cronograma Fiscalizacion
+
         public ActionResult Index()
         {
             var list = _cronogramaBusiness.FindAll().ToList().ConvertAll(p => new CronogramaFiscalizacionModel
@@ -38,7 +41,7 @@ namespace Licencias.Presentation.Controllers
                 Id = p.Id,
                 FiscalizadorId = p.FiscalizadorId,
                 FiscalizadorNombre = p.Fiscalizador.Nombre,
-                FechaFiscalizacion = p.FechaFiscalizacion.GetDate(),
+                FechaFiscalizacion = p.FechaProgramada.GetDate(),
                 NumLicencia = p.Licencia.NumLicencia,
                 LicenciaId = p.LicenciaId
             });
@@ -62,11 +65,11 @@ namespace Licencias.Presentation.Controllers
                 Id = entity.Id,
                 LicenciaId = entity.LicenciaId,
                 Comentario = entity.Comentario,
-                FechaFiscalizacion = entity.FechaFiscalizacion.GetDate(),
+                FechaFiscalizacion = entity.FechaProgramada.GetDate(),
                 FiscalizadorId = entity.FiscalizadorId,
                 FiscalizadorNombre = entity.Fiscalizador.Nombre,
                 LocalId = entity.Licencia.LocalId,
-                LocalNombre = entity.Licencia.Local.Direccion,
+                LocalDireccion = entity.Licencia.Local.Direccion,
                 NumLicencia = entity.Licencia.NumLicencia,
                 Accion = "Editar"
             });
@@ -79,12 +82,13 @@ namespace Licencias.Presentation.Controllers
 
             try
             {
-                var cronograma = new CronogramaFiscalizacion
+                var cronograma = new Fiscalizacion
                 {
-                    FechaFiscalizacion = Convert.ToDateTime(model.FechaFiscalizacion),
+                    FechaProgramada = Convert.ToDateTime(model.FechaFiscalizacion),
                     FiscalizadorId = model.FiscalizadorId,
                     Comentario = model.Comentario,
-                    LicenciaId = model.LicenciaId
+                    LicenciaId = model.LicenciaId,
+                    Estado = Convert.ToString((int)EstadoFiscalizacion.Pendiente)
                 };
 
                 _cronogramaBusiness.Add(cronograma);
@@ -108,7 +112,7 @@ namespace Licencias.Presentation.Controllers
             {
                 var entity = _cronogramaBusiness.Get(model.Id);
 
-                entity.FechaFiscalizacion = Convert.ToDateTime(model.FechaFiscalizacion);
+                entity.FechaProgramada = Convert.ToDateTime(model.FechaFiscalizacion);
                 entity.FiscalizadorId = model.FiscalizadorId;
                 entity.Comentario = model.Comentario;
                 entity.LicenciaId = model.LicenciaId;
@@ -133,11 +137,11 @@ namespace Licencias.Presentation.Controllers
                 Id = entity.Id,
                 LicenciaId = entity.LicenciaId,
                 Comentario = entity.Comentario,
-                FechaFiscalizacion = entity.FechaFiscalizacion.GetDate(),
+                FechaFiscalizacion = entity.FechaProgramada.GetDate(),
                 FiscalizadorId = entity.FiscalizadorId,
                 FiscalizadorNombre = entity.Fiscalizador.Nombre,
                 LocalId = entity.Licencia.LocalId,
-                LocalNombre = entity.Licencia.Local.Direccion,
+                LocalDireccion = entity.Licencia.Local.Direccion,
                 NumLicencia = entity.Licencia.NumLicencia
             });
         }
@@ -188,6 +192,26 @@ namespace Licencias.Presentation.Controllers
 
             return Json(jsonResponse, JsonRequestBehavior.AllowGet);
         }
+
+        #endregion
+
+        #region Fiscalizacion
+
+        public ActionResult Fiscalizaciones()
+        {
+            var list = _cronogramaBusiness.FindAll().ToList().ConvertAll(p => new FiscalizacionModel
+            {
+                Id = p.Id,
+                LocalDireccion = p.Licencia.Local.Direccion,
+                FechaFiscalizacion = p.FechaProgramada.GetDate(),
+                NumLicencia = p.Licencia.NumLicencia,
+                EstadoNombre = EstadoFiscalizacion.Pendiente.ToString()
+            });
+
+            return View(list);
+        }
+
+        #endregion
 
         #endregion
     }
