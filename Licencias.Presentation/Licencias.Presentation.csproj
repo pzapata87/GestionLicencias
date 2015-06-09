@@ -212,6 +212,8 @@
     <Content Include="Content\js\app.js" />
     <Content Include="Content\js\app.min.js" />
     <Content Include="Content\js\demo.js" />
+    <Content Include="Content\css\dropzone.css" />
+    <Content Include="Content\js\dropzone.js" />
     <Content Include="Content\js\i18n\es.js" />
     <Content Include="Content\js\jquery.validate.min.js" />
     <Content Include="Content\js\jquery.validate.unobtrusive.min.js" />

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Licencias.Presentation.Core.Enums;
 
@@ -109,5 +111,48 @@ namespace Licencias.Presentation.Core
 
             return list;
         }
+
+        #region Metodos Archivos
+
+        public static bool ValidarExtensionImagen(string extension)
+        {
+            if (String.IsNullOrEmpty(extension)) return false;
+
+            var extenciones = new[] { "bmp", "gif", "jpeg", "jpg", "png" };
+            return extenciones.Contains(extension.ToLower());
+        }
+
+        public static void Guardar(HttpPostedFileBase file, string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            var finalPath = ObtenerDireccion(path, file.FileName);
+
+            file.SaveAs(finalPath);
+        }
+
+        public static void Borrar(string path)
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+        }
+
+        public static string ObtenerDireccion(string path, string filename)
+        {
+            return Path.Combine(path, Path.GetFileName(filename));
+        }
+
+        public static string ObtenerExtension(string path)
+        {
+            return Path.GetExtension(path);
+        }
+
+        public static string ObtenerNombreArchivo(string path)
+        {
+            return Path.GetFileName(path);
+        }
+
+        #endregion
     }
 }
