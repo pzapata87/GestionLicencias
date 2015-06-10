@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Licencias.Bussines;
 using Licencias.DataAccess;
@@ -254,7 +256,7 @@ namespace Licencias.Presentation.Controllers
                 Detalle = entity.Detalle,
                 EstadoNombre = Utils.EstadoFiscalizacionList[entity.Estado],
                 EstadoId = entity.Estado,
-                UriImagen = entity.Licencia.UriImagen
+                UriImagen = Url.Content(string.Format("~/Images/Licencias/{0}", entity.Licencia.UriImagen))
             });
         }
 
@@ -298,11 +300,58 @@ namespace Licencias.Presentation.Controllers
                 NumLicencia = entity.Licencia.NumLicencia,
                 Detalle = entity.Detalle,
                 EstadoNombre = Utils.EstadoFiscalizacionList[entity.Estado],
-                UriImagen = entity.Licencia.UriImagen
+                UriImagen = Url.Content(string.Format("~/Images/Licencias/{0}", entity.Licencia.UriImagen))
             });
         }
 
         #endregion
+
+        public ActionResult SaveUploadedFile()
+        {
+            bool isSavedSuccessfully = true;
+            string fName = "";
+            try
+            {
+                foreach (string fileName in Request.Files)
+                {
+                    HttpPostedFileBase file = Request.Files[fileName];
+                    //Save file content goes here
+                    fName = file.FileName;
+                    if (file != null && file.ContentLength > 0)
+                    {
+
+                        var originalDirectory = new DirectoryInfo(string.Format("{0}Images", Server.MapPath(@"\")));
+
+                        string pathString = Path.Combine(originalDirectory.ToString(), "Evidencias");
+
+                        //var fileName1 = Path.GetFileName(file.FileName);
+
+                        bool isExists = Directory.Exists(pathString);
+
+                        if (!isExists)
+                            Directory.CreateDirectory(pathString);
+
+                        var path = string.Format("{0}\\{1}", pathString, file.FileName);
+                        file.SaveAs(path);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                isSavedSuccessfully = false;
+            }
+
+
+            if (isSavedSuccessfully)
+            {
+                return Json(new { Message = fName });
+            }
+            else
+            {
+                return Json(new { Message = "Error in saving file" });
+            }
+        }
 
         #endregion
     }
