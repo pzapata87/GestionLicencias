@@ -233,6 +233,7 @@
     <Content Include="Content\datatables\languages\dataTables.es.json" />
     <Content Include="Content\css\images\Thumbs.db" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Images\Evidencias\Base sim.png" />
     <Content Include="Images\Licencias\licencia001.jpg" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\_references.js" />

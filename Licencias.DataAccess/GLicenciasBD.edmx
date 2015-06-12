@@ -70,6 +70,7 @@
     <Property Name="Observacion" Type="nvarchar" Nullable="true" MaxLength="1000" />
     <Property Name="Detalle" Type="nvarchar" Nullable="true" MaxLength="1000" />
     <Property Name="FechaReal" Type="datetime" Nullable="true" />
+    <Property Name="Imagenes" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Local">
     <Key>
@@ -256,6 +257,7 @@
           <Property Name="Observacion" Type="String" Nullable="true" MaxLength="1000" />
           <Property Name="Detalle" Type="String" Nullable="true" MaxLength="1000" />
           <Property Name="FechaReal" Type="DateTime" Nullable="true" />
+          <Property Name="Imagenes" Type="String" Nullable="true" MaxLength="Max" />
         </EntityType>
         <EntityType Name="Local">
           <Key>
@@ -366,6 +368,7 @@
           <ScalarProperty Name="Observacion" ColumnName="Observacion" />
           <ScalarProperty Name="Detalle" ColumnName="Detalle" />
           <ScalarProperty Name="FechaReal" ColumnName="FechaReal" />
+          <ScalarProperty Name="Imagenes" ColumnName="Imagenes" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

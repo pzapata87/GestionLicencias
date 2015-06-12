@@ -23,6 +23,7 @@ namespace Licencias.DataAccess
         public string Observacion { get; set; }
         public string Detalle { get; set; }
         public Nullable<System.DateTime> FechaReal { get; set; }
+        public string Imagenes { get; set; }
     
         public virtual Fiscalizador Fiscalizador { get; set; }
         public virtual Licencia Licencia { get; set; }

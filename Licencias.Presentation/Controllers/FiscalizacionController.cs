@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -229,7 +230,9 @@ namespace Licencias.Presentation.Controllers
 
         public ActionResult Fiscalizaciones()
         {
-            var list = _fiscalizacionBusiness.FindAll().ToList().ConvertAll(p => new FiscalizacionModel
+            var fiscalizadorId = Convert.ToInt32(ConfigurationManager.AppSettings["fiscalizadorId"]);
+
+            var list = _fiscalizacionBusiness.FindAll().Where(p => p.FiscalizadorId == fiscalizadorId).ToList().ConvertAll(p => new FiscalizacionModel
             {
                 Id = p.Id,
                 LocalDireccion = p.Licencia.Local.Direccion,
@@ -300,7 +303,8 @@ namespace Licencias.Presentation.Controllers
                 NumLicencia = entity.Licencia.NumLicencia,
                 Detalle = entity.Detalle,
                 EstadoNombre = Utils.EstadoFiscalizacionList[entity.Estado],
-                UriImagen = Url.Content(string.Format("~/Images/Licencias/{0}", entity.Licencia.UriImagen))
+                UriImagen = Url.Content(string.Format("~/Images/Licencias/{0}", entity.Licencia.UriImagen)),
+                EvidenciaImagenes = entity.Imagenes != null ? entity.Imagenes.Split('|').ToList() : null
             });
         }
 
@@ -309,22 +313,20 @@ namespace Licencias.Presentation.Controllers
         public ActionResult SaveUploadedFile()
         {
             bool isSavedSuccessfully = true;
-            string fName = "";
+            string fNames = string.Empty;
+
             try
             {
                 foreach (string fileName in Request.Files)
                 {
                     HttpPostedFileBase file = Request.Files[fileName];
                     //Save file content goes here
-                    fName = file.FileName;
+                    fNames += "|" + file.FileName;
                     if (file != null && file.ContentLength > 0)
                     {
-
                         var originalDirectory = new DirectoryInfo(string.Format("{0}Images", Server.MapPath(@"\")));
 
                         string pathString = Path.Combine(originalDirectory.ToString(), "Evidencias");
-
-                        //var fileName1 = Path.GetFileName(file.FileName);
 
                         bool isExists = Directory.Exists(pathString);
 
@@ -336,21 +338,19 @@ namespace Licencias.Presentation.Controllers
                     }
                 }
 
+                var id = Convert.ToInt32(Request.Form.Get("fiscalizacionId"));
+
+                var entity = _fiscalizacionBusiness.Get(id);
+                entity.Imagenes = fNames.TrimStart('|');
+
+                _fiscalizacionBusiness.Update(entity);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 isSavedSuccessfully = false;
             }
 
-
-            if (isSavedSuccessfully)
-            {
-                return Json(new { Message = fName });
-            }
-            else
-            {
-                return Json(new { Message = "Error in saving file" });
-            }
+            return Json(isSavedSuccessfully);
         }
 
         #endregion

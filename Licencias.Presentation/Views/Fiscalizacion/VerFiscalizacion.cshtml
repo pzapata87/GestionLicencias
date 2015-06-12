@@ -15,9 +15,9 @@
                 <div class="col-sm-4">
                     @Html.TextBoxFor(p => p.NumLicencia, new { @class = "form-control", @disabled = "disabled" })
                 </div>
-                <a class="btn btn-social btn-success" href="@Model.UriImagen">
+                <button type="button" class="btn btn-social btn-success" id="btnImagenLicencia">
                     <i class="fa fa-instagram"></i> Ver Imagen
-                </a>
+                </button>
             </div>
             <div class="form-group">
                 @Html.LabelFor(p => p.LocalDireccion, new { @class = "col-sm-2 control-label" })
@@ -49,6 +49,19 @@
                     @Html.TextAreaFor(p => p.Observacion, new { @class = "form-control", @maxlength = 1000, @disabled = "disabled" })
                 </div>
             </div>
+            <div class="timeline-item">
+                <div class="timeline-body">
+                    @{
+                        if (Model.EvidenciaImagenes != null)
+                        {
+                            foreach (var item in Model.EvidenciaImagenes)
+                            {
+                                <img src="@Url.Content(string.Format("~/Images/Evidencias/{0}", item))" alt="..." class='margin' style="width: 150px; height: 150px" />
+                            }
+                        }
+                    }
+                </div>
+            </div>
         </div>
     </div>
     <div class="box-footer">
@@ -60,3 +73,36 @@
         </div>
     </div>
 </div>
+<div class="modal" id="modalImagenLicencia">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Imágenes</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <img id="imgView" src="" style="width: 100%; height: 100%" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section ScriptContent
+{
+    <script type="text/javascript">
+        $("#btnImagenLicencia").on('click', function () {
+            $("#imgView").attr('src', '@Model.UriImagen');
+            $("#modalImagenLicencia").modal('show');
+        });
+        
+        $(".margin").on('click', function () {
+            $("#imgView").attr('src', $(this).attr('src'));
+            $("#modalImagenLicencia").modal('show');
+        });
+    </script>
+}

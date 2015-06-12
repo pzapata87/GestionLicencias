@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Licencias.Presentation.Models
@@ -34,5 +35,7 @@ namespace Licencias.Presentation.Models
         public string Observacion { get; set; }
 
         public string UriImagen { get; set; }
+
+        public List<string> EvidenciaImagenes { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/07/2015 20:46:39
+-- Date Created: 06/12/2015 01:24:31
 -- Generated from EDMX file: D:\Proyectos\Academico - Servicio Web\GestionLicencias\GestionLicencias\Licencias.DataAccess\GLicenciasBD.edmx
 -- --------------------------------------------------
 
@@ -95,7 +95,8 @@ CREATE TABLE [dbo].[Fiscalizacion] (
     [Estado] nvarchar(1)  NOT NULL,
     [Observacion] nvarchar(1000)  NULL,
     [Detalle] nvarchar(1000)  NULL,
-    [FechaReal] datetime  NULL
+    [FechaReal] datetime  NULL,
+    [Imagenes] nvarchar(max)  NULL
 );
 GO
 
