@@ -14,6 +14,11 @@ namespace Licencias.DataAccess
     
     public partial class Fiscalizacion
     {
+        public Fiscalizacion()
+        {
+            this.FiscalizacionRequisitos = new HashSet<FiscalizacionRequisito>();
+        }
+    
         public int Id { get; set; }
         public System.DateTime FechaProgramada { get; set; }
         public string Comentario { get; set; }
@@ -27,5 +32,6 @@ namespace Licencias.DataAccess
     
         public virtual Fiscalizador Fiscalizador { get; set; }
         public virtual Licencia Licencia { get; set; }
+        public virtual ICollection<FiscalizacionRequisito> FiscalizacionRequisitos { get; set; }
     }
 }

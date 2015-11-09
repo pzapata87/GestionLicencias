@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Licencias.Bussines;
 using Licencias.DataAccess;
@@ -248,8 +248,7 @@ namespace Licencias.Presentation.Controllers
         public ActionResult EditarFiscalizacion(int id)
         {
             var entity = _fiscalizacionBusiness.Get(id);
-
-            return View("EditarFiscalizacion", new FiscalizacionModel
+            var model = new FiscalizacionModel
             {
                 Id = entity.Id,
                 FechaFiscalizacion = entity.FechaProgramada.GetDate(),
@@ -259,8 +258,34 @@ namespace Licencias.Presentation.Controllers
                 Detalle = entity.Detalle,
                 EstadoNombre = Utils.EstadoFiscalizacionList[entity.Estado],
                 EstadoId = entity.Estado,
+                GiroDescripcion = entity.Licencia.Giro.Descripcion,
+                RequisitoList = new List<FiscalizacionRequisitoModel>(),
                 UriImagen = Url.Content(string.Format("~/Images/Licencias/{0}", entity.Licencia.UriImagen))
-            });
+            };
+
+            foreach (var requisito in entity.Licencia.Giro.Requisitos)
+            {
+                var fRequisito = entity.FiscalizacionRequisitos.FirstOrDefault(p => p.RequisitoId == requisito.Id);
+                if(fRequisito != null)
+                    model.RequisitoList.Add(new FiscalizacionRequisitoModel
+                    {
+                        Valor = requisito.Valor,
+                        RequisitoId = requisito.Id,
+                        Comentario = fRequisito.Comentario,
+                        Imagenes = fRequisito.Imagenes,
+                        Cumplido = fRequisito.Cumplido
+                    });
+                else
+                {
+                    model.RequisitoList.Add(new FiscalizacionRequisitoModel
+                    {
+                        Valor = requisito.Valor,
+                        RequisitoId = requisito.Id
+                    });
+                }
+            }
+
+            return View("EditarFiscalizacion", model);
         }
 
         [HttpPost]
@@ -277,6 +302,36 @@ namespace Licencias.Presentation.Controllers
                 entity.Observacion = model.Observacion;
                 entity.Detalle = model.Detalle;
                 entity.Estado = model.EstadoId;
+
+                if (model.RequisitoList != null)
+                {
+                    if (entity.Estado == EstadoFiscalizacion.Finalizado.GetStringValue() &&
+                        entity.FiscalizacionRequisitos.All(p => p.Cumplido))
+                        entity.Estado = EstadoFiscalizacion.FinalizadoVerificado.GetStringValue();
+
+                    foreach (var requisito in model.RequisitoList)
+                    {
+                        var fRequisito =
+                            entity.FiscalizacionRequisitos.FirstOrDefault(p => p.RequisitoId == requisito.RequisitoId);
+
+                        if (fRequisito != null)
+                        {
+                            fRequisito.Comentario = requisito.Comentario;
+                            fRequisito.Cumplido = requisito.Cumplido;
+                        }
+                        else
+                        {
+                            entity.FiscalizacionRequisitos.Add(new FiscalizacionRequisito
+                            {
+                                Comentario = requisito.Comentario,
+                                Cumplido = requisito.Cumplido,
+                                RequisitoId = requisito.RequisitoId
+                            });
+                        }
+                    }
+                }
+
+                SaveUploadedFile(entity);
 
                 _fiscalizacionBusiness.Update(entity);
                 jsonResponse.Success = true;
@@ -310,24 +365,33 @@ namespace Licencias.Presentation.Controllers
 
         #endregion
 
-        public ActionResult SaveUploadedFile()
+        public void SaveUploadedFile(Fiscalizacion entity)
         {
-            bool isSavedSuccessfully = true;
             string fNames = string.Empty;
 
             try
             {
                 foreach (string fileName in Request.Files)
                 {
-                    HttpPostedFileBase file = Request.Files[fileName];
-                    //Save file content goes here
-                    fNames += "|" + file.FileName;
+                    var file = Request.Files[fileName];
+                    
                     if (file != null && file.ContentLength > 0)
                     {
+                        if (fileName.StartsWith("fileEvidencia"))
+                            fNames += "|" + file.FileName;
+                        else
+                        {
+                            var requisito =
+                                entity.FiscalizacionRequisitos.FirstOrDefault(
+                                    p => fileName.StartsWith(string.Format("file{0}", p.RequisitoId)));
+                            if (requisito != null)
+                                requisito.Imagenes += string.IsNullOrEmpty(requisito.Imagenes)
+                                    ? file.FileName
+                                    : "|" + file.FileName;
+                        }
+
                         var originalDirectory = new DirectoryInfo(string.Format("{0}Images", Server.MapPath(@"\")));
-
                         string pathString = Path.Combine(originalDirectory.ToString(), "Evidencias");
-
                         bool isExists = Directory.Exists(pathString);
 
                         if (!isExists)
@@ -338,19 +402,12 @@ namespace Licencias.Presentation.Controllers
                     }
                 }
 
-                var id = Convert.ToInt32(Request.Form.Get("fiscalizacionId"));
-
-                var entity = _fiscalizacionBusiness.Get(id);
                 entity.Imagenes = fNames.TrimStart('|');
-
-                _fiscalizacionBusiness.Update(entity);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                isSavedSuccessfully = false;
+                throw new Exception(ex.Message);
             }
-
-            return Json(isSavedSuccessfully);
         }
 
         #endregion

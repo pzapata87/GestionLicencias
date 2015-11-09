@@ -12,17 +12,16 @@ namespace Licencias.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class Fiscalizador
+    public partial class FiscalizacionRequisito
     {
-        public Fiscalizador()
-        {
-            this.Fiscalizaciones = new HashSet<Fiscalizacion>();
-        }
-    
         public int Id { get; set; }
-        public string Nombre { get; set; }
-        public string Apellido { get; set; }
+        public string Comentario { get; set; }
+        public bool Cumplido { get; set; }
+        public int FiscalizacionId { get; set; }
+        public int RequisitoId { get; set; }
+        public string Imagenes { get; set; }
     
-        public virtual ICollection<Fiscalizacion> Fiscalizaciones { get; set; }
+        public virtual Fiscalizacion Fiscalizacion { get; set; }
+        public virtual Requisito Requisito { get; set; }
     }
 }

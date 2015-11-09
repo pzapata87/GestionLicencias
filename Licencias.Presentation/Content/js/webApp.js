@@ -85,12 +85,42 @@
         return obj;
     };
 
+    var getDataFormAppend = function (form) {
+        var $form = $(form);
+        var url = $form.attr('action');
+        var type = $form.attr('method');
+        var data = new FormData();
+
+        //serialize our form (which excludes file inputs)
+        var disabled = $form.find(':input:disabled').removeAttr('disabled');
+        $.each($form.serializeArray(), function (i, item) {
+            data.append(item.name, item.value);
+        });
+        disabled.attr('disabled', 'disabled');
+
+        var obj = {
+            url: url,
+            type: type,
+            data: data
+        };
+
+        return obj;
+    };
+
     return {
         init: function () {
             createMessageDialog();
             createConfirmDialog();
         },
         getDataForm: getDataForm,
+        getDataFormAppend: getDataFormAppend,
+        AppendDataArrayForm: function (form, array, nameArray) {
+            $.each(array, function (index, value) {
+                for (var name in value) {
+                    form.data.append(nameArray + "[" + index + "][" + name + "]", value[name]);
+                }
+            });
+        },
         showConfirmDialog: function (fnSuccess, message) {
             var popup = $('#' + _popupConfirmacion);
             var btnSuccess = $(popup).find('.btn-info');

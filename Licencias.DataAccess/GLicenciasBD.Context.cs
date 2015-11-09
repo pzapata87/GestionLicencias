@@ -32,5 +32,10 @@ namespace Licencias.DataAccess
         public virtual DbSet<Local> Local { get; set; }
         public virtual DbSet<Licencia> Licencia { get; set; }
         public virtual DbSet<Fiscalizador> Fiscalizador { get; set; }
+        public virtual DbSet<Giro> Giro { get; set; }
+        public virtual DbSet<Requisito> Requisito { get; set; }
+        public virtual DbSet<Criterio> Criterio { get; set; }
+        public virtual DbSet<FiscalizacionRequisito> FiscalizacionRequisito { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

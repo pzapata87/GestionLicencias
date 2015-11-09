@@ -142,6 +142,7 @@
     </Compile>
     <Compile Include="Models\CronogramaFiscalizacionModel.cs" />
     <Compile Include="Models\FiscalizacionModel.cs" />
+    <Compile Include="Models\FiscalizacionRequisitoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

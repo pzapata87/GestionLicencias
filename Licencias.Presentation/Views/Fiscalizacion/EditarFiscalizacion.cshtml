@@ -111,12 +111,20 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Evidencias Fotográficas</h4>
             </div>
-            <div class="modal-body">
-                <form action="@Url.Action("SaveUploadedFile", "Fiscalizacion")" class="dropzone" id="dropzone">
+            <div class="modal-body" id="divUpload">
+                <form action="@Url.Action("SaveUploadedFile", "Fiscalizacion")" class="dropzone" id="fileEvidencia">
                     <div class="fallback">
-                        <input name="file" type="file" multiple="" />
+                        <input name="file" type="file" multiple=""/>
                     </div>
                 </form>
+                @foreach (var item in Model.RequisitoList)
+                {
+                    <form action="@Url.Action("SaveUploadedFile", "Fiscalizacion")" class="dropzone" id="@string.Format("file{0}", item.RequisitoId)" style="display: none">
+                        <div class="fallback">
+                            <input name="file" type="file" multiple="" />
+                        </div>
+                    </form>
+                }
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
@@ -125,7 +133,7 @@
     </div>
 </div>
 
-<div class="modal" id="modalImagenLicencia">
+<div class="modal" id="modalImagenLicencia" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -134,7 +142,7 @@
             </div>
             <div class="modal-body">
                 <div class="text-center">
-                    <img src="@Model.UriImagen"/>
+                    <img src="@Model.UriImagen" />
                 </div>
             </div>
             <div class="modal-footer">
@@ -144,71 +152,49 @@
     </div>
 </div>
 
-<div class="modal" id="modalRequisitos">
+<div class="modal" id="modalRequisitos" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Requisitos necesarios para el giro XXX</h4>
+                <h4 class="modal-title">Requisitos necesarios para el giro @Model.GiroDescripcion</h4>
             </div>
             <div class="modal-body">
                 <div class="box-body table-responsive no-padding">
-                    <table class="table table-bordered table-hover">
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th style="width: 12px">Cumple?</th>
-                            <th>Requisito</th>
-                            <th style="width: 80px">Comentario</th>
-                            <th style="width: 10px">Imágenes</th>
-                        </tr>
-                        <tr>
-                            <td>1.</td>
-                            <td class="text-center"><input type="checkbox" /></td>
-                            <td>Requisito 01</td>
-                            <td><textarea></textarea></td>
-                            <td>
-                                <button type="button" class="btn btn-success">
-                                    <i class="fa fa-paperclip"></i>
-                                    Adjuntar
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2.</td>
-                            <td class="text-center"><input type="checkbox" /></td>
-                            <td>Requisito 02</td>
-                            <td><textarea></textarea></td>
-                            <td>
-                                <button type="button" class="btn btn-success">
-                                    <i class="fa fa-paperclip"></i>
-                                    Adjuntar
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3.</td>
-                            <td class="text-center"><input type="checkbox" /></td>
-                            <td>Requisito 03</td>
-                            <td><textarea></textarea></td>
-                            <td>
-                                <button type="button" class="btn btn-success">
-                                    <i class="fa fa-paperclip"></i>
-                                    Adjuntar
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4.</td>
-                            <td class="text-center"><input type="checkbox" /></td>
-                            <td>Requisito 04</td>
-                            <td><textarea></textarea></td>
-                            <td>
-                                <button type="button" class="btn btn-success">
-                                    <i class="fa fa-paperclip"></i>
-                                    Adjuntar
-                                </button>
-                            </td>
-                        </tr>
+                    <table id="tableRequisito" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th style="display: none">Id</th>
+                                <th style="width: 8%">Cumple?</th>
+                                <th style="width: 30%">Requisito</th>
+                                <th style="width: 47%">Comentario</th>
+                                <th style="width: 15%">Imágenes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var requisito in Model.RequisitoList)
+                            {
+                                <tr>
+                                    <td style="display: none" data-id="">@requisito.RequisitoId</td>
+                                    @if (requisito.Cumplido)
+                                    {
+                                        <td class="text-center"><input type="checkbox" checked="checked" data-cumplido="" /></td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-center"><input type="checkbox" data-cumplido="" /></td>
+                                    }
+                                    <td>@requisito.Valor</td>
+                                    <td><textarea cols="40" data-comentario="">@requisito.Comentario</textarea></td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" data-requisitoid="@requisito.RequisitoId">
+                                            <i class="fa fa-paperclip"></i>
+                                            Adjuntar
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -232,14 +218,22 @@
     <script type="text/javascript">
 
         $("#btnImages").on('click', function() {
+            $("form.dropzone").css("display", "none");
+            $("#fileEvidencia").css("display", "block");
             $("#modalImages").modal('show');
         });
-        
-        $("#btnImagenLicencia").on('click', function () {
+
+        $("#tableRequisito").on("click", "button[data-requisitoid]", function() {
+            $("form.dropzone").css("display", "none");
+            $("#file" + $(this).data("requisitoid")).css("display", "block");
+            $("#modalImages").modal('show');
+        });
+
+        $("#btnImagenLicencia").on('click', function() {
             $("#modalImagenLicencia").modal('show');
         });
 
-        $("#btnRequisito").on('click', function () {
+        $("#btnRequisito").on('click', function() {
             $("#modalRequisitos").modal('show');
         });
 
@@ -249,33 +243,51 @@
                 return;
             }
 
-            var form = webApp.getDataForm(this);
+            var form = webApp.getDataFormAppend(this);
+            var requisitoList = [];
+
+            $("#tableRequisito tbody tr").each(function() {
+                var $tr = $(this);
+                requisitoList.push({
+                    RequisitoId: $tr.find('[data-id]').text(),
+                    Comentario: $tr.find('[data-comentario]').val(),
+                    Cumplido: $tr.find('[data-cumplido]').is(":checked")
+                });
+            });
+
+            webApp.AppendDataArrayForm(form, requisitoList, "RequisitoList");
+
+            $("form.dropzone").each(function() {
+                var id = $(this).prop('id');
+                var list = Dropzone.forElement("#" + id).getQueuedFiles();
+
+                for (var i = 0; i < list.length; i++) {
+                    form.data.append(id + "[" + i + "]", list[i]);
+                }
+            });
 
             webApp.showConfirmDialog(function() {
                 $.ajax({
                     url: form.url,
                     type: form.type,
                     data: form.data,
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
                         if (response.Success === true) {
-                            myDropzone.processQueue();
+                            //myDropzone.processQueue();
                             webApp.showMessageDialog(function() {
                                 window.location.href = "@Url.Action("Fiscalizaciones", "Fiscalizacion")";
                             }, response.Message);
                         } else
                             webApp.showMessageDialog(function() {
                             }, response.Message);
-                    },
-                    error: function(x, xh) {
-                        console.error(xh);
-                    },
-                    complete: function() {
                     }
                 });
             });
 
             e.preventDefault();
-        });
+            });
 
         $("#FechaFiscalizacion").datepicker({
             changeMonth: true,
@@ -284,30 +296,58 @@
             yearRange: "@DateTime.Today.Year:+0"
         });
 
-        try {
-            Dropzone.autoDiscover = false;
-            var myDropzone = new Dropzone("#dropzone", {
-                params: {
-                    fiscalizacionId: '@Model.Id'
-                },
-                acceptedFiles: "image/*",
-                paramName: "file", // The name that will be used to transfer the file
-                maxFilesize: 4.0, // MB
-                addRemoveLinks: true,
-                uploadMultiple: true,
-                autoProcessQueue: false,
-                dictDefaultMessage:
-                    '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i> Drop files</span> to upload \
+        function createDropzone(id) {
+            try {
+                Dropzone.autoDiscover = false;
+                var myDropzone = new Dropzone(id, {
+                    acceptedFiles: "image/*",
+                    paramName: "file", // The name that will be used to transfer the file
+                    maxFilesize: 4.0, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: true,
+                    autoProcessQueue: false,
+                    dictDefaultMessage:
+                        '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i> Drop files</span> to upload \
 				    <span class="smaller-80 grey">(or click)</span> <br /> \
 				    <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>',
-                dictResponseError: 'Error while uploading file!',
+                    dictResponseError: 'Error while uploading file!',
 
-                //change the previewTemplate to use Bootstrap progress bars
-                previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
+                    //change the previewTemplate to use Bootstrap progress bars
+                    previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
+                });
+
+            } catch (e) {
+                alert('Dropzone.js does not support older browsers!');
+            }
+        }
+
+        $.each(@Json.Encode(Model.RequisitoList.Select(p => p.RequisitoId)), function(index, value) {
+            createDropzone("#file" + value);
+        });
+
+        createDropzone("#fileEvidencia");
+
+        $(document)
+            .on('show.bs.modal', '.modal', function() {
+                $(this).appendTo($('body'));
+            })
+            .on('shown.bs.modal', '.modal.in', function() {
+                setModalsAndBackdropsOrder();
+            })
+            .on('hidden.bs.modal', '.modal', function() {
+                setModalsAndBackdropsOrder();
+                if ($('.modal.in').length === 0) {
+                    $('body').removeClass('modal-open');
+                }
             });
 
-        } catch(e) {
-            alert('Dropzone.js does not support older browsers!');
+        function setModalsAndBackdropsOrder() {  
+            $('body').addClass('modal-open');
+            var modalZIndex = $('.modal.in').length + 1050 + 1;
+            var backdropZIndex = modalZIndex - 1;
+            $('.modal-backdrop').addClass('hidden');
+            $('.modal.in:last').css('z-index', modalZIndex);
+            $('.modal-backdrop.in:last').css('z-index', backdropZIndex).removeClass('hidden');
         }
 
     </script>

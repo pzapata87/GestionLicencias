@@ -50,10 +50,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Criterio.cs">
+      <DependentUpon>GLicenciasBD.tt</DependentUpon>
+    </Compile>
     <Compile Include="Fiscalizacion.cs">
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
     </Compile>
+    <Compile Include="FiscalizacionRequisito.cs">
+      <DependentUpon>GLicenciasBD.tt</DependentUpon>
+    </Compile>
     <Compile Include="Fiscalizador.cs">
+      <DependentUpon>GLicenciasBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Giro.cs">
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
     </Compile>
     <Compile Include="GLicenciasBD.Context.cs">
@@ -78,10 +87,16 @@
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requisito.cs">
+      <DependentUpon>GLicenciasBD.tt</DependentUpon>
+    </Compile>
     <Compile Include="Rol.cs">
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
     </Compile>
     <Compile Include="RolUsuario.cs">
+      <DependentUpon>GLicenciasBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
     </Compile>
     <Compile Include="Usuario.cs">

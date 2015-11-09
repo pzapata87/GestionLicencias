@@ -4,6 +4,7 @@
     {
         Pendiente = 1,
         NoEncontrado,
-        Finalizado
+        Finalizado,
+        FinalizadoVerificado
     }
 }

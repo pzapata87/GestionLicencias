@@ -36,6 +36,9 @@ namespace Licencias.Presentation.Models
 
         public string UriImagen { get; set; }
 
+        public string GiroDescripcion { get; set; }
+
         public List<string> EvidenciaImagenes { get; set; }
+        public List<FiscalizacionRequisitoModel> RequisitoList { get; set; }
     }
 }

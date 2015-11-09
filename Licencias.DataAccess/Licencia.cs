@@ -16,7 +16,7 @@ namespace Licencias.DataAccess
     {
         public Licencia()
         {
-            this.Fiscalizacions = new HashSet<Fiscalizacion>();
+            this.Fiscalizaciones = new HashSet<Fiscalizacion>();
         }
     
         public int Id { get; set; }
@@ -25,8 +25,10 @@ namespace Licencias.DataAccess
         public string NumLicencia { get; set; }
         public System.DateTime FechaLicencia { get; set; }
         public string UriImagen { get; set; }
+        public int GiroId { get; set; }
     
         public virtual Local Local { get; set; }
-        public virtual ICollection<Fiscalizacion> Fiscalizacions { get; set; }
+        public virtual ICollection<Fiscalizacion> Fiscalizaciones { get; set; }
+        public virtual Giro Giro { get; set; }
     }
 }

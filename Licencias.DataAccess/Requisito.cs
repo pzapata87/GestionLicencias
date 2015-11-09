@@ -12,17 +12,21 @@ namespace Licencias.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class Fiscalizador
+    public partial class Requisito
     {
-        public Fiscalizador()
+        public Requisito()
         {
-            this.Fiscalizaciones = new HashSet<Fiscalizacion>();
+            this.FiscalizacionRequisitos = new HashSet<FiscalizacionRequisito>();
         }
     
         public int Id { get; set; }
-        public string Nombre { get; set; }
-        public string Apellido { get; set; }
+        public string Valor { get; set; }
+        public System.DateTime FechaRegistro { get; set; }
+        public int GiroId { get; set; }
+        public int CriterioId { get; set; }
     
-        public virtual ICollection<Fiscalizacion> Fiscalizaciones { get; set; }
+        public virtual Giro Giro { get; set; }
+        public virtual Criterio Criterio { get; set; }
+        public virtual ICollection<FiscalizacionRequisito> FiscalizacionRequisitos { get; set; }
     }
 }

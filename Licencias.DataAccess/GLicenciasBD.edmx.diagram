@@ -6,17 +6,27 @@
     <edmx:Diagrams>
       <Diagram DiagramId="fc2f5f7c402f47b38a5371e44c831066" Name="Diagram1" >
         <EntityTypeShape EntityType="GLicenciasBD.Usuario" Width="1.5" PointX="0.75" PointY="0.5" />
-        <EntityTypeShape EntityType="GLicenciasBD.Rol" Width="1.5" PointX="3.25" PointY="4.5" />
+        <EntityTypeShape EntityType="GLicenciasBD.Rol" Width="1.5" PointX="0.5" PointY="5.75" />
         <EntityTypeShape EntityType="GLicenciasBD.RolUsuario" Width="1.5" PointX="0.625" PointY="3.5" />
         <AssociationConnector Association="GLicenciasBD.UsuarioRolUsuario" />
         <AssociationConnector Association="GLicenciasBD.RolRolUsuario" />
-        <EntityTypeShape EntityType="GLicenciasBD.Fiscalizacion" Width="1.875" PointX="9.125" PointY="3.625" />
+        <EntityTypeShape EntityType="GLicenciasBD.Fiscalizacion" Width="1.875" PointX="7.5" PointY="2.75" />
         <EntityTypeShape EntityType="GLicenciasBD.Local" Width="1.5" PointX="6.5" PointY="0.5" />
-        <EntityTypeShape EntityType="GLicenciasBD.Licencia" Width="2" PointX="9" PointY="0.5" />
+        <EntityTypeShape EntityType="GLicenciasBD.Licencia" Width="2" PointX="10.125" PointY="1.25" />
         <AssociationConnector Association="GLicenciasBD.LocalLicencia" />
         <EntityTypeShape EntityType="GLicenciasBD.Fiscalizador" Width="1.5" PointX="3.625" PointY="0.5" />
         <AssociationConnector Association="GLicenciasBD.FiscalizadorFiscalizacion" />
         <AssociationConnector Association="GLicenciasBD.LicenciaFiscalizacion" />
+        <EntityTypeShape EntityType="GLicenciasBD.Giro" Width="1.5" PointX="3.75" PointY="2.875" />
+        <EntityTypeShape EntityType="GLicenciasBD.Requisito" Width="2.625" PointX="2.625" PointY="5.125" />
+        <EntityTypeShape EntityType="GLicenciasBD.Criterio" Width="1.5" PointX="4.875" PointY="7.875" />
+        <AssociationConnector Association="GLicenciasBD.GiroRequisito" />
+        <AssociationConnector Association="GLicenciasBD.CriterioRequisito" />
+        <EntityTypeShape EntityType="GLicenciasBD.FiscalizacionRequisito" Width="2.625" PointX="7.75" PointY="7" />
+        <AssociationConnector Association="GLicenciasBD.FiscalizacionFiscalizacionRequisito" />
+        <AssociationConnector Association="GLicenciasBD.RequisitoFiscalizacionRequisito" />
+        <EntityTypeShape EntityType="GLicenciasBD.sysdiagram" Width="1.5" PointX="0.75" PointY="8.75" />
+        <AssociationConnector Association="GLicenciasBD.GiroLicencia" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

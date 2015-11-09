@@ -90,18 +90,23 @@ namespace Licencias.Presentation.Core
             {
                 {Convert.ToString((int) EstadoFiscalizacion.Pendiente), "Pendiente"},
                 {Convert.ToString((int) EstadoFiscalizacion.NoEncontrado), "No Encontrado"},
-                {Convert.ToString((int) EstadoFiscalizacion.Finalizado), "Finalizado"}
+                {Convert.ToString((int) EstadoFiscalizacion.Finalizado), "Finalizado"},
+                {Convert.ToString((int) EstadoFiscalizacion.FinalizadoVerificado), "Finalizado Verificado"}
             };
         }
 
         public static List<SelectListItem> SelectEstadoFiscalizacion()
         {
-            var list = EstadoFiscalizacionList.Where(p => p.Key != Convert.ToString((int) EstadoFiscalizacion.Pendiente))
-                .Select(p => new SelectListItem
-                {
-                    Text = p.Value,
-                    Value = p.Key
-                }).ToList();
+            var list =
+                EstadoFiscalizacionList.Where(
+                    p =>
+                        p.Key != EstadoFiscalizacion.Pendiente.GetStringValue() &&
+                        p.Key != EstadoFiscalizacion.FinalizadoVerificado.GetStringValue())
+                    .Select(p => new SelectListItem
+                    {
+                        Text = p.Value,
+                        Value = p.Key
+                    }).ToList();
 
             list.Insert(0, new SelectListItem
             {
@@ -151,6 +156,20 @@ namespace Licencias.Presentation.Core
         public static string ObtenerNombreArchivo(string path)
         {
             return Path.GetFileName(path);
+        }
+
+        #endregion
+
+        #region Extensiones enumeración
+
+        public static string GetStringValue(this System.Enum value)
+        {
+            return Convert.ToString(Convert.ChangeType(value, value.GetTypeCode()));
+        }
+
+        public static int GetNumberValue(this System.Enum value)
+        {
+            return Convert.ToInt32(Convert.ChangeType(value, value.GetTypeCode()));
         }
 
         #endregion
