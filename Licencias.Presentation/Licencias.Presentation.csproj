@@ -134,6 +134,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\FiscalizacionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LicenciaController.cs" />
     <Compile Include="Core\Enums\EstadoFiscalizacion.cs" />
     <Compile Include="Core\JsonResponse.cs" />
     <Compile Include="Core\Utils.cs" />
@@ -260,6 +261,7 @@
     <Content Include="Views\Fiscalizacion\Fiscalizaciones.cshtml" />
     <Content Include="Views\Fiscalizacion\EditarFiscalizacion.cshtml" />
     <Content Include="Views\Fiscalizacion\VerFiscalizacion.cshtml" />
+    <Content Include="Views\Licencia\Solicitud.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

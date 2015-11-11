@@ -29,7 +29,6 @@ namespace Licencias.DataAccess
         public virtual DbSet<Rol> Rol { get; set; }
         public virtual DbSet<RolUsuario> RolUsuario { get; set; }
         public virtual DbSet<Fiscalizacion> Fiscalizacion { get; set; }
-        public virtual DbSet<Local> Local { get; set; }
         public virtual DbSet<Licencia> Licencia { get; set; }
         public virtual DbSet<Fiscalizador> Fiscalizador { get; set; }
         public virtual DbSet<Giro> Giro { get; set; }
@@ -37,5 +36,10 @@ namespace Licencias.DataAccess
         public virtual DbSet<Criterio> Criterio { get; set; }
         public virtual DbSet<FiscalizacionRequisito> FiscalizacionRequisito { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<SolicitudLicencia> SolicitudLicencia { get; set; }
+        public virtual DbSet<Administrado> Administrado { get; set; }
+        public virtual DbSet<DeclaracionJurada> DeclaracionJurada { get; set; }
+        public virtual DbSet<FormularioUnicoTramite> FormularioUnicoTramite { get; set; }
+        public virtual DbSet<SolicitudAnuncio> SolicitudAnuncio { get; set; }
     }
 }

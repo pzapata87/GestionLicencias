@@ -87,8 +87,10 @@
                 </div>
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
-                    <li class="active"><a href="@Url.Action("Index", "Fiscalizacion")"><i class="fa fa-calendar"></i> <span>Actualizar Cronograma</span></a></li>
-                    <li><a href="@Url.Action("Fiscalizaciones", "Fiscalizacion")"><i class="fa fa-edit"></i> <span>Actualizar Fiscalización</span></a></li>
+                    <li class="@(ViewBag.Index == 1 ? "active" : "")"><a href="@Url.Action("Solicitud", "Fiscalizacion")"><i class="fa fa-edit"></i> <span>Solicitar Licencia</span></a></li>
+                    <li class="@(ViewBag.Index == 2 ? "active" : "")"><a href="@Url.Action("Solicitud", "Fiscalizacion")"><i class="fa fa-edit"></i> <span>Evaluar Solicitud de Licencia</span></a></li>
+                    <li class="@(ViewBag.Index == 3 ? "active" : "")"><a href="@Url.Action("Index", "Fiscalizacion")"><i class="fa fa-calendar"></i> <span>Actualizar Cronograma</span></a></li>
+                    <li class="@(ViewBag.Index == 4 ? "active" : "")"><a href="@Url.Action("Fiscalizaciones", "Fiscalizacion")"><i class="fa fa-edit"></i> <span>Actualizar Fiscalización</span></a></li>
                 </ul>
             </section>
             <!-- /.sidebar -->

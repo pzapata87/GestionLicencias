@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Editar";
+    ViewBag.Index = 3;
 }
 
 @section StyleContent
@@ -31,24 +32,24 @@
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(p => p.LocalId, new {@class = "col-sm-2 control-label"})
+                @Html.LabelFor(p => p.Direccion, new {@class = "col-sm-2 control-label"})
                 <div class="col-sm-8">
                     @{
                         var list = new List<SelectListItem>();
 
-                        if (!string.IsNullOrEmpty(Model.LocalDireccion))
+                        if (!string.IsNullOrEmpty(Model.Direccion))
                         {
                             list.Add(
                                 new SelectListItem
                                 {
-                                    Value = Convert.ToString(Model.LocalId),
-                                    Text = Model.LocalDireccion
+                                    Value = Model.Direccion,
+                                    Text = Model.Direccion
                                 });
                         }
                     }
 
-                    @Html.DropDownListFor(p => p.LocalId, list, new { @class = "form-control" })
-                    <div class="help-block">@Html.ValidationMessageFor(p => p.LocalId)</div>
+                    @Html.DropDownListFor(p => p.Direccion, list, new { @class = "form-control" })
+                    <div class="help-block">@Html.ValidationMessageFor(p => p.Direccion)</div>
                 </div>
             </div>
             <div class="form-group">
@@ -156,7 +157,7 @@
             yearRange: "@DateTime.Today.Year:+0"
         });
 
-        $("#LocalId").select2({
+        $("#Direccion").select2({
             language: "es",
             placeholder: 'Dirección de Local',
             minimumInputLength: 3,
@@ -208,7 +209,7 @@
             }
         });
 
-        $("#LocalId").on("select2:select", function(e) {
+        $("#Direccion").on("select2:select", function(e) {
             $('#NumLicencia').val(e.params.data.numLicencia);
             $('#LicenciaId').val(e.params.data.id);
         });

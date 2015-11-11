@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Ver";
+    ViewBag.Index = 3;
 }
 
 <div class="box box-info">
@@ -17,9 +18,9 @@
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(p => p.LocalId, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(p => p.Direccion, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-8">
-                    @Html.TextBoxFor(p => p.LocalDireccion, new { @class = "form-control", @disabled = "disabled" })
+                    @Html.TextBoxFor(p => p.Direccion, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="form-group">

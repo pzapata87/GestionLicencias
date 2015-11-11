@@ -1,18 +1,8 @@
 USE [GLicenciasBD]
 
 GO
-/***[Local]***/
-SET IDENTITY_INSERT [dbo].[Local] ON 
 
-GO
-INSERT [dbo].[Local] ([Id], [Direccion]) VALUES (1, N'LOCAL 1')
-GO
-INSERT [dbo].[Local] ([Id], [Direccion]) VALUES (2, N'LOCAL 2')
-GO
-SET IDENTITY_INSERT [dbo].[Local] OFF
-GO
-
-/***[Local]***/
+/***[Giro]***/
 SET IDENTITY_INSERT [dbo].[Giro] ON 
 GO
 INSERT [dbo].[Giro] ([Id], [Descripcion], [FechaRegistro]) VALUES (1, N'GIRO 1', GETDATE())
@@ -22,13 +12,33 @@ GO
 SET IDENTITY_INSERT [dbo].[Giro] OFF
 GO
 
+/***[Criterio]***/
+SET IDENTITY_INSERT [dbo].[Criterio] ON 
+GO
+INSERT [dbo].[Criterio] ([Id], [Descripcion], [FechaRegistro]) VALUES (1, N'CRITERIO 1', GETDATE())
+GO
+INSERT [dbo].[Criterio] ([Id], [Descripcion], [FechaRegistro]) VALUES (2, N'CRITERIO 2', GETDATE())
+GO
+SET IDENTITY_INSERT [dbo].[Criterio] OFF
+GO
+
+/***[Requisito]***/
+SET IDENTITY_INSERT [dbo].[Requisito] ON 
+GO
+INSERT [dbo].[Requisito] ([Id], [Valor], [CriterioId], [GiroId], [FechaRegistro]) VALUES (1, N'REQUISITO 1', 1, 1, GETDATE())
+GO
+INSERT [dbo].[Requisito] ([Id], [Valor], [CriterioId], [GiroId], [FechaRegistro]) VALUES (2, N'REQUISITO 2', 1, 1, GETDATE())
+GO
+SET IDENTITY_INSERT [dbo].[Criterio] OFF
+GO
+
 /***[Licencia]***/
 SET IDENTITY_INSERT [dbo].[Licencia] ON 
 
 GO
-INSERT [dbo].[Licencia] ([Id], [LocalId], [Responsable], [NumLicencia], [FechaLicencia], [GiroId]) VALUES (1, 1, N'1', N'0001', CAST(0x0000A4B000000000 AS DateTime), 1)
+INSERT [dbo].[Licencia] ([Id], [Direccion], [Responsable], [NumLicencia], [FechaLicencia], [GiroId]) VALUES (1, N'Direccion 01', N'1', N'0001', CAST(0x0000A4B000000000 AS DateTime), 1)
 GO
-INSERT [dbo].[Licencia] ([Id], [LocalId], [Responsable], [NumLicencia], [FechaLicencia], [GiroId]) VALUES (2, 2, N'2', N'0002', CAST(0x0000A4B000000000 AS DateTime), 1)
+INSERT [dbo].[Licencia] ([Id], [Direccion], [Responsable], [NumLicencia], [FechaLicencia], [GiroId]) VALUES (2, N'Direccion 02', N'2', N'0002', CAST(0x0000A4B000000000 AS DateTime), 1)
 GO
 SET IDENTITY_INSERT [dbo].[Licencia] OFF
 GO

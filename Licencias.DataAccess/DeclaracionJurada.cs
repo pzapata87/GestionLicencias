@@ -12,21 +12,14 @@ namespace Licencias.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class Giro
+    public partial class DeclaracionJurada
     {
-        public Giro()
-        {
-            this.Requisitos = new HashSet<Requisito>();
-            this.Licencias = new HashSet<Licencia>();
-            this.SolicitudLicencias = new HashSet<SolicitudLicencia>();
-        }
-    
         public int Id { get; set; }
-        public string Descripcion { get; set; }
-        public string FechaRegistro { get; set; }
+        public bool Corresponde { get; set; }
+        public int RequisitoId { get; set; }
+        public int SolicitudLicenciaId { get; set; }
     
-        public virtual ICollection<Requisito> Requisitos { get; set; }
-        public virtual ICollection<Licencia> Licencias { get; set; }
-        public virtual ICollection<SolicitudLicencia> SolicitudLicencias { get; set; }
+        public virtual Requisito Requisito { get; set; }
+        public virtual SolicitudLicencia SolicitudLicencia { get; set; }
     }
 }

@@ -77,8 +77,7 @@ namespace Licencias.Presentation.Controllers
                 FechaFiscalizacion = entity.FechaProgramada.GetDate(),
                 FiscalizadorId = entity.FiscalizadorId,
                 FiscalizadorNombre = entity.Fiscalizador.Nombre,
-                LocalId = entity.Licencia.LocalId,
-                LocalDireccion = entity.Licencia.Local.Direccion,
+                Direccion = entity.Licencia.Direccion,
                 NumLicencia = entity.Licencia.NumLicencia,
                 Accion = "Editar"
             });
@@ -171,8 +170,7 @@ namespace Licencias.Presentation.Controllers
                 FechaFiscalizacion = entity.FechaProgramada.GetDate(),
                 FiscalizadorId = entity.FiscalizadorId,
                 FiscalizadorNombre = entity.Fiscalizador.Nombre,
-                LocalId = entity.Licencia.LocalId,
-                LocalDireccion = entity.Licencia.Local.Direccion,
+                Direccion = entity.Licencia.Direccion,
                 NumLicencia = entity.Licencia.NumLicencia
             });
         }
@@ -187,7 +185,7 @@ namespace Licencias.Presentation.Controllers
                 jsonResponse.Data = _licenciaBusiness.FindAll(search).Select(p => new
                 {
                     id = p.Id,
-                    text = p.Local.Direccion,
+                    text = p.Direccion,
                     numLicencia = p.NumLicencia
                 });
 
@@ -235,7 +233,7 @@ namespace Licencias.Presentation.Controllers
             var list = _fiscalizacionBusiness.FindAll().Where(p => p.FiscalizadorId == fiscalizadorId).ToList().ConvertAll(p => new FiscalizacionModel
             {
                 Id = p.Id,
-                LocalDireccion = p.Licencia.Local.Direccion,
+                LocalDireccion = p.Licencia.Direccion,
                 FechaFiscalizacion = p.FechaProgramada.GetDate(),
                 NumLicencia = p.Licencia.NumLicencia,
                 EstadoId = p.Estado,
@@ -253,7 +251,7 @@ namespace Licencias.Presentation.Controllers
                 Id = entity.Id,
                 FechaFiscalizacion = entity.FechaProgramada.GetDate(),
                 Observacion = entity.Observacion,
-                LocalDireccion = entity.Licencia.Local.Direccion,
+                LocalDireccion = entity.Licencia.Direccion,
                 NumLicencia = entity.Licencia.NumLicencia,
                 Detalle = entity.Detalle,
                 EstadoNombre = Utils.EstadoFiscalizacionList[entity.Estado],
@@ -354,7 +352,7 @@ namespace Licencias.Presentation.Controllers
                 Id = entity.Id,
                 FechaFiscalizacion = entity.FechaProgramada.GetDate(),
                 Observacion = entity.Observacion,
-                LocalDireccion = entity.Licencia.Local.Direccion,
+                LocalDireccion = entity.Licencia.Direccion,
                 NumLicencia = entity.Licencia.NumLicencia,
                 Detalle = entity.Detalle,
                 EstadoNombre = Utils.EstadoFiscalizacionList[entity.Estado],

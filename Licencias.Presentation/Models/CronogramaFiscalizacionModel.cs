@@ -18,10 +18,8 @@ namespace Licencias.Presentation.Models
         public int FiscalizadorId { get; set; }
 
         [Required]
-        [DisplayName("Local")]
-        public int LocalId { get; set; }
-
-        public string LocalDireccion { get; set; }
+        [DisplayName("Direccion")]
+        public string Direccion { get; set; }
 
         [DisplayName("Comentario")]
         public string Comentario { get; set; }

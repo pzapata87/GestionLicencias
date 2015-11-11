@@ -10,10 +10,8 @@
         <EntityTypeShape EntityType="GLicenciasBD.RolUsuario" Width="1.5" PointX="0.625" PointY="3.5" />
         <AssociationConnector Association="GLicenciasBD.UsuarioRolUsuario" />
         <AssociationConnector Association="GLicenciasBD.RolRolUsuario" />
-        <EntityTypeShape EntityType="GLicenciasBD.Fiscalizacion" Width="1.875" PointX="7.5" PointY="2.75" />
-        <EntityTypeShape EntityType="GLicenciasBD.Local" Width="1.5" PointX="6.5" PointY="0.5" />
-        <EntityTypeShape EntityType="GLicenciasBD.Licencia" Width="2" PointX="10.125" PointY="1.25" />
-        <AssociationConnector Association="GLicenciasBD.LocalLicencia" />
+        <EntityTypeShape EntityType="GLicenciasBD.Fiscalizacion" Width="1.875" PointX="5.875" PointY="2.875" />
+        <EntityTypeShape EntityType="GLicenciasBD.Licencia" Width="2" PointX="7.375" PointY="1" />
         <EntityTypeShape EntityType="GLicenciasBD.Fiscalizador" Width="1.5" PointX="3.625" PointY="0.5" />
         <AssociationConnector Association="GLicenciasBD.FiscalizadorFiscalizacion" />
         <AssociationConnector Association="GLicenciasBD.LicenciaFiscalizacion" />
@@ -27,6 +25,17 @@
         <AssociationConnector Association="GLicenciasBD.RequisitoFiscalizacionRequisito" />
         <EntityTypeShape EntityType="GLicenciasBD.sysdiagram" Width="1.5" PointX="0.75" PointY="8.75" />
         <AssociationConnector Association="GLicenciasBD.GiroLicencia" />
+        <EntityTypeShape EntityType="GLicenciasBD.SolicitudLicencia" Width="1.875" PointX="10.375" PointY="1.125" />
+        <AssociationConnector Association="GLicenciasBD.GiroSolicitudLicencia" />
+        <EntityTypeShape EntityType="GLicenciasBD.Administrado" Width="1.5" PointX="13.625" PointY="1.5" />
+        <AssociationConnector Association="GLicenciasBD.AdministradoSolicitudLicencia" />
+        <EntityTypeShape EntityType="GLicenciasBD.DeclaracionJurada" Width="1.5" PointX="8.625" PointY="4.625" />
+        <AssociationConnector Association="GLicenciasBD.RequisitoDeclaracionJurada" />
+        <AssociationConnector Association="GLicenciasBD.SolicitudLicenciaDeclaracionJurada" />
+        <EntityTypeShape EntityType="GLicenciasBD.FormularioUnicoTramite" Width="2" PointX="16" PointY="3.75" />
+        <EntityTypeShape EntityType="GLicenciasBD.SolicitudAnuncio" Width="1.875" PointX="11.875" PointY="8.125" />
+        <AssociationConnector Association="GLicenciasBD.SolicitudLicenciaFormularioUnicoTramite" />
+        <AssociationConnector Association="GLicenciasBD.FormularioUnicoTramiteSolicitudAnuncio" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

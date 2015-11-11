@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/08/2015 10:21:24
+-- Date Created: 11/09/2015 01:00:10
 -- Generated from EDMX file: D:\Proyectos\Academico - Servicio Web\GestionLicencias\GestionLicencias\Licencias.DataAccess\GLicenciasBD.edmx
 -- --------------------------------------------------
 
@@ -23,9 +23,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_RolRolUsuario]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RolUsuario] DROP CONSTRAINT [FK_RolRolUsuario];
 GO
-IF OBJECT_ID(N'[dbo].[FK_LocalLicencia]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Licencia] DROP CONSTRAINT [FK_LocalLicencia];
-GO
 IF OBJECT_ID(N'[dbo].[FK_FiscalizadorFiscalizacion]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Fiscalizacion] DROP CONSTRAINT [FK_FiscalizadorFiscalizacion];
 GO
@@ -44,6 +41,27 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_RequisitoFiscalizacionRequisito]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[FiscalizacionRequisito] DROP CONSTRAINT [FK_RequisitoFiscalizacionRequisito];
 GO
+IF OBJECT_ID(N'[dbo].[FK_GiroLicencia]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Licencia] DROP CONSTRAINT [FK_GiroLicencia];
+GO
+IF OBJECT_ID(N'[dbo].[FK_GiroSolicitudLicencia]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[SolicitudLicencia] DROP CONSTRAINT [FK_GiroSolicitudLicencia];
+GO
+IF OBJECT_ID(N'[dbo].[FK_AdministradoSolicitudLicencia]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[SolicitudLicencia] DROP CONSTRAINT [FK_AdministradoSolicitudLicencia];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RequisitoDeclaracionJurada]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DeclaracionJurada] DROP CONSTRAINT [FK_RequisitoDeclaracionJurada];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SolicitudLicenciaDeclaracionJurada]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DeclaracionJurada] DROP CONSTRAINT [FK_SolicitudLicenciaDeclaracionJurada];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FormularioUnicoTramiteSolicitudAnuncio]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[SolicitudAnuncio] DROP CONSTRAINT [FK_FormularioUnicoTramiteSolicitudAnuncio];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SolicitudLicenciaFormularioUnicoTramite1]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FormularioUnicoTramite] DROP CONSTRAINT [FK_SolicitudLicenciaFormularioUnicoTramite1];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -60,9 +78,6 @@ IF OBJECT_ID(N'[dbo].[RolUsuario]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Fiscalizacion]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Fiscalizacion];
-GO
-IF OBJECT_ID(N'[dbo].[Local]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Local];
 GO
 IF OBJECT_ID(N'[dbo].[Licencia]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Licencia];
@@ -84,6 +99,21 @@ IF OBJECT_ID(N'[dbo].[FiscalizacionRequisito]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[sysdiagrams]', 'U') IS NOT NULL
     DROP TABLE [dbo].[sysdiagrams];
+GO
+IF OBJECT_ID(N'[dbo].[SolicitudLicencia]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[SolicitudLicencia];
+GO
+IF OBJECT_ID(N'[dbo].[Administrado]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Administrado];
+GO
+IF OBJECT_ID(N'[dbo].[DeclaracionJurada]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DeclaracionJurada];
+GO
+IF OBJECT_ID(N'[dbo].[FormularioUnicoTramite]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[FormularioUnicoTramite];
+GO
+IF OBJECT_ID(N'[dbo].[SolicitudAnuncio]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[SolicitudAnuncio];
 GO
 
 -- --------------------------------------------------
@@ -127,17 +157,10 @@ CREATE TABLE [dbo].[Fiscalizacion] (
 );
 GO
 
--- Creating table 'Local'
-CREATE TABLE [dbo].[Local] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Direccion] nvarchar(200)  NOT NULL
-);
-GO
-
 -- Creating table 'Licencia'
 CREATE TABLE [dbo].[Licencia] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [LocalId] int  NOT NULL,
+    [Direccion] nvarchar(500)  NOT NULL,
     [Responsable] nvarchar(100)  NOT NULL,
     [NumLicencia] nvarchar(max)  NOT NULL,
     [FechaLicencia] datetime  NOT NULL,
@@ -201,6 +224,59 @@ CREATE TABLE [dbo].[sysdiagrams] (
 );
 GO
 
+-- Creating table 'SolicitudLicencia'
+CREATE TABLE [dbo].[SolicitudLicencia] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [GiroId] int  NOT NULL,
+    [AdministradoId] int  NOT NULL,
+    [Solicitante] nvarchar(200)  NOT NULL
+);
+GO
+
+-- Creating table 'Administrado'
+CREATE TABLE [dbo].[Administrado] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [NDocumento] nvarchar(8)  NOT NULL,
+    [Nombres] nvarchar(200)  NOT NULL,
+    [Telefono] nvarchar(15)  NULL
+);
+GO
+
+-- Creating table 'DeclaracionJurada'
+CREATE TABLE [dbo].[DeclaracionJurada] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Corresponde] bit  NOT NULL,
+    [RequisitoId] int  NOT NULL,
+    [SolicitudLicenciaId] int  NOT NULL
+);
+GO
+
+-- Creating table 'FormularioUnicoTramite'
+CREATE TABLE [dbo].[FormularioUnicoTramite] (
+    [Id] int  NOT NULL,
+    [Ruc] nvarchar(11)  NOT NULL,
+    [Dni] nvarchar(8)  NOT NULL,
+    [CarnetExtranjeria] nvarchar(15)  NULL,
+    [Domicilio] nvarchar(200)  NOT NULL,
+    [Telefono] nvarchar(15)  NULL,
+    [Celular] nvarchar(15)  NULL,
+    [Telefax] nvarchar(15)  NULL
+);
+GO
+
+-- Creating table 'SolicitudAnuncio'
+CREATE TABLE [dbo].[SolicitudAnuncio] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Grafico] nvarchar(max)  NOT NULL,
+    [Leyenda] nvarchar(100)  NOT NULL,
+    [Color] nvarchar(20)  NOT NULL,
+    [Largo] decimal(10,2)  NOT NULL,
+    [Alto] decimal(10,2)  NOT NULL,
+    [Ancho] decimal(10,2)  NOT NULL,
+    [FormularioUnicoTramite_Id] int  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -226,12 +302,6 @@ GO
 -- Creating primary key on [Id] in table 'Fiscalizacion'
 ALTER TABLE [dbo].[Fiscalizacion]
 ADD CONSTRAINT [PK_Fiscalizacion]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Local'
-ALTER TABLE [dbo].[Local]
-ADD CONSTRAINT [PK_Local]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -277,6 +347,36 @@ ADD CONSTRAINT [PK_sysdiagrams]
     PRIMARY KEY CLUSTERED ([diagram_id] ASC);
 GO
 
+-- Creating primary key on [Id] in table 'SolicitudLicencia'
+ALTER TABLE [dbo].[SolicitudLicencia]
+ADD CONSTRAINT [PK_SolicitudLicencia]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Administrado'
+ALTER TABLE [dbo].[Administrado]
+ADD CONSTRAINT [PK_Administrado]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'DeclaracionJurada'
+ALTER TABLE [dbo].[DeclaracionJurada]
+ADD CONSTRAINT [PK_DeclaracionJurada]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'FormularioUnicoTramite'
+ALTER TABLE [dbo].[FormularioUnicoTramite]
+ADD CONSTRAINT [PK_FormularioUnicoTramite]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'SolicitudAnuncio'
+ALTER TABLE [dbo].[SolicitudAnuncio]
+ADD CONSTRAINT [PK_SolicitudAnuncio]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
@@ -303,21 +403,6 @@ GO
 CREATE INDEX [IX_FK_RolRolUsuario]
 ON [dbo].[RolUsuario]
     ([RolId]);
-GO
-
--- Creating foreign key on [LocalId] in table 'Licencia'
-ALTER TABLE [dbo].[Licencia]
-ADD CONSTRAINT [FK_LocalLicencia]
-    FOREIGN KEY ([LocalId])
-    REFERENCES [dbo].[Local]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_LocalLicencia'
-CREATE INDEX [IX_FK_LocalLicencia]
-ON [dbo].[Licencia]
-    ([LocalId]);
 GO
 
 -- Creating foreign key on [FiscalizadorId] in table 'Fiscalizacion'
@@ -423,6 +508,90 @@ GO
 CREATE INDEX [IX_FK_GiroLicencia]
 ON [dbo].[Licencia]
     ([GiroId]);
+GO
+
+-- Creating foreign key on [GiroId] in table 'SolicitudLicencia'
+ALTER TABLE [dbo].[SolicitudLicencia]
+ADD CONSTRAINT [FK_GiroSolicitudLicencia]
+    FOREIGN KEY ([GiroId])
+    REFERENCES [dbo].[Giro]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_GiroSolicitudLicencia'
+CREATE INDEX [IX_FK_GiroSolicitudLicencia]
+ON [dbo].[SolicitudLicencia]
+    ([GiroId]);
+GO
+
+-- Creating foreign key on [AdministradoId] in table 'SolicitudLicencia'
+ALTER TABLE [dbo].[SolicitudLicencia]
+ADD CONSTRAINT [FK_AdministradoSolicitudLicencia]
+    FOREIGN KEY ([AdministradoId])
+    REFERENCES [dbo].[Administrado]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_AdministradoSolicitudLicencia'
+CREATE INDEX [IX_FK_AdministradoSolicitudLicencia]
+ON [dbo].[SolicitudLicencia]
+    ([AdministradoId]);
+GO
+
+-- Creating foreign key on [RequisitoId] in table 'DeclaracionJurada'
+ALTER TABLE [dbo].[DeclaracionJurada]
+ADD CONSTRAINT [FK_RequisitoDeclaracionJurada]
+    FOREIGN KEY ([RequisitoId])
+    REFERENCES [dbo].[Requisito]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RequisitoDeclaracionJurada'
+CREATE INDEX [IX_FK_RequisitoDeclaracionJurada]
+ON [dbo].[DeclaracionJurada]
+    ([RequisitoId]);
+GO
+
+-- Creating foreign key on [SolicitudLicenciaId] in table 'DeclaracionJurada'
+ALTER TABLE [dbo].[DeclaracionJurada]
+ADD CONSTRAINT [FK_SolicitudLicenciaDeclaracionJurada]
+    FOREIGN KEY ([SolicitudLicenciaId])
+    REFERENCES [dbo].[SolicitudLicencia]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SolicitudLicenciaDeclaracionJurada'
+CREATE INDEX [IX_FK_SolicitudLicenciaDeclaracionJurada]
+ON [dbo].[DeclaracionJurada]
+    ([SolicitudLicenciaId]);
+GO
+
+-- Creating foreign key on [FormularioUnicoTramite_Id] in table 'SolicitudAnuncio'
+ALTER TABLE [dbo].[SolicitudAnuncio]
+ADD CONSTRAINT [FK_FormularioUnicoTramiteSolicitudAnuncio]
+    FOREIGN KEY ([FormularioUnicoTramite_Id])
+    REFERENCES [dbo].[FormularioUnicoTramite]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_FormularioUnicoTramiteSolicitudAnuncio'
+CREATE INDEX [IX_FK_FormularioUnicoTramiteSolicitudAnuncio]
+ON [dbo].[SolicitudAnuncio]
+    ([FormularioUnicoTramite_Id]);
+GO
+
+-- Creating foreign key on [Id] in table 'FormularioUnicoTramite'
+ALTER TABLE [dbo].[FormularioUnicoTramite]
+ADD CONSTRAINT [FK_SolicitudLicenciaFormularioUnicoTramite]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[SolicitudLicencia]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------

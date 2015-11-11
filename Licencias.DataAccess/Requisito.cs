@@ -17,6 +17,7 @@ namespace Licencias.DataAccess
         public Requisito()
         {
             this.FiscalizacionRequisitos = new HashSet<FiscalizacionRequisito>();
+            this.DeclaracionJuradas = new HashSet<DeclaracionJurada>();
         }
     
         public int Id { get; set; }
@@ -28,5 +29,6 @@ namespace Licencias.DataAccess
         public virtual Giro Giro { get; set; }
         public virtual Criterio Criterio { get; set; }
         public virtual ICollection<FiscalizacionRequisito> FiscalizacionRequisitos { get; set; }
+        public virtual ICollection<DeclaracionJurada> DeclaracionJuradas { get; set; }
     }
 }

@@ -10,7 +10,6 @@
     <EntitySet Name="Rol" EntityType="GLicenciasBD.Store.Rol" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="RolUsuario" EntityType="GLicenciasBD.Store.RolUsuario" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Fiscalizacion" EntityType="GLicenciasBD.Store.Fiscalizacion" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Local" EntityType="GLicenciasBD.Store.Local" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Licencia" EntityType="GLicenciasBD.Store.Licencia" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Fiscalizador" EntityType="GLicenciasBD.Store.Fiscalizador" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Giro" EntityType="GLicenciasBD.Store.Giro" store:Type="Tables" Schema="dbo" />
@@ -18,6 +17,11 @@
     <EntitySet Name="Criterio" EntityType="GLicenciasBD.Store.Criterio" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="FiscalizacionRequisito" EntityType="GLicenciasBD.Store.FiscalizacionRequisito" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="sysdiagrams" EntityType="GLicenciasBD.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SolicitudLicencia" EntityType="GLicenciasBD.Store.SolicitudLicencia" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Administrado" EntityType="GLicenciasBD.Store.Administrado" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DeclaracionJurada" EntityType="GLicenciasBD.Store.DeclaracionJurada" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FormularioUnicoTramite" EntityType="GLicenciasBD.Store.FormularioUnicoTramite" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SolicitudAnuncio" EntityType="GLicenciasBD.Store.SolicitudAnuncio" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="UsuarioRolUsuario" Association="GLicenciasBD.Store.UsuarioRolUsuario">
       <End Role="Usuario" EntitySet="Usuario" />
       <End Role="RolUsuario" EntitySet="RolUsuario" />
@@ -25,10 +29,6 @@
     <AssociationSet Name="RolRolUsuario" Association="GLicenciasBD.Store.RolRolUsuario">
       <End Role="Rol" EntitySet="Rol" />
       <End Role="RolUsuario" EntitySet="RolUsuario" />
-    </AssociationSet>
-    <AssociationSet Name="LocalLicencia" Association="GLicenciasBD.Store.LocalLicencia">
-      <End Role="Local" EntitySet="Local" />
-      <End Role="Licencia" EntitySet="Licencia" />
     </AssociationSet>
     <AssociationSet Name="FiscalizadorFiscalizacion" Association="GLicenciasBD.Store.FiscalizadorFiscalizacion">
       <End Role="Fiscalizador" EntitySet="Fiscalizador" />
@@ -57,6 +57,30 @@
     <AssociationSet Name="GiroLicencia" Association="GLicenciasBD.Store.GiroLicencia">
       <End Role="Giro" EntitySet="Giro" />
       <End Role="Licencia" EntitySet="Licencia" />
+    </AssociationSet>
+    <AssociationSet Name="GiroSolicitudLicencia" Association="GLicenciasBD.Store.GiroSolicitudLicencia">
+      <End Role="Giro" EntitySet="Giro" />
+      <End Role="SolicitudLicencia" EntitySet="SolicitudLicencia" />
+    </AssociationSet>
+    <AssociationSet Name="AdministradoSolicitudLicencia" Association="GLicenciasBD.Store.AdministradoSolicitudLicencia">
+      <End Role="Administrado" EntitySet="Administrado" />
+      <End Role="SolicitudLicencia" EntitySet="SolicitudLicencia" />
+    </AssociationSet>
+    <AssociationSet Name="RequisitoDeclaracionJurada" Association="GLicenciasBD.Store.RequisitoDeclaracionJurada">
+      <End Role="Requisito" EntitySet="Requisito" />
+      <End Role="DeclaracionJurada" EntitySet="DeclaracionJurada" />
+    </AssociationSet>
+    <AssociationSet Name="SolicitudLicenciaDeclaracionJurada" Association="GLicenciasBD.Store.SolicitudLicenciaDeclaracionJurada">
+      <End Role="SolicitudLicencia" EntitySet="SolicitudLicencia" />
+      <End Role="DeclaracionJurada" EntitySet="DeclaracionJurada" />
+    </AssociationSet>
+    <AssociationSet Name="FormularioUnicoTramiteSolicitudAnuncio" Association="GLicenciasBD.Store.FormularioUnicoTramiteSolicitudAnuncio">
+      <End Role="FormularioUnicoTramite" EntitySet="FormularioUnicoTramite" />
+      <End Role="SolicitudAnuncio" EntitySet="SolicitudAnuncio" />
+    </AssociationSet>
+    <AssociationSet Name="SolicitudLicenciaFormularioUnicoTramite" Association="GLicenciasBD.Store.SolicitudLicenciaFormularioUnicoTramite">
+      <End Role="SolicitudLicencia" EntitySet="SolicitudLicencia" />
+      <End Role="FormularioUnicoTramite" EntitySet="FormularioUnicoTramite" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Usuario">
@@ -97,19 +121,12 @@
     <Property Name="FechaReal" Type="datetime" Nullable="true" />
     <Property Name="Imagenes" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
-  <EntityType Name="Local">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Direccion" Type="nvarchar" Nullable="false" MaxLength="200" />
-  </EntityType>
   <EntityType Name="Licencia">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="LocalId" Type="int" Nullable="false" />
+    <Property Name="Direccion" Type="nvarchar" Nullable="false" MaxLength="500" />
     <Property Name="Responsable" Type="nvarchar" Nullable="false" MaxLength="100" />
     <Property Name="NumLicencia" Type="nvarchar(max)" Nullable="false" />
     <Property Name="FechaLicencia" Type="datetime" Nullable="false" />
@@ -171,6 +188,59 @@
     <Property Name="version" Type="int" Nullable="true" />
     <Property Name="definition" Type="varbinary(max)" Nullable="true" />
   </EntityType>
+  <EntityType Name="SolicitudLicencia">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GiroId" Type="int" Nullable="false" />
+    <Property Name="AdministradoId" Type="int" Nullable="false" />
+    <Property Name="Solicitante" Type="nvarchar" Nullable="false" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="Administrado">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NDocumento" Type="nvarchar" Nullable="false" MaxLength="8" />
+    <Property Name="Nombres" Type="nvarchar" Nullable="false" MaxLength="200" />
+    <Property Name="Telefono" Type="nvarchar" Nullable="true" MaxLength="15" />
+  </EntityType>
+  <EntityType Name="DeclaracionJurada">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Corresponde" Type="bit" Nullable="false" />
+    <Property Name="RequisitoId" Type="int" Nullable="false" />
+    <Property Name="SolicitudLicenciaId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FormularioUnicoTramite">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Ruc" Type="nvarchar" Nullable="false" MaxLength="11" />
+    <Property Name="Dni" Type="nvarchar" Nullable="false" MaxLength="8" />
+    <Property Name="CarnetExtranjeria" Type="nvarchar" Nullable="true" MaxLength="15" />
+    <Property Name="Domicilio" Type="nvarchar" Nullable="false" MaxLength="200" />
+    <Property Name="Telefono" Type="nvarchar" Nullable="true" MaxLength="15" />
+    <Property Name="Celular" Type="nvarchar" Nullable="true" MaxLength="15" />
+    <Property Name="Telefax" Type="nvarchar" Nullable="true" MaxLength="15" />
+  </EntityType>
+  <EntityType Name="SolicitudAnuncio">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Grafico" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Leyenda" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Color" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Largo" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="Alto" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="Ancho" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="FormularioUnicoTramite_Id" Type="int" Nullable="false" />
+  </EntityType>
   <Association Name="UsuarioRolUsuario">
     <End Role="Usuario" Type="GLicenciasBD.Store.Usuario" Multiplicity="1" />
     <End Role="RolUsuario" Type="GLicenciasBD.Store.RolUsuario" Multiplicity="*" />
@@ -192,18 +262,6 @@
       </Principal>
       <Dependent Role="RolUsuario">
         <PropertyRef Name="RolId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="LocalLicencia">
-    <End Role="Local" Type="GLicenciasBD.Store.Local" Multiplicity="1" />
-    <End Role="Licencia" Type="GLicenciasBD.Store.Licencia" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Local">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Licencia">
-        <PropertyRef Name="LocalId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -291,6 +349,78 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="GiroSolicitudLicencia">
+    <End Role="Giro" Type="GLicenciasBD.Store.Giro" Multiplicity="1" />
+    <End Role="SolicitudLicencia" Type="GLicenciasBD.Store.SolicitudLicencia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Giro">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SolicitudLicencia">
+        <PropertyRef Name="GiroId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdministradoSolicitudLicencia">
+    <End Role="Administrado" Type="GLicenciasBD.Store.Administrado" Multiplicity="1" />
+    <End Role="SolicitudLicencia" Type="GLicenciasBD.Store.SolicitudLicencia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Administrado">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SolicitudLicencia">
+        <PropertyRef Name="AdministradoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RequisitoDeclaracionJurada">
+    <End Role="Requisito" Type="GLicenciasBD.Store.Requisito" Multiplicity="1" />
+    <End Role="DeclaracionJurada" Type="GLicenciasBD.Store.DeclaracionJurada" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Requisito">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DeclaracionJurada">
+        <PropertyRef Name="RequisitoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SolicitudLicenciaDeclaracionJurada">
+    <End Role="SolicitudLicencia" Type="GLicenciasBD.Store.SolicitudLicencia" Multiplicity="1" />
+    <End Role="DeclaracionJurada" Type="GLicenciasBD.Store.DeclaracionJurada" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SolicitudLicencia">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DeclaracionJurada">
+        <PropertyRef Name="SolicitudLicenciaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FormularioUnicoTramiteSolicitudAnuncio">
+    <End Role="FormularioUnicoTramite" Type="GLicenciasBD.Store.FormularioUnicoTramite" Multiplicity="1" />
+    <End Role="SolicitudAnuncio" Type="GLicenciasBD.Store.SolicitudAnuncio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FormularioUnicoTramite">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SolicitudAnuncio">
+        <PropertyRef Name="FormularioUnicoTramite_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SolicitudLicenciaFormularioUnicoTramite">
+    <End Role="SolicitudLicencia" Type="GLicenciasBD.Store.SolicitudLicencia" Multiplicity="1" />
+    <End Role="FormularioUnicoTramite" Type="GLicenciasBD.Store.FormularioUnicoTramite" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="SolicitudLicencia">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FormularioUnicoTramite">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -308,12 +438,7 @@
             <End Role="RolUsuario" EntitySet="RolUsuario" />
           </AssociationSet>
           <EntitySet Name="Fiscalizacion" EntityType="GLicenciasBD.Fiscalizacion" />
-          <EntitySet Name="Local" EntityType="GLicenciasBD.Local" />
           <EntitySet Name="Licencia" EntityType="GLicenciasBD.Licencia" />
-          <AssociationSet Name="LocalLicencia" Association="GLicenciasBD.LocalLicencia">
-            <End Role="Local" EntitySet="Local" />
-            <End Role="Licencia" EntitySet="Licencia" />
-          </AssociationSet>
           <EntitySet Name="Fiscalizador" EntityType="GLicenciasBD.Fiscalizador" />
           <AssociationSet Name="FiscalizadorFiscalizacion" Association="GLicenciasBD.FiscalizadorFiscalizacion">
             <End Role="Fiscalizador" EntitySet="Fiscalizador" />
@@ -347,6 +472,35 @@
           <AssociationSet Name="GiroLicencia" Association="GLicenciasBD.GiroLicencia">
             <End Role="Giro" EntitySet="Giro" />
             <End Role="Licencia" EntitySet="Licencia" />
+          </AssociationSet>
+          <EntitySet Name="SolicitudLicencia" EntityType="GLicenciasBD.SolicitudLicencia" />
+          <AssociationSet Name="GiroSolicitudLicencia" Association="GLicenciasBD.GiroSolicitudLicencia">
+            <End Role="Giro" EntitySet="Giro" />
+            <End Role="SolicitudLicencia" EntitySet="SolicitudLicencia" />
+          </AssociationSet>
+          <EntitySet Name="Administrado" EntityType="GLicenciasBD.Administrado" />
+          <AssociationSet Name="AdministradoSolicitudLicencia" Association="GLicenciasBD.AdministradoSolicitudLicencia">
+            <End Role="Administrado" EntitySet="Administrado" />
+            <End Role="SolicitudLicencia" EntitySet="SolicitudLicencia" />
+          </AssociationSet>
+          <EntitySet Name="DeclaracionJurada" EntityType="GLicenciasBD.DeclaracionJurada" />
+          <AssociationSet Name="RequisitoDeclaracionJurada" Association="GLicenciasBD.RequisitoDeclaracionJurada">
+            <End Role="Requisito" EntitySet="Requisito" />
+            <End Role="DeclaracionJurada" EntitySet="DeclaracionJurada" />
+          </AssociationSet>
+          <AssociationSet Name="SolicitudLicenciaDeclaracionJurada" Association="GLicenciasBD.SolicitudLicenciaDeclaracionJurada">
+            <End Role="SolicitudLicencia" EntitySet="SolicitudLicencia" />
+            <End Role="DeclaracionJurada" EntitySet="DeclaracionJurada" />
+          </AssociationSet>
+          <EntitySet Name="FormularioUnicoTramite" EntityType="GLicenciasBD.FormularioUnicoTramite" />
+          <EntitySet Name="SolicitudAnuncio" EntityType="GLicenciasBD.SolicitudAnuncio" />
+          <AssociationSet Name="SolicitudLicenciaFormularioUnicoTramite" Association="GLicenciasBD.SolicitudLicenciaFormularioUnicoTramite">
+            <End Role="SolicitudLicencia" EntitySet="SolicitudLicencia" />
+            <End Role="FormularioUnicoTramite" EntitySet="FormularioUnicoTramite" />
+          </AssociationSet>
+          <AssociationSet Name="FormularioUnicoTramiteSolicitudAnuncio" Association="GLicenciasBD.FormularioUnicoTramiteSolicitudAnuncio">
+            <End Role="FormularioUnicoTramite" EntitySet="FormularioUnicoTramite" />
+            <End Role="SolicitudAnuncio" EntitySet="SolicitudAnuncio" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Usuario">
@@ -418,21 +572,12 @@
           <Property Name="Imagenes" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="FiscalizacionRequisitos" Relationship="GLicenciasBD.FiscalizacionFiscalizacionRequisito" FromRole="Fiscalizacion" ToRole="FiscalizacionRequisito" />
         </EntityType>
-        <EntityType Name="Local">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Direccion" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Licencias" Relationship="GLicenciasBD.LocalLicencia" FromRole="Local" ToRole="Licencia" />
-        </EntityType>
         <EntityType Name="Licencia">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Local" Relationship="GLicenciasBD.LocalLicencia" FromRole="Licencia" ToRole="Local" />
-          <Property Name="LocalId" Type="Int32" Nullable="false" />
+          <Property Name="Direccion" Type="String" Nullable="false" MaxLength="500" />
           <Property Name="Responsable" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="NumLicencia" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="FechaLicencia" Type="DateTime" Nullable="false" Precision="3" />
@@ -441,18 +586,6 @@
           <NavigationProperty Name="Giro" Relationship="GLicenciasBD.GiroLicencia" FromRole="Licencia" ToRole="Giro" />
           <Property Name="GiroId" Type="Int32" Nullable="false" />
         </EntityType>
-        <Association Name="LocalLicencia">
-          <End Type="GLicenciasBD.Local" Role="Local" Multiplicity="1" />
-          <End Type="GLicenciasBD.Licencia" Role="Licencia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Local">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Licencia">
-              <PropertyRef Name="LocalId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Fiscalizador">
           <Key>
             <PropertyRef Name="Id" />
@@ -495,6 +628,7 @@
           <Property Name="FechaRegistro" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Requisitos" Relationship="GLicenciasBD.GiroRequisito" FromRole="Giro" ToRole="Requisito" />
           <NavigationProperty Name="Licencias" Relationship="GLicenciasBD.GiroLicencia" FromRole="Giro" ToRole="Licencia" />
+          <NavigationProperty Name="SolicitudLicencias" Relationship="GLicenciasBD.GiroSolicitudLicencia" FromRole="Giro" ToRole="SolicitudLicencia" />
         </EntityType>
         <EntityType Name="Requisito">
           <Key>
@@ -508,6 +642,7 @@
           <NavigationProperty Name="Criterio" Relationship="GLicenciasBD.CriterioRequisito" FromRole="Requisito" ToRole="Criterio" />
           <Property Name="CriterioId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="FiscalizacionRequisitos" Relationship="GLicenciasBD.RequisitoFiscalizacionRequisito" FromRole="Requisito" ToRole="FiscalizacionRequisito" />
+          <NavigationProperty Name="DeclaracionJuradas" Relationship="GLicenciasBD.RequisitoDeclaracionJurada" FromRole="Requisito" ToRole="DeclaracionJurada" />
         </EntityType>
         <EntityType Name="Criterio">
           <Key>
@@ -601,6 +736,140 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SolicitudLicencia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Giro" Relationship="GLicenciasBD.GiroSolicitudLicencia" FromRole="SolicitudLicencia" ToRole="Giro" />
+          <Property Name="GiroId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Administrado" Relationship="GLicenciasBD.AdministradoSolicitudLicencia" FromRole="SolicitudLicencia" ToRole="Administrado" />
+          <Property Name="AdministradoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DeclaracionJuradas" Relationship="GLicenciasBD.SolicitudLicenciaDeclaracionJurada" FromRole="SolicitudLicencia" ToRole="DeclaracionJurada" />
+          <Property Name="Solicitante" Type="String" Nullable="false" MaxLength="200" />
+          <NavigationProperty Name="FormularioUnicoTramite" Relationship="GLicenciasBD.SolicitudLicenciaFormularioUnicoTramite" FromRole="SolicitudLicencia" ToRole="FormularioUnicoTramite" />
+        </EntityType>
+        <Association Name="GiroSolicitudLicencia">
+          <End Type="GLicenciasBD.Giro" Role="Giro" Multiplicity="1" />
+          <End Type="GLicenciasBD.SolicitudLicencia" Role="SolicitudLicencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Giro">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SolicitudLicencia">
+              <PropertyRef Name="GiroId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Administrado">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NDocumento" Type="String" Nullable="false" MaxLength="8" />
+          <Property Name="Nombres" Type="String" Nullable="false" MaxLength="200" />
+          <Property Name="Telefono" Type="String" Nullable="true" MaxLength="15" />
+          <NavigationProperty Name="SolicitudLicencias" Relationship="GLicenciasBD.AdministradoSolicitudLicencia" FromRole="Administrado" ToRole="SolicitudLicencia" />
+        </EntityType>
+        <Association Name="AdministradoSolicitudLicencia">
+          <End Type="GLicenciasBD.Administrado" Role="Administrado" Multiplicity="1" />
+          <End Type="GLicenciasBD.SolicitudLicencia" Role="SolicitudLicencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrado">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SolicitudLicencia">
+              <PropertyRef Name="AdministradoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DeclaracionJurada">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Corresponde" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Requisito" Relationship="GLicenciasBD.RequisitoDeclaracionJurada" FromRole="DeclaracionJurada" ToRole="Requisito" />
+          <Property Name="RequisitoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SolicitudLicencia" Relationship="GLicenciasBD.SolicitudLicenciaDeclaracionJurada" FromRole="DeclaracionJurada" ToRole="SolicitudLicencia" />
+          <Property Name="SolicitudLicenciaId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="RequisitoDeclaracionJurada">
+          <End Type="GLicenciasBD.Requisito" Role="Requisito" Multiplicity="1" />
+          <End Type="GLicenciasBD.DeclaracionJurada" Role="DeclaracionJurada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Requisito">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DeclaracionJurada">
+              <PropertyRef Name="RequisitoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SolicitudLicenciaDeclaracionJurada">
+          <End Type="GLicenciasBD.SolicitudLicencia" Role="SolicitudLicencia" Multiplicity="1" />
+          <End Type="GLicenciasBD.DeclaracionJurada" Role="DeclaracionJurada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SolicitudLicencia">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DeclaracionJurada">
+              <PropertyRef Name="SolicitudLicenciaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FormularioUnicoTramite">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Ruc" Type="String" Nullable="false" MaxLength="11" />
+          <Property Name="Dni" Type="String" Nullable="false" MaxLength="8" />
+          <Property Name="CarnetExtranjeria" Type="String" Nullable="true" MaxLength="15" />
+          <Property Name="Domicilio" Type="String" Nullable="false" MaxLength="200" />
+          <Property Name="Telefono" Type="String" Nullable="true" MaxLength="15" />
+          <Property Name="Celular" Type="String" Nullable="true" MaxLength="15" />
+          <Property Name="Telefax" Type="String" Nullable="true" MaxLength="15" />
+          <NavigationProperty Name="SolicitudLicencia" Relationship="GLicenciasBD.SolicitudLicenciaFormularioUnicoTramite" FromRole="FormularioUnicoTramite" ToRole="SolicitudLicencia" />
+          <NavigationProperty Name="SolicitudAnuncio" Relationship="GLicenciasBD.FormularioUnicoTramiteSolicitudAnuncio" FromRole="FormularioUnicoTramite" ToRole="SolicitudAnuncio" />
+        </EntityType>
+        <EntityType Name="SolicitudAnuncio">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Grafico" Type="String" Nullable="false" MaxLength="Max" />
+          <Property Name="Leyenda" Type="String" Nullable="false" MaxLength="100" />
+          <Property Name="Color" Type="String" Nullable="false" MaxLength="20" />
+          <Property Name="Largo" Type="Decimal" Nullable="false" Scale="2" Precision="10" />
+          <Property Name="Alto" Type="Decimal" Nullable="false" Scale="2" Precision="10" />
+          <Property Name="Ancho" Type="Decimal" Nullable="false" Scale="2" Precision="10" />
+          <NavigationProperty Name="FormularioUnicoTramite" Relationship="GLicenciasBD.FormularioUnicoTramiteSolicitudAnuncio" FromRole="SolicitudAnuncio" ToRole="FormularioUnicoTramite" />
+        </EntityType>
+        <Association Name="SolicitudLicenciaFormularioUnicoTramite">
+          <End Type="GLicenciasBD.SolicitudLicencia" Role="SolicitudLicencia" Multiplicity="1" />
+          <End Type="GLicenciasBD.FormularioUnicoTramite" Role="FormularioUnicoTramite" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="SolicitudLicencia">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FormularioUnicoTramite">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FormularioUnicoTramiteSolicitudAnuncio">
+          <End Type="GLicenciasBD.FormularioUnicoTramite" Role="FormularioUnicoTramite" Multiplicity="1" />
+          <End Type="GLicenciasBD.SolicitudAnuncio" Role="SolicitudAnuncio" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FormularioUnicoTramite">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SolicitudAnuncio">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -648,19 +917,11 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Local">
-      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.Local)">
-        <MappingFragment StoreEntitySet="Local">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Licencia">
       <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.Licencia)">
         <MappingFragment StoreEntitySet="Licencia">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="LocalId" ColumnName="LocalId" />
+          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
           <ScalarProperty Name="Responsable" ColumnName="Responsable" />
           <ScalarProperty Name="NumLicencia" ColumnName="NumLicencia" />
           <ScalarProperty Name="FechaLicencia" ColumnName="FechaLicencia" />
@@ -727,6 +988,63 @@
           <ScalarProperty Name="principal_id" ColumnName="principal_id" />
           <ScalarProperty Name="version" ColumnName="version" />
           <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SolicitudLicencia">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.SolicitudLicencia)">
+        <MappingFragment StoreEntitySet="SolicitudLicencia">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="GiroId" ColumnName="GiroId" />
+          <ScalarProperty Name="AdministradoId" ColumnName="AdministradoId" />
+          <ScalarProperty Name="Solicitante" ColumnName="Solicitante" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Administrado">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.Administrado)">
+        <MappingFragment StoreEntitySet="Administrado">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="NDocumento" ColumnName="NDocumento" />
+          <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DeclaracionJurada">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.DeclaracionJurada)">
+        <MappingFragment StoreEntitySet="DeclaracionJurada">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Corresponde" ColumnName="Corresponde" />
+          <ScalarProperty Name="RequisitoId" ColumnName="RequisitoId" />
+          <ScalarProperty Name="SolicitudLicenciaId" ColumnName="SolicitudLicenciaId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FormularioUnicoTramite">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.FormularioUnicoTramite)">
+        <MappingFragment StoreEntitySet="FormularioUnicoTramite">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Ruc" ColumnName="Ruc" />
+          <ScalarProperty Name="Dni" ColumnName="Dni" />
+          <ScalarProperty Name="CarnetExtranjeria" ColumnName="CarnetExtranjeria" />
+          <ScalarProperty Name="Domicilio" ColumnName="Domicilio" />
+          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+          <ScalarProperty Name="Celular" ColumnName="Celular" />
+          <ScalarProperty Name="Telefax" ColumnName="Telefax" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SolicitudAnuncio">
+      <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.SolicitudAnuncio)">
+        <MappingFragment StoreEntitySet="SolicitudAnuncio">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Grafico" ColumnName="Grafico" />
+          <ScalarProperty Name="Leyenda" ColumnName="Leyenda" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Largo" ColumnName="Largo" />
+          <ScalarProperty Name="Alto" ColumnName="Alto" />
+          <ScalarProperty Name="Ancho" ColumnName="Ancho" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

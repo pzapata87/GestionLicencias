@@ -12,16 +12,21 @@ namespace Licencias.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class Local
+    public partial class SolicitudLicencia
     {
-        public Local()
+        public SolicitudLicencia()
         {
-            this.Licencias = new HashSet<Licencia>();
+            this.DeclaracionJuradas = new HashSet<DeclaracionJurada>();
         }
     
         public int Id { get; set; }
-        public string Direccion { get; set; }
+        public int GiroId { get; set; }
+        public int AdministradoId { get; set; }
+        public string Solicitante { get; set; }
     
-        public virtual ICollection<Licencia> Licencias { get; set; }
+        public virtual Giro Giro { get; set; }
+        public virtual Administrado Administrado { get; set; }
+        public virtual ICollection<DeclaracionJurada> DeclaracionJuradas { get; set; }
+        public virtual FormularioUnicoTramite FormularioUnicoTramite { get; set; }
     }
 }

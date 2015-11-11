@@ -50,7 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Administrado.cs">
+      <DependentUpon>GLicenciasBD.tt</DependentUpon>
+    </Compile>
     <Compile Include="Criterio.cs">
+      <DependentUpon>GLicenciasBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DeclaracionJurada.cs">
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
     </Compile>
     <Compile Include="Fiscalizacion.cs">
@@ -60,6 +66,9 @@
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
     </Compile>
     <Compile Include="Fiscalizador.cs">
+      <DependentUpon>GLicenciasBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioUnicoTramite.cs">
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
     </Compile>
     <Compile Include="Giro.cs">
@@ -83,9 +92,6 @@
     <Compile Include="Licencia.cs">
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
     </Compile>
-    <Compile Include="Local.cs">
-      <DependentUpon>GLicenciasBD.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requisito.cs">
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
@@ -94,6 +100,12 @@
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
     </Compile>
     <Compile Include="RolUsuario.cs">
+      <DependentUpon>GLicenciasBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SolicitudAnuncio.cs">
+      <DependentUpon>GLicenciasBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SolicitudLicencia.cs">
       <DependentUpon>GLicenciasBD.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagram.cs">

@@ -21,7 +21,7 @@ namespace Licencias.Bussines
 
         public List<Licencia> FindAll(string search)
         {
-            return _db.Licencia.Where(p => p.Local.Direccion.Contains(search)).ToList();
+            return _db.Licencia.Where(p => p.Direccion.Contains(search)).ToList();
         }
 
         public Licencia Get(int id)
