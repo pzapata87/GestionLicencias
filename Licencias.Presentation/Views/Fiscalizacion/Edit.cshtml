@@ -182,7 +182,7 @@
                 cache: true
             }
         });
-        
+
         $("#FiscalizadorId").select2({
             language: "es",
             placeholder: 'Fiscalizador',
@@ -195,12 +195,12 @@
                 dataType: 'json',
                 type: "POST",
                 quietMillis: 250,
-                data: function (params) {
+                data: function(params) {
                     return {
                         search: params.term
                     };
                 },
-                processResults: function (data, page) {
+                processResults: function(data, page) {
                     return {
                         results: data.Data
                     };
@@ -213,5 +213,5 @@
             $('#NumLicencia').val(e.params.data.numLicencia);
             $('#LicenciaId').val(e.params.data.id);
         });
-</script>
+    </script>
 }

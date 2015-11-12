@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/09/2015 01:00:10
+-- Date Created: 11/11/2015 23:55:59
 -- Generated from EDMX file: D:\Proyectos\Academico - Servicio Web\GestionLicencias\GestionLicencias\Licencias.DataAccess\GLicenciasBD.edmx
 -- --------------------------------------------------
 
@@ -56,11 +56,11 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_SolicitudLicenciaDeclaracionJurada]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DeclaracionJurada] DROP CONSTRAINT [FK_SolicitudLicenciaDeclaracionJurada];
 GO
+IF OBJECT_ID(N'[dbo].[FK_SolicitudLicenciaFormularioUnicoTramite]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FormularioUnicoTramite] DROP CONSTRAINT [FK_SolicitudLicenciaFormularioUnicoTramite];
+GO
 IF OBJECT_ID(N'[dbo].[FK_FormularioUnicoTramiteSolicitudAnuncio]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[SolicitudAnuncio] DROP CONSTRAINT [FK_FormularioUnicoTramiteSolicitudAnuncio];
-GO
-IF OBJECT_ID(N'[dbo].[FK_SolicitudLicenciaFormularioUnicoTramite1]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[FormularioUnicoTramite] DROP CONSTRAINT [FK_SolicitudLicenciaFormularioUnicoTramite1];
 GO
 
 -- --------------------------------------------------
@@ -272,8 +272,7 @@ CREATE TABLE [dbo].[SolicitudAnuncio] (
     [Color] nvarchar(20)  NOT NULL,
     [Largo] decimal(10,2)  NOT NULL,
     [Alto] decimal(10,2)  NOT NULL,
-    [Ancho] decimal(10,2)  NOT NULL,
-    [FormularioUnicoTramite_Id] int  NOT NULL
+    [Ancho] decimal(10,2)  NOT NULL
 );
 GO
 
@@ -570,26 +569,20 @@ ON [dbo].[DeclaracionJurada]
     ([SolicitudLicenciaId]);
 GO
 
--- Creating foreign key on [FormularioUnicoTramite_Id] in table 'SolicitudAnuncio'
-ALTER TABLE [dbo].[SolicitudAnuncio]
-ADD CONSTRAINT [FK_FormularioUnicoTramiteSolicitudAnuncio]
-    FOREIGN KEY ([FormularioUnicoTramite_Id])
-    REFERENCES [dbo].[FormularioUnicoTramite]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_FormularioUnicoTramiteSolicitudAnuncio'
-CREATE INDEX [IX_FK_FormularioUnicoTramiteSolicitudAnuncio]
-ON [dbo].[SolicitudAnuncio]
-    ([FormularioUnicoTramite_Id]);
-GO
-
 -- Creating foreign key on [Id] in table 'FormularioUnicoTramite'
 ALTER TABLE [dbo].[FormularioUnicoTramite]
 ADD CONSTRAINT [FK_SolicitudLicenciaFormularioUnicoTramite]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[SolicitudLicencia]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Id] in table 'SolicitudAnuncio'
+ALTER TABLE [dbo].[SolicitudAnuncio]
+ADD CONSTRAINT [FK_FormularioUnicoTramiteSolicitudAnuncio]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[FormularioUnicoTramite]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO

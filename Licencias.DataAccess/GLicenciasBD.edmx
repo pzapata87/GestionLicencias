@@ -74,13 +74,13 @@
       <End Role="SolicitudLicencia" EntitySet="SolicitudLicencia" />
       <End Role="DeclaracionJurada" EntitySet="DeclaracionJurada" />
     </AssociationSet>
-    <AssociationSet Name="FormularioUnicoTramiteSolicitudAnuncio" Association="GLicenciasBD.Store.FormularioUnicoTramiteSolicitudAnuncio">
-      <End Role="FormularioUnicoTramite" EntitySet="FormularioUnicoTramite" />
-      <End Role="SolicitudAnuncio" EntitySet="SolicitudAnuncio" />
-    </AssociationSet>
     <AssociationSet Name="SolicitudLicenciaFormularioUnicoTramite" Association="GLicenciasBD.Store.SolicitudLicenciaFormularioUnicoTramite">
       <End Role="SolicitudLicencia" EntitySet="SolicitudLicencia" />
       <End Role="FormularioUnicoTramite" EntitySet="FormularioUnicoTramite" />
+    </AssociationSet>
+    <AssociationSet Name="FormularioUnicoTramiteSolicitudAnuncio" Association="GLicenciasBD.Store.FormularioUnicoTramiteSolicitudAnuncio">
+      <End Role="FormularioUnicoTramite" EntitySet="FormularioUnicoTramite" />
+      <End Role="SolicitudAnuncio" EntitySet="SolicitudAnuncio" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Usuario">
@@ -239,7 +239,6 @@
     <Property Name="Largo" Type="decimal" Nullable="false" Precision="10" Scale="2" />
     <Property Name="Alto" Type="decimal" Nullable="false" Precision="10" Scale="2" />
     <Property Name="Ancho" Type="decimal" Nullable="false" Precision="10" Scale="2" />
-    <Property Name="FormularioUnicoTramite_Id" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="UsuarioRolUsuario">
     <End Role="Usuario" Type="GLicenciasBD.Store.Usuario" Multiplicity="1" />
@@ -397,18 +396,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FormularioUnicoTramiteSolicitudAnuncio">
-    <End Role="FormularioUnicoTramite" Type="GLicenciasBD.Store.FormularioUnicoTramite" Multiplicity="1" />
-    <End Role="SolicitudAnuncio" Type="GLicenciasBD.Store.SolicitudAnuncio" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="FormularioUnicoTramite">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="SolicitudAnuncio">
-        <PropertyRef Name="FormularioUnicoTramite_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="SolicitudLicenciaFormularioUnicoTramite">
     <End Role="SolicitudLicencia" Type="GLicenciasBD.Store.SolicitudLicencia" Multiplicity="1" />
     <End Role="FormularioUnicoTramite" Type="GLicenciasBD.Store.FormularioUnicoTramite" Multiplicity="0..1" />
@@ -417,6 +404,18 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="FormularioUnicoTramite">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FormularioUnicoTramiteSolicitudAnuncio">
+    <End Role="FormularioUnicoTramite" Type="GLicenciasBD.Store.FormularioUnicoTramite" Multiplicity="1" />
+    <End Role="SolicitudAnuncio" Type="GLicenciasBD.Store.SolicitudAnuncio" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="FormularioUnicoTramite">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SolicitudAnuncio">
         <PropertyRef Name="Id" />
       </Dependent>
     </ReferentialConstraint>
