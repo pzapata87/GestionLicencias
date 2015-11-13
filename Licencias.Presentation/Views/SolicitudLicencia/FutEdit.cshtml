@@ -1,0 +1,86 @@
+﻿@model Licencias.Presentation.Models.FormularioUnicoTramiteModel
+
+@using (Html.BeginForm("EditFut", "SolicitudLicencia", new { area = "" }, FormMethod.Post, new { id = "frmFut", @class = "form-horizontal" }))
+{
+    <div class="box-body">
+        <div class="form-group">
+            @Html.LabelFor(p => p.Ruc, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Ruc, new { @class = "form-control" })
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Ruc)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Dni, new {@class = "col-sm-3 control-label"})
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Dni, new {@class = "form-control"})
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Dni)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Domicilio, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Domicilio, new { @class = "form-control" })
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Domicilio)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.CarnetExtranjeria, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.CarnetExtranjeria, new { @class = "form-control" })
+                <div class="help-block">@Html.ValidationMessageFor(p => p.CarnetExtranjeria)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Celular, new {@class = "col-sm-3 control-label"})
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Celular, new {@class = "form-control"})
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Celular)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Telefono, new {@class = "col-sm-3 control-label"})
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Telefono, new {@class = "form-control"})
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Telefono)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Telefax, new {@class = "col-sm-3 control-label"})
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Telefax, new {@class = "form-control"})
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Telefax)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Correo, new {@class = "col-sm-3 control-label"})
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Correo, new {@class = "form-control"})
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Correo)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.FichaLiteral, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.FichaLiteral, new { @class = "form-control" })
+                <div class="help-block">@Html.ValidationMessageFor(p => p.FichaLiteral)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Representante, new {@class = "col-sm-3 control-label"})
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Representante, new {@class = "form-control"})
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Representante)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Solicitud", new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                <button type="button" id="btnSolicitud" class="btn btn-success">
+                    <i class="fa fa-external-link"></i>
+                    Solicitud de Anuncio
+                </button>
+            </div>
+        </div>
+    </div>
+}

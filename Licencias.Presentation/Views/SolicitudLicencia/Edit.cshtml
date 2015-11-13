@@ -1,0 +1,294 @@
+﻿@model Licencias.Presentation.Models.SolicitudLicenciaModel
+
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Index = 1;
+}
+
+@section StyleContent
+{
+    <link href="@Url.Content("~/Content/css/select2.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/css/jquery-ui.min.css")" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .ui-datepicker-month, .ui-datepicker-year {
+            color: black;
+        }
+    </style>
+}
+
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Solicitar Licencia</h3>
+    </div>
+    @using (Html.BeginForm(Model.Accion, "SolicitudLicencia", new {area = ""}, FormMethod.Post, new {id = "frmLicencia", @class = "form-horizontal"}))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="box-body">
+            <div class="form-group">
+                @Html.LabelFor(p => p.Solicitante, new {@class = "col-sm-2 control-label"})
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(p => p.Solicitante, new {@class = "form-control"})
+                    <div class="help-block">@Html.ValidationMessageFor(p => p.Solicitante)</div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.GiroId, new {@class = "col-sm-2 control-label"})
+                <div class="col-sm-8">
+                    @Html.DropDownListFor(p => p.GiroId, new SelectList(Model.GiroList, "Key", "Value", Model.GiroId), new {@class = "form-control"})
+                    <div class="help-block">@Html.ValidationMessageFor(p => p.GiroId)</div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.AdministradoId, new {@class = "col-sm-2 control-label"})
+                <div class="col-sm-8">
+                    @Html.DropDownListFor(p => p.AdministradoId, new SelectList(Model.AdministradoList, "Key", "Value", Model.AdministradoId), new {@class = "form-control"})
+                    <div class="help-block">@Html.ValidationMessageFor(p => p.AdministradoId)</div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Declaración Jurada", new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-8">
+                    <button type="button" id="btnRequisito" class="btn btn-success">
+                        <i class="fa fa-external-link"></i>
+                        Declaración Jurada
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("FUT", new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-8">
+                    <button type="button" id="btnFut" class="btn btn-success">
+                        <i class="fa fa-external-link"></i>
+                        Formulario Único de Trámite (FUT)
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.HiddenFor(p => p.Id)
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="col-md-offset-3 col-md-9">
+                <a class="btn btn-default" href="@Url.Action("Index", "SolicitudLicencia")">
+                    <i class="fa fa-reply"></i>
+                    Regresar
+                </a>
+                &nbsp; &nbsp; &nbsp;
+                <button type="submit" class="btn btn-info">
+                    <i class="fa fa-floppy-o"></i>
+                    Guardar
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal" id="modalRequisitos" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Declaración Jurada</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body table-responsive no-padding">
+                    <table id="tableRequisito" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style="display: none">Id</th>
+                            <th style="width: 30%">Requisito</th>
+                            <th style="width: 8%">Cumple?</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbRequisito">
+                            @foreach (var requisito in Model.DeclaracionJuradaList)
+                            {
+                                <tr>
+                                    <td style="display: none" data-id="">@requisito.RequisitoId</td>
+                                    <td>@requisito.Valor</td>
+                                    @if (requisito.Corresponde)
+                                    {
+                                        <td class="text-center"><input type="checkbox" checked="checked" data-cumplido="" /></td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-center"><input type="checkbox" data-cumplido="" /></td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modalFut" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Declaración Jurada</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("FutEdit", Model.Fut)
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAceptarFut" class="btn btn-primary">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modalAnuncio" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Solicitud de Anuncio</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("Anuncio", Model.SolicitudAnuncio)
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAceptarAnuncio" class="btn btn-primary">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section ScriptContent
+{
+    <script src="@Url.Content("~/Content/js/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/js/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/js/select2.min.js")"></script>
+    <script src="@Url.Content("~/Content/js/i18n/es.js")"></script>
+    <script src="@Url.Content("~/Content/js/jQuery/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/Content/js/jQuery/datepicker-es.js")" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        var futCorrecto = false;
+        var anuncioCorrecto = false;
+
+        $("#frmLicencia").on("submit", function(e) {
+            if (!$(this).valid()) {
+                e.preventDefault();
+                return;
+            }
+
+            if (!futCorrecto) {
+                webApp.showMessageDialog(function () { }, "Ingrese todos los datos del FUT");
+                e.preventDefault();
+                return;
+            }
+
+            var form = webApp.getDataForm(this);
+            form.data.Fut = webApp.getDataForm("#frmFut").data;
+            if (anuncioCorrecto)
+                form.data.SolicitudAnuncio = webApp.getDataForm("#frmAnuncio").data;
+            form.data.DeclaracionJuradaList = [];
+
+            var checked = true;
+            $("#tableRequisito tbody tr").each(function() {
+                var $tr = $(this);
+                var cumplido = $tr.find('[data-cumplido]').is(":checked");
+                if (!cumplido)
+                    checked = false;
+
+                form.data.DeclaracionJuradaList.push({
+                    RequisitoId: $tr.find('[data-id]').text(),
+                    Corresponde: cumplido
+                });
+            });
+
+            if (form.data.DeclaracionJuradaList.length === 0 || !checked) {
+                webApp.showMessageDialog(function () { }, "Para generar la solicitud se debe cumplir con todos los requisitos de la declaración jurada");
+                e.preventDefault();
+                return;
+            }
+
+            webApp.showConfirmDialog(function() {
+                $.ajax({
+                    url: form.url,
+                    type: form.type,
+                    data: form.data,
+                    success: function(response) {
+                        if (response.Success === true) {
+                            webApp.showMessageDialog(function() {
+                                window.location.href = "@Url.Action("Index", "SolicitudLicencia")";
+                            }, response.Message);
+                        } else
+                            webApp.showMessageDialog(function() {}, response.Message);
+                    },
+                    error: function(x, xh) {
+                        console.error(xh);
+                    },
+                    complete: function() {
+                    }
+                });
+            });
+
+            e.preventDefault();
+        });
+
+        $("#btnRequisito").on('click', function() {
+            $("#modalRequisitos").modal('show');
+        });
+
+        $("#btnFut").on('click', function() {
+            $("#modalFut").modal('show');
+        });
+
+        $("#btnSolicitud").on('click', function() {
+            $("#modalAnuncio").modal('show');
+        });
+
+        $("#btnAceptarFut").on('click', function() {
+            if (!$("#frmFut").valid()) {
+                futCorrecto = false;
+                e.preventDefault();
+                return;
+            }
+            futCorrecto = true;
+            $("#modalFut").modal('hide');
+        });
+
+        $("#btnAceptarAnuncio").on('click', function() {
+            if (!$("#frmAnuncio").valid()) {
+                anuncioCorrecto = false;
+                e.preventDefault();
+                return;
+            }
+            anuncioCorrecto = true;
+            $("#modalAnuncio").modal('hide');
+        });
+
+        $("#GiroId").on("change", function() {
+            $.ajax({
+                url: '@Url.Action("GetRequisitos", "SolicitudLicencia")',
+                type: "POST",
+                data: { giroId: $(this).val() },
+                success: function(response) {
+                    if (response.Success === true) {
+                        var tr = '';
+                        for (var i = 0; i < response.Data.length; i++) {
+                            var item = response.Data[i];
+                            tr +=
+                                '<tr>\
+                                    <td style="display: none" data-id="">' + item.Id + '</td>\
+                                    <td>' + item.Valor + '</td>\
+			                        <td class="text-center"><input type="checkbox" data-cumplido="" /></td>\
+                                </tr>';
+                        }
+                        $("#tbRequisito").html(tr);
+                    }
+                }
+            });
+        });
+    </script>
+}

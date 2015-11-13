@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using Licencias.Bussines;
+using Licencias.DataAccess;
+using Licencias.Presentation.Core;
 using Licencias.Presentation.Models;
 
 namespace Licencias.Presentation.Controllers
@@ -10,6 +14,8 @@ namespace Licencias.Presentation.Controllers
         #region Variables
 
         private readonly SolicitudLicenciaBusiness _licenciaBusiness;
+        private readonly GiroBusiness _giroBusiness;
+        private readonly AdministradoBusiness _administradoBusiness;
 
         #endregion
 
@@ -18,6 +24,8 @@ namespace Licencias.Presentation.Controllers
         public SolicitudLicenciaController()
         {
             _licenciaBusiness = new SolicitudLicenciaBusiness();
+            _giroBusiness = new GiroBusiness();
+            _administradoBusiness = new AdministradoBusiness();
         }
 
         #endregion
@@ -28,6 +36,7 @@ namespace Licencias.Presentation.Controllers
         {
             var list =
                 _licenciaBusiness.FindAll()
+                    .OrderByDescending(p => p.Id)
                     .ToList()
                     .ConvertAll(p => new SolicitudLicenciaModel
                     {
@@ -41,10 +50,207 @@ namespace Licencias.Presentation.Controllers
 
         public ActionResult Crear()
         {
-            return View("Edit", new CronogramaFiscalizacionModel
+            var model = new SolicitudLicenciaModel
             {
+                GiroList =
+                    _giroBusiness.FindAll()
+                        .ToList()
+                        .ConvertAll(p => new KeyValuePair<int?, string>(p.Id, p.Descripcion)),
+                AdministradoList =
+                    _administradoBusiness.FindAll()
+                        .ToList()
+                        .ConvertAll(p => new KeyValuePair<int?, string>(p.Id, p.Nombres)),
+                Fut = new FormularioUnicoTramiteModel(),
+                SolicitudAnuncio = new SolicitudAnuncioModel(),
+                DeclaracionJuradaList = new List<DeclaracionJuradaModel>(),
                 Accion = "Crear"
-            });
+            };
+
+            model.GiroList.Insert(0, new KeyValuePair<int?, string>(null, "--Seleccionar--"));
+            model.AdministradoList.Insert(0, new KeyValuePair<int?, string>(null, "--Seleccionar--"));
+
+            return View("Edit", model);
+        }
+
+        public ActionResult Editar(int id)
+        {
+            var entity = _licenciaBusiness.Get(id);
+            var model = new SolicitudLicenciaModel
+            {
+                Id = entity.Id,
+                Solicitante = entity.Solicitante,
+                GiroId = entity.GiroId,
+                AdministradoId = entity.AdministradoId,
+                GiroList =
+                    _giroBusiness.FindAll()
+                        .ToList()
+                        .ConvertAll(p => new KeyValuePair<int?, string>(p.Id, p.Descripcion)),
+                AdministradoList =
+                    _administradoBusiness.FindAll()
+                        .ToList()
+                        .ConvertAll(p => new KeyValuePair<int?, string>(p.Id, p.Nombres)),
+                DeclaracionJuradaList = entity.DeclaracionJuradas.Select(p => new DeclaracionJuradaModel
+                {
+                    RequisitoId = p.RequisitoId,
+                    Valor = p.Requisito.Valor,
+                    Corresponde = p.Corresponde
+                }).ToList(),
+                Fut = new FormularioUnicoTramiteModel
+                {
+                    CarnetExtranjeria = entity.FormularioUnicoTramite.CarnetExtranjeria,
+                    Celular = entity.FormularioUnicoTramite.Celular,
+                    Dni = entity.FormularioUnicoTramite.Dni,
+                    Domicilio = entity.FormularioUnicoTramite.Domicilio,
+                    Ruc = entity.FormularioUnicoTramite.Ruc,
+                    Telefax = entity.FormularioUnicoTramite.Telefax,
+                    Telefono = entity.FormularioUnicoTramite.Telefono,
+                    Correo = entity.FormularioUnicoTramite.Correo,
+                    FichaLiteral = entity.FormularioUnicoTramite.FichaLiteral,
+                    Representante = entity.FormularioUnicoTramite.Correo,
+                },
+                SolicitudAnuncio = entity.FormularioUnicoTramite.SolicitudAnuncio != null
+                    ? new SolicitudAnuncioModel
+                    {
+                        Alto = entity.FormularioUnicoTramite.SolicitudAnuncio.Alto,
+                        Ancho = entity.FormularioUnicoTramite.SolicitudAnuncio.Ancho,
+                        Color = entity.FormularioUnicoTramite.SolicitudAnuncio.Color,
+                        Grafico = entity.FormularioUnicoTramite.SolicitudAnuncio.Grafico,
+                        Largo = entity.FormularioUnicoTramite.SolicitudAnuncio.Largo,
+                        Leyenda = entity.FormularioUnicoTramite.SolicitudAnuncio.Leyenda
+                    }
+                    : new SolicitudAnuncioModel(),
+                Accion = "Editar"
+            };
+
+            model.GiroList.Insert(0, new KeyValuePair<int?, string>(null, "--Seleccionar--"));
+            model.AdministradoList.Insert(0, new KeyValuePair<int?, string>(null, "--Seleccionar--"));
+
+            return View("Edit", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Crear(SolicitudLicenciaModel model)
+        {
+            var jsonResponse = new JsonResponse { Success = false };
+
+            try
+            {
+                var solicitud = new SolicitudLicencia
+                {
+                    AdministradoId = model.AdministradoId,
+                    GiroId = model.GiroId,
+                    Solicitante = model.Solicitante,
+                    DeclaracionJuradas = model.DeclaracionJuradaList.ConvertAll(p => new DeclaracionJurada
+                    {
+                        RequisitoId = p.RequisitoId,
+                        Corresponde = p.Corresponde
+                    }),
+                    FormularioUnicoTramite = new FormularioUnicoTramite
+                    {
+                        CarnetExtranjeria = model.Fut.CarnetExtranjeria,
+                        Celular = model.Fut.Celular,
+                        Dni = model.Fut.Dni,
+                        Domicilio = model.Fut.Domicilio,
+                        Ruc = model.Fut.Ruc,
+                        Telefax = model.Fut.Telefax,
+                        Telefono = model.Fut.Telefono,
+                        Correo = model.Fut.Correo,
+                        FichaLiteral = model.Fut.FichaLiteral,
+                        Representante = model.Fut.Correo,
+                        SolicitudAnuncio = model.SolicitudAnuncio != null
+                            ? new SolicitudAnuncio
+                            {
+                                Alto = model.SolicitudAnuncio.Alto,
+                                Ancho = model.SolicitudAnuncio.Ancho,
+                                Color = model.SolicitudAnuncio.Color,
+                                Grafico = model.SolicitudAnuncio.Grafico,
+                                Largo = model.SolicitudAnuncio.Largo,
+                                Leyenda = model.SolicitudAnuncio.Leyenda
+                            }
+                            : null
+                    }
+                };
+
+                _licenciaBusiness.Add(solicitud);
+                jsonResponse.Success = true;
+                jsonResponse.Message = "La operación se realizó con éxito.";
+            }
+            catch (Exception ex)
+            {
+                jsonResponse.Message = ex.Message;
+            }
+
+            return Json(jsonResponse, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Editar(SolicitudLicenciaModel model)
+        {
+            var jsonResponse = new JsonResponse { Success = false };
+
+            try
+            {
+                var entity = _licenciaBusiness.Get(model.Id);
+
+                entity.AdministradoId = model.AdministradoId;
+                entity.GiroId = model.GiroId;
+                entity.Solicitante = model.Solicitante;
+
+                entity.DeclaracionJuradas.Clear();
+                entity.DeclaracionJuradas = model.DeclaracionJuradaList.ConvertAll(p => new DeclaracionJurada
+                {
+                    RequisitoId = p.RequisitoId,
+                    Corresponde = p.Corresponde
+                });
+                entity.FormularioUnicoTramite.CarnetExtranjeria = model.Fut.CarnetExtranjeria;
+                entity.FormularioUnicoTramite.Celular = model.Fut.Celular;
+                entity.FormularioUnicoTramite.Dni = model.Fut.Dni;
+                entity.FormularioUnicoTramite.Domicilio = model.Fut.Domicilio;
+                entity.FormularioUnicoTramite.Ruc = model.Fut.Ruc;
+                entity.FormularioUnicoTramite.Telefax = model.Fut.Telefax;
+                entity.FormularioUnicoTramite.Telefono = model.Fut.Telefono;
+                entity.FormularioUnicoTramite.Correo = model.Fut.Correo;
+                entity.FormularioUnicoTramite.FichaLiteral = model.Fut.FichaLiteral;
+                entity.FormularioUnicoTramite.Representante = model.Fut.Correo;
+                entity.FormularioUnicoTramite.SolicitudAnuncio.Alto = model.SolicitudAnuncio.Alto;
+                entity.FormularioUnicoTramite.SolicitudAnuncio.Ancho = model.SolicitudAnuncio.Ancho;
+                entity.FormularioUnicoTramite.SolicitudAnuncio.Color = model.SolicitudAnuncio.Color;
+                entity.FormularioUnicoTramite.SolicitudAnuncio.Grafico = model.SolicitudAnuncio.Grafico;
+                entity.FormularioUnicoTramite.SolicitudAnuncio.Largo = model.SolicitudAnuncio.Largo;
+                entity.FormularioUnicoTramite.SolicitudAnuncio.Leyenda = model.SolicitudAnuncio.Leyenda;
+
+                model.DeclaracionJuradaList.RemoveAll(p => true);
+
+                _licenciaBusiness.Update(entity);
+                jsonResponse.Success = true;
+                jsonResponse.Message = "La operación se realizó con éxito.";
+            }
+            catch (Exception ex)
+            {
+                jsonResponse.Message = ex.Message;
+            }
+
+            return Json(jsonResponse, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetRequisitos(int giroId)
+        {
+            var jsonResponse = new JsonResponse { Success = false };
+
+            try
+            {
+                jsonResponse.Data = _giroBusiness.Get(giroId).Requisitos.Select(p => new {p.Id, p.Valor}).ToList();
+                jsonResponse.Success = true;
+            }
+            catch (Exception ex)
+            {
+                jsonResponse.Message = ex.Message;
+            }
+
+            return Json(jsonResponse, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

@@ -14,7 +14,6 @@ namespace Licencias.DataAccess
     
     public partial class DeclaracionJurada
     {
-        public int Id { get; set; }
         public bool Corresponde { get; set; }
         public int RequisitoId { get; set; }
         public int SolicitudLicenciaId { get; set; }

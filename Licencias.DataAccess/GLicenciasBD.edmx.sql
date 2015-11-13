@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/11/2015 23:55:59
+-- Date Created: 11/13/2015 04:17:02
 -- Generated from EDMX file: D:\Proyectos\Academico - Servicio Web\GestionLicencias\GestionLicencias\Licencias.DataAccess\GLicenciasBD.edmx
 -- --------------------------------------------------
 
@@ -244,7 +244,6 @@ GO
 
 -- Creating table 'DeclaracionJurada'
 CREATE TABLE [dbo].[DeclaracionJurada] (
-    [Id] int IDENTITY(1,1) NOT NULL,
     [Corresponde] bit  NOT NULL,
     [RequisitoId] int  NOT NULL,
     [SolicitudLicenciaId] int  NOT NULL
@@ -260,13 +259,16 @@ CREATE TABLE [dbo].[FormularioUnicoTramite] (
     [Domicilio] nvarchar(200)  NOT NULL,
     [Telefono] nvarchar(15)  NULL,
     [Celular] nvarchar(15)  NULL,
-    [Telefax] nvarchar(15)  NULL
+    [Telefax] nvarchar(15)  NULL,
+    [Correo] nvarchar(50)  NOT NULL,
+    [FichaLiteral] nvarchar(50)  NOT NULL,
+    [Representante] nvarchar(100)  NOT NULL
 );
 GO
 
 -- Creating table 'SolicitudAnuncio'
 CREATE TABLE [dbo].[SolicitudAnuncio] (
-    [Id] int IDENTITY(1,1) NOT NULL,
+    [Id] int  NOT NULL,
     [Grafico] nvarchar(max)  NOT NULL,
     [Leyenda] nvarchar(100)  NOT NULL,
     [Color] nvarchar(20)  NOT NULL,
@@ -358,10 +360,10 @@ ADD CONSTRAINT [PK_Administrado]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'DeclaracionJurada'
+-- Creating primary key on [RequisitoId], [SolicitudLicenciaId] in table 'DeclaracionJurada'
 ALTER TABLE [dbo].[DeclaracionJurada]
 ADD CONSTRAINT [PK_DeclaracionJurada]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
+    PRIMARY KEY CLUSTERED ([RequisitoId], [SolicitudLicenciaId] ASC);
 GO
 
 -- Creating primary key on [Id] in table 'FormularioUnicoTramite'
@@ -546,12 +548,6 @@ ADD CONSTRAINT [FK_RequisitoDeclaracionJurada]
     REFERENCES [dbo].[Requisito]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_RequisitoDeclaracionJurada'
-CREATE INDEX [IX_FK_RequisitoDeclaracionJurada]
-ON [dbo].[DeclaracionJurada]
-    ([RequisitoId]);
 GO
 
 -- Creating foreign key on [SolicitudLicenciaId] in table 'DeclaracionJurada'

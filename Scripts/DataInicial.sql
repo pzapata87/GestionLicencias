@@ -12,6 +12,16 @@ GO
 SET IDENTITY_INSERT [dbo].[Giro] OFF
 GO
 
+/***[Administrado]***/
+SET IDENTITY_INSERT [dbo].[Administrado] ON 
+GO
+INSERT [dbo].[Administrado] ([Id], [NDocumento], [Nombres], [Telefono]) VALUES (1, N'12345678', N'Administrado 1', N'123456789')
+GO
+INSERT [dbo].[Administrado] ([Id], [NDocumento], [Nombres], [Telefono]) VALUES (2, N'87654321', N'Administrado 2', N'987654321')
+GO
+SET IDENTITY_INSERT [dbo].[Administrado] OFF
+GO
+
 /***[Criterio]***/
 SET IDENTITY_INSERT [dbo].[Criterio] ON 
 GO

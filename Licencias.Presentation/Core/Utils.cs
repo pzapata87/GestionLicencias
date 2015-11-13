@@ -162,12 +162,12 @@ namespace Licencias.Presentation.Core
 
         #region Extensiones enumeración
 
-        public static string GetStringValue(this System.Enum value)
+        public static string GetStringValue(this Enum value)
         {
             return Convert.ToString(Convert.ChangeType(value, value.GetTypeCode()));
         }
 
-        public static int GetNumberValue(this System.Enum value)
+        public static int GetNumberValue(this Enum value)
         {
             return Convert.ToInt32(Convert.ChangeType(value, value.GetTypeCode()));
         }

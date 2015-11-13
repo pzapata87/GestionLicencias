@@ -22,6 +22,9 @@ namespace Licencias.DataAccess
         public string Telefono { get; set; }
         public string Celular { get; set; }
         public string Telefax { get; set; }
+        public string Correo { get; set; }
+        public string FichaLiteral { get; set; }
+        public string Representante { get; set; }
     
         public virtual SolicitudLicencia SolicitudLicencia { get; set; }
         public virtual SolicitudAnuncio SolicitudAnuncio { get; set; }

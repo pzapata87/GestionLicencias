@@ -208,9 +208,9 @@
   </EntityType>
   <EntityType Name="DeclaracionJurada">
     <Key>
-      <PropertyRef Name="Id" />
+      <PropertyRef Name="RequisitoId" />
+      <PropertyRef Name="SolicitudLicenciaId" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Corresponde" Type="bit" Nullable="false" />
     <Property Name="RequisitoId" Type="int" Nullable="false" />
     <Property Name="SolicitudLicenciaId" Type="int" Nullable="false" />
@@ -227,12 +227,15 @@
     <Property Name="Telefono" Type="nvarchar" Nullable="true" MaxLength="15" />
     <Property Name="Celular" Type="nvarchar" Nullable="true" MaxLength="15" />
     <Property Name="Telefax" Type="nvarchar" Nullable="true" MaxLength="15" />
+    <Property Name="Correo" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="FichaLiteral" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Representante" Type="nvarchar" Nullable="false" MaxLength="100" />
   </EntityType>
   <EntityType Name="SolicitudAnuncio">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="Grafico" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Leyenda" Type="nvarchar" Nullable="false" MaxLength="100" />
     <Property Name="Color" Type="nvarchar" Nullable="false" MaxLength="20" />
@@ -784,9 +787,9 @@
         </Association>
         <EntityType Name="DeclaracionJurada">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="RequisitoId" />
+            <PropertyRef Name="SolicitudLicenciaId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Corresponde" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Requisito" Relationship="GLicenciasBD.RequisitoDeclaracionJurada" FromRole="DeclaracionJurada" ToRole="Requisito" />
           <Property Name="RequisitoId" Type="Int32" Nullable="false" />
@@ -831,12 +834,15 @@
           <Property Name="Telefax" Type="String" Nullable="true" MaxLength="15" />
           <NavigationProperty Name="SolicitudLicencia" Relationship="GLicenciasBD.SolicitudLicenciaFormularioUnicoTramite" FromRole="FormularioUnicoTramite" ToRole="SolicitudLicencia" />
           <NavigationProperty Name="SolicitudAnuncio" Relationship="GLicenciasBD.FormularioUnicoTramiteSolicitudAnuncio" FromRole="FormularioUnicoTramite" ToRole="SolicitudAnuncio" />
+          <Property Name="Correo" Type="String" Nullable="false" MaxLength="50" />
+          <Property Name="FichaLiteral" Type="String" Nullable="false" MaxLength="50" />
+          <Property Name="Representante" Type="String" Nullable="false" MaxLength="100" />
         </EntityType>
         <EntityType Name="SolicitudAnuncio">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="Grafico" Type="String" Nullable="false" MaxLength="Max" />
           <Property Name="Leyenda" Type="String" Nullable="false" MaxLength="100" />
           <Property Name="Color" Type="String" Nullable="false" MaxLength="20" />
@@ -1013,10 +1019,9 @@
     <EntitySetMapping Name="DeclaracionJurada">
       <EntityTypeMapping TypeName="IsTypeOf(GLicenciasBD.DeclaracionJurada)">
         <MappingFragment StoreEntitySet="DeclaracionJurada">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Corresponde" ColumnName="Corresponde" />
           <ScalarProperty Name="RequisitoId" ColumnName="RequisitoId" />
           <ScalarProperty Name="SolicitudLicenciaId" ColumnName="SolicitudLicenciaId" />
+          <ScalarProperty Name="Corresponde" ColumnName="Corresponde" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1031,6 +1036,9 @@
           <ScalarProperty Name="Telefono" ColumnName="Telefono" />
           <ScalarProperty Name="Celular" ColumnName="Celular" />
           <ScalarProperty Name="Telefax" ColumnName="Telefax" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="FichaLiteral" ColumnName="FichaLiteral" />
+          <ScalarProperty Name="Representante" ColumnName="Representante" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

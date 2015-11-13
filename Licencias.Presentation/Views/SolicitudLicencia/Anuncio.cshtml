@@ -1,0 +1,49 @@
+﻿@model Licencias.Presentation.Models.SolicitudAnuncioModel
+
+@using (Html.BeginForm("Anuncio", "SolicitudLicencia", new { area = "" }, FormMethod.Post, new { id = "frmAnuncio", @class = "form-horizontal" }))
+{
+    <div class="box-body">
+        <div class="form-group">
+            @Html.LabelFor(p => p.Grafico, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Grafico, new { @class = "form-control" })
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Grafico)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Leyenda, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Leyenda, new { @class = "form-control" })
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Leyenda)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Largo, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Largo, new { @class = "form-control" })
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Largo)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Ancho, new {@class = "col-sm-3 control-label"})
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Ancho, new {@class = "form-control"})
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Ancho)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Alto, new {@class = "col-sm-3 control-label"})
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Alto, new { @class = "form-control" })
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Alto)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Color, new {@class = "col-sm-3 control-label"})
+            <div class="col-sm-8">
+                @Html.TextBoxFor(p => p.Color, new { @class = "form-control" })
+                <div class="help-block">@Html.ValidationMessageFor(p => p.Color)</div>
+            </div>
+        </div>
+    </div>
+}
