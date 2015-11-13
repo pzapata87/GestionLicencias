@@ -13,7 +13,8 @@ namespace Licencias.Presentation.Controllers
     {
         #region Variables
 
-        private readonly SolicitudLicenciaBusiness _licenciaBusiness;
+        private readonly SolicitudLicenciaBusiness _solLicenciaBusiness;
+        private readonly LicenciaBusiness _licenciaBusiness;
         private readonly GiroBusiness _giroBusiness;
         private readonly AdministradoBusiness _administradoBusiness;
 
@@ -23,9 +24,10 @@ namespace Licencias.Presentation.Controllers
 
         public SolicitudLicenciaController()
         {
-            _licenciaBusiness = new SolicitudLicenciaBusiness();
+            _solLicenciaBusiness = new SolicitudLicenciaBusiness();
             _giroBusiness = new GiroBusiness();
             _administradoBusiness = new AdministradoBusiness();
+            _licenciaBusiness = new LicenciaBusiness();
         }
 
         #endregion
@@ -35,7 +37,7 @@ namespace Licencias.Presentation.Controllers
         public ActionResult Index()
         {
             var list =
-                _licenciaBusiness.FindAll()
+                _solLicenciaBusiness.FindAll()
                     .OrderByDescending(p => p.Id)
                     .ToList()
                     .ConvertAll(p => new SolicitudLicenciaModel
@@ -74,7 +76,7 @@ namespace Licencias.Presentation.Controllers
 
         public ActionResult Editar(int id)
         {
-            var entity = _licenciaBusiness.Get(id);
+            var entity = _solLicenciaBusiness.Get(id);
             var model = new SolicitudLicenciaModel
             {
                 Id = entity.Id,
@@ -172,7 +174,6 @@ namespace Licencias.Presentation.Controllers
                     }
                 };
 
-                _licenciaBusiness.Add(solicitud);
                 jsonResponse.Success = true;
                 jsonResponse.Message = "La operación se realizó con éxito.";
             }
@@ -192,7 +193,7 @@ namespace Licencias.Presentation.Controllers
 
             try
             {
-                var entity = _licenciaBusiness.Get(model.Id);
+                var entity = _solLicenciaBusiness.Get(model.Id);
 
                 entity.AdministradoId = model.AdministradoId;
                 entity.GiroId = model.GiroId;
@@ -223,7 +224,7 @@ namespace Licencias.Presentation.Controllers
 
                 model.DeclaracionJuradaList.RemoveAll(p => true);
 
-                _licenciaBusiness.Update(entity);
+                _solLicenciaBusiness.Update(entity);
                 jsonResponse.Success = true;
                 jsonResponse.Message = "La operación se realizó con éxito.";
             }
