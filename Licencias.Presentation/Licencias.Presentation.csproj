@@ -283,10 +283,6 @@
       <Project>{861f25c9-48cb-4ee2-8f89-b5465538493e}</Project>
       <Name>Licencias.Bussines</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Licencias.Components\Licencias.Components.csproj">
-      <Project>{b4113cdc-061d-4686-a7ad-6dffcea9d3ea}</Project>
-      <Name>Licencias.Components</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Licencias.DataAccess\Licencias.DataAccess.csproj">
       <Project>{D01BBB2B-9F94-45A9-B5CF-22B44B4DD99D}</Project>
       <Name>Licencias.DataAccess</Name>
