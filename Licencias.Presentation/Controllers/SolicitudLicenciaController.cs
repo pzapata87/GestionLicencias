@@ -174,6 +174,8 @@ namespace Licencias.Presentation.Controllers
                     }
                 };
 
+                _solLicenciaBusiness.Add(solicitud);
+
                 jsonResponse.Success = true;
                 jsonResponse.Message = "La operación se realizó con éxito.";
             }
