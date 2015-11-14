@@ -176,6 +176,23 @@ namespace Licencias.Presentation.Controllers
 
                 _solLicenciaBusiness.Add(solicitud);
 
+                var numLicencia = _licenciaBusiness.FindAll().Max(p => p.NumLicencia);
+
+                var licencia = new Licencia
+                {
+                    FechaLicencia = DateTime.Now,
+                    Direccion = model.Fut.Domicilio,
+                    Responsable = model.Solicitante,
+                    GiroId = model.GiroId,
+                    UriImagen = "licencia001.jpg",
+                    NumLicencia =
+                        numLicencia != null
+                            ? (Convert.ToInt32(numLicencia) + 1).ToString().PadLeft(4, '0')
+                            : "1".PadLeft(4, '0')
+                };
+
+                _licenciaBusiness.Add(licencia);
+
                 jsonResponse.Success = true;
                 jsonResponse.Message = "La operación se realizó con éxito.";
             }
@@ -217,15 +234,17 @@ namespace Licencias.Presentation.Controllers
                 entity.FormularioUnicoTramite.Correo = model.Fut.Correo;
                 entity.FormularioUnicoTramite.FichaLiteral = model.Fut.FichaLiteral;
                 entity.FormularioUnicoTramite.Representante = model.Fut.Correo;
-                entity.FormularioUnicoTramite.SolicitudAnuncio.Alto = model.SolicitudAnuncio.Alto;
-                entity.FormularioUnicoTramite.SolicitudAnuncio.Ancho = model.SolicitudAnuncio.Ancho;
-                entity.FormularioUnicoTramite.SolicitudAnuncio.Color = model.SolicitudAnuncio.Color;
-                entity.FormularioUnicoTramite.SolicitudAnuncio.Grafico = model.SolicitudAnuncio.Grafico;
-                entity.FormularioUnicoTramite.SolicitudAnuncio.Largo = model.SolicitudAnuncio.Largo;
-                entity.FormularioUnicoTramite.SolicitudAnuncio.Leyenda = model.SolicitudAnuncio.Leyenda;
 
-                model.DeclaracionJuradaList.RemoveAll(p => true);
-
+                if (model.SolicitudAnuncio != null)
+                {
+                    entity.FormularioUnicoTramite.SolicitudAnuncio.Alto = model.SolicitudAnuncio.Alto;
+                    entity.FormularioUnicoTramite.SolicitudAnuncio.Ancho = model.SolicitudAnuncio.Ancho;
+                    entity.FormularioUnicoTramite.SolicitudAnuncio.Color = model.SolicitudAnuncio.Color;
+                    entity.FormularioUnicoTramite.SolicitudAnuncio.Grafico = model.SolicitudAnuncio.Grafico;
+                    entity.FormularioUnicoTramite.SolicitudAnuncio.Largo = model.SolicitudAnuncio.Largo;
+                    entity.FormularioUnicoTramite.SolicitudAnuncio.Leyenda = model.SolicitudAnuncio.Leyenda;
+                }
+                
                 _solLicenciaBusiness.Update(entity);
                 jsonResponse.Success = true;
                 jsonResponse.Message = "La operación se realizó con éxito.";
@@ -255,6 +274,29 @@ namespace Licencias.Presentation.Controllers
 
             return Json(jsonResponse, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult ValidarRuc(string ruc)
+        {
+            var jsonResponse = new JsonResponse { Success = false };
+
+            try
+            {
+                var client = new Aduanet.wsadpdPortClient();
+                var resp = client.verficaRUC(ruc);
+
+                jsonResponse.Data = resp;
+                jsonResponse.Success = true;
+            }
+            catch (Exception ex)
+            {
+                jsonResponse.Message = ex.Message.Contains("No Activo")
+                    ? "No Activo"
+                    : ex.Message.Contains("Activo") ? "Activo" : ex.Message;
+            }
+
+            return Json(jsonResponse, JsonRequestBehavior.AllowGet);
+        } 
 
         #endregion
     }

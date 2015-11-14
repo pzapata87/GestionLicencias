@@ -172,7 +172,7 @@
     <script src="@Url.Content("~/Content/js/jQuery/datepicker-es.js")" type="text/javascript"></script>
 
     <script type="text/javascript">
-        var futCorrecto = false;
+        var futCorrecto = "@Model.Accion" === "Editar";
         var anuncioCorrecto = false;
 
         $("#frmLicencia").on("submit", function(e) {
@@ -287,6 +287,21 @@
                         }
                         $("#tbRequisito").html(tr);
                     }
+                }
+            });
+        });
+        
+        $("#btnValidarRuc").on("click", function () {
+            $.ajax({
+                url: '@Url.Action("ValidarRuc", "SolicitudLicencia")',
+                type: "POST",
+                data: { ruc: $("#Ruc").val() },
+                success: function (response) {
+                    if (response.Success === true) {
+                        webApp.showMessageDialog(function () { }, response.Data);
+                    }
+                    else
+                        webApp.showMessageDialog(function () { }, response.Message);
                 }
             });
         });

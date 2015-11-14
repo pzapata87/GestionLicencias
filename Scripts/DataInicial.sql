@@ -46,9 +46,9 @@ GO
 SET IDENTITY_INSERT [dbo].[Licencia] ON 
 
 GO
-INSERT [dbo].[Licencia] ([Id], [Direccion], [Responsable], [NumLicencia], [FechaLicencia], [GiroId]) VALUES (1, N'Direccion 01', N'1', N'0001', CAST(0x0000A4B000000000 AS DateTime), 1)
+INSERT [dbo].[Licencia] ([Id], [Direccion], [Responsable], [NumLicencia], [FechaLicencia], [GiroId], [UriImagen]) VALUES (1, N'Direccion 01', N'1', N'0001', CAST(0x0000A4B000000000 AS DateTime), 1, 'licencia001.jpg')
 GO
-INSERT [dbo].[Licencia] ([Id], [Direccion], [Responsable], [NumLicencia], [FechaLicencia], [GiroId]) VALUES (2, N'Direccion 02', N'2', N'0002', CAST(0x0000A4B000000000 AS DateTime), 1)
+INSERT [dbo].[Licencia] ([Id], [Direccion], [Responsable], [NumLicencia], [FechaLicencia], [GiroId], [UriImagen]) VALUES (2, N'Direccion 02', N'2', N'0002', CAST(0x0000A4B000000000 AS DateTime), 1, 'licencia001.jpg')
 GO
 SET IDENTITY_INSERT [dbo].[Licencia] OFF
 GO

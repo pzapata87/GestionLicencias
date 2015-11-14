@@ -4,16 +4,21 @@
 {
     <div class="box-body">
         <div class="form-group">
-            @Html.LabelFor(p => p.Ruc, new { @class = "col-sm-3 control-label" })
+            @Html.LabelFor(p => p.Ruc, new {@class = "col-sm-3 control-label"})
             <div class="col-sm-8">
-                @Html.TextBoxFor(p => p.Ruc, new { @class = "form-control" })
-                <div class="help-block">@Html.ValidationMessageFor(p => p.Ruc)</div>
+                <div class="input-group">
+                    @Html.TextBoxFor(p => p.Ruc, new { @class = "form-control", @maxlength = 11 })
+                    <span class="input-group-btn">
+                        <button type="button" id="btnValidarRuc" class="btn btn-info btn-flat">Validar!</button>
+                    </span>
+                    <div class="help-block">@Html.ValidationMessageFor(p => p.Ruc)</div>
+                </div>
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(p => p.Dni, new {@class = "col-sm-3 control-label"})
             <div class="col-sm-8">
-                @Html.TextBoxFor(p => p.Dni, new {@class = "form-control"})
+                @Html.TextBoxFor(p => p.Dni, new { @class = "form-control", @maxlength = 8 })
                 <div class="help-block">@Html.ValidationMessageFor(p => p.Dni)</div>
             </div>
         </div>

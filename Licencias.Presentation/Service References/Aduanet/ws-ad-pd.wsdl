@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:soap12enc="http://www.w3.org/2003/05/soap-encoding" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://www.bea.com/education/webservices/examples/basic/javaclass" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsr="http://www.openuri.org/2002/10/soap/reliability/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:conv="http://www.openuri.org/2002/04/wsdl/conversation/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.bea.com/education/webservices/examples/basic/javaclass" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema xmlns:stns="java:language_builtins.util" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="java:language_builtins.util" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:complexType name="List">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="xsd:anyType[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </types>
+  <message name="enviaArchivoWebService">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="toperador" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="operador" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="clave" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="aduana" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="archivoEnvioByte" type="partns:base64Binary" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="nombreArchivo" type="partns:string" />
+  </message>
+  <message name="enviaArchivoWebServiceResponse">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="NroEnvioGenerado" type="partns:string" />
+  </message>
+  <message name="obtieneArchivoRpta">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="toperador" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="operador" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="clave" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="aduana" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="ano" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="NroEnvioGenerado" type="partns:string" />
+  </message>
+  <message name="obtieneArchivoRptaResponse">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="ArchivoRptaByte" type="partns:base64Binary" />
+  </message>
+  <message name="verficaRUC">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="ruc" type="partns:string" />
+  </message>
+  <message name="verficaRUCResponse">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="estado" type="partns:string" />
+  </message>
+  <message name="verificaDatadoManifiesto">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="aduana" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="anomc" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="numeromc" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="conoembar" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="viatrans" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="tipomani" type="partns:string" />
+  </message>
+  <message name="verificaDatadoManifiestoResponse">
+    <part xmlns:partns="java:language_builtins.util" name="b" type="partns:List" />
+  </message>
+  <message name="verificaEstadoArchivo">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="toperador" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="operador" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="clave" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="aduana" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="ano" type="partns:string" />
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="NroEnvioGenerado" type="partns:string" />
+  </message>
+  <message name="verificaEstadoArchivoResponse">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="estadoArchivo" type="partns:string" />
+  </message>
+  <portType name="ws-ad-pdPort">
+    <operation name="enviaArchivoWebService">
+      <input message="tns:enviaArchivoWebService" />
+      <output message="tns:enviaArchivoWebServiceResponse" />
+    </operation>
+    <operation name="obtieneArchivoRpta">
+      <input message="tns:obtieneArchivoRpta" />
+      <output message="tns:obtieneArchivoRptaResponse" />
+    </operation>
+    <operation name="verficaRUC">
+      <input message="tns:verficaRUC" />
+      <output message="tns:verficaRUCResponse" />
+    </operation>
+    <operation name="verificaDatadoManifiesto">
+      <input message="tns:verificaDatadoManifiesto" />
+      <output message="tns:verificaDatadoManifiestoResponse" />
+    </operation>
+    <operation name="verificaEstadoArchivo">
+      <input message="tns:verificaEstadoArchivo" />
+      <output message="tns:verificaEstadoArchivoResponse" />
+    </operation>
+  </portType>
+  <binding name="ws-ad-pdPort" type="tns:ws-ad-pdPort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <operation name="enviaArchivoWebService">
+      <soap:operation soapAction="" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://www.bea.com/education/webservices/examples/basic/javaclass" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://www.bea.com/education/webservices/examples/basic/javaclass" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="obtieneArchivoRpta">
+      <soap:operation soapAction="" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://www.bea.com/education/webservices/examples/basic/javaclass" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://www.bea.com/education/webservices/examples/basic/javaclass" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="verficaRUC">
+      <soap:operation soapAction="" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://www.bea.com/education/webservices/examples/basic/javaclass" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://www.bea.com/education/webservices/examples/basic/javaclass" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="verificaDatadoManifiesto">
+      <soap:operation soapAction="" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://www.bea.com/education/webservices/examples/basic/javaclass" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://www.bea.com/education/webservices/examples/basic/javaclass" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="verificaEstadoArchivo">
+      <soap:operation soapAction="" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://www.bea.com/education/webservices/examples/basic/javaclass" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://www.bea.com/education/webservices/examples/basic/javaclass" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+  </binding>
+  <service name="ws-ad-pd">
+    <port name="ws-ad-pdPort" binding="tns:ws-ad-pdPort">
+      <soap:address location="http://www.aduanet.gob.pe:80/ws-ad-pd/ws-ad-pd" />
+    </port>
+  </service>
+</definitions>
