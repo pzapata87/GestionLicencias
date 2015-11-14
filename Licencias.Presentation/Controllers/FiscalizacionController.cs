@@ -347,7 +347,20 @@ namespace Licencias.Presentation.Controllers
         {
             var entity = _fiscalizacionBusiness.Get(id);
 
-            return View("VerFiscalizacion", new FiscalizacionModel
+            //return View("VerFiscalizacion", new FiscalizacionModel
+            //{
+            //    Id = entity.Id,
+            //    FechaFiscalizacion = entity.FechaProgramada.GetDate(),
+            //    Observacion = entity.Observacion,
+            //    LocalDireccion = entity.Licencia.Direccion,
+            //    NumLicencia = entity.Licencia.NumLicencia,
+            //    Detalle = entity.Detalle,
+            //    EstadoNombre = Utils.EstadoFiscalizacionList[entity.Estado],
+            //    UriImagen = Url.Content(string.Format("~/Images/Licencias/{0}", entity.Licencia.UriImagen)),
+            //    EvidenciaImagenes = entity.Imagenes != null ? entity.Imagenes.Split('|').ToList() : null
+            //});
+
+            var model = new FiscalizacionModel
             {
                 Id = entity.Id,
                 FechaFiscalizacion = entity.FechaProgramada.GetDate(),
@@ -356,9 +369,35 @@ namespace Licencias.Presentation.Controllers
                 NumLicencia = entity.Licencia.NumLicencia,
                 Detalle = entity.Detalle,
                 EstadoNombre = Utils.EstadoFiscalizacionList[entity.Estado],
-                UriImagen = Url.Content(string.Format("~/Images/Licencias/{0}", entity.Licencia.UriImagen)),
-                EvidenciaImagenes = entity.Imagenes != null ? entity.Imagenes.Split('|').ToList() : null
-            });
+                EstadoId = entity.Estado,
+                GiroDescripcion = entity.Licencia.Giro.Descripcion,
+                RequisitoList = new List<FiscalizacionRequisitoModel>(),
+                UriImagen = Url.Content(string.Format("~/Images/Licencias/{0}", entity.Licencia.UriImagen))
+            };
+
+            foreach (var requisito in entity.Licencia.Giro.Requisitos)
+            {
+                var fRequisito = entity.FiscalizacionRequisitos.FirstOrDefault(p => p.RequisitoId == requisito.Id);
+                if (fRequisito != null)
+                    model.RequisitoList.Add(new FiscalizacionRequisitoModel
+                    {
+                        Valor = requisito.Valor,
+                        RequisitoId = requisito.Id,
+                        Comentario = fRequisito.Comentario,
+                        Imagenes = fRequisito.Imagenes,
+                        Cumplido = fRequisito.Cumplido
+                    });
+                else
+                {
+                    model.RequisitoList.Add(new FiscalizacionRequisitoModel
+                    {
+                        Valor = requisito.Valor,
+                        RequisitoId = requisito.Id
+                    });
+                }
+            }
+
+            return View("VerFiscalizacion", model);
         }
 
         #endregion

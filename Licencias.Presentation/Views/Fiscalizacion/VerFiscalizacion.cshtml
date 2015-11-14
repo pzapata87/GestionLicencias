@@ -33,9 +33,18 @@
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(p => p.FechaFiscalizacion, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(p => p.FechaFiscalizacion, new {@class = "col-sm-2 control-label"})
                 <div class="col-sm-4">
-                    @Html.TextBoxFor(p => p.FechaFiscalizacion, new { @class = "form-control", @disabled = "disabled" })
+                    @Html.TextBoxFor(p => p.FechaFiscalizacion, new {@class = "form-control", @disabled = "disabled"})
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Requisitos", new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-8">
+                    <button type="button" id="btnRequisito" class="btn btn-success">
+                        <i class="fa fa-check-square"></i>
+                        Requisitos
+                    </button>
                 </div>
             </div>
             <div class="form-group">
@@ -83,7 +92,69 @@
             </div>
             <div class="modal-body">
                 <div class="text-center">
-                    <img id="imgView" src="" style="width: 100%; height: 100%" />
+                    <img id="imgView" src="" style="width: 100%; height: 100%"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modalRequisitos" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Requisitos necesarios para el giro @Model.GiroDescripcion</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body table-responsive no-padding">
+                    <table id="tableRequisito" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style="display: none">Id</th>
+                            <th style="width: 8%">Cumple?</th>
+                            <th style="width: 30%">Requisito</th>
+                            <th style="width: 47%">Comentario</th>
+                            <th style="width: 15%">Imágenes</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var requisito in Model.RequisitoList)
+                        {
+                            <tr>
+                                <td style="display: none" data-id="">@requisito.RequisitoId</td>
+                                @if (requisito.Cumplido)
+                                {
+                                    <td class="text-center"><input type="checkbox" checked="checked" data-cumplido="" disabled="disabled"/></td>
+                                }
+                                else
+                                {
+                                    <td class="text-center"><input type="checkbox" data-cumplido="" disabled="disabled"/></td>
+                                }
+                                <td>@requisito.Valor</td>
+                                <td><textarea cols="40" data-comentario="" disabled="disabled">@requisito.Comentario</textarea></td>
+                                <td>
+                                    @{
+                                        if (!string.IsNullOrEmpty(requisito.Imagenes))
+                                        {
+                                            var imagenes = requisito.Imagenes.Split('|');
+                                            foreach (var imagen in imagenes)
+                                            {
+                                                <a target="_blank" href="@Url.Content(string.Format("~/Images/Evidencias/{0}", imagen))">
+                                                    <img src="@Url.Content(string.Format("~/Images/Evidencias/{0}", imagen))" style="width: 20px; height: 20px; border: 1px blue solid;"/>
+                                                </a>
+                                            }
+                                        }
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="modal-footer">
@@ -104,6 +175,9 @@
         $(".margin").on('click', function () {
             $("#imgView").attr('src', $(this).attr('src'));
             $("#modalImagenLicencia").modal('show');
+        });
+        $("#btnRequisito").on('click', function () {
+            $("#modalRequisitos").modal('show');
         });
     </script>
 }
