@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using Licencias.Bussines;
+using Licencias.Components.WCFService;
 using Licencias.DataAccess;
 using Licencias.Presentation.Core;
 using Licencias.Presentation.Models;
@@ -282,17 +284,17 @@ namespace Licencias.Presentation.Controllers
 
             try
             {
-                var client = new Aduanet.wsadpdPortClient();
-                var resp = client.verficaRUC(ruc);
+                var resp = WcfService.InvokeServiceWcf<string>(ConfigurationManager.AppSettings.Get("urlVerificarRuc"), "verficaRUC",
+                new object[] { ruc });
 
                 jsonResponse.Data = resp;
                 jsonResponse.Success = true;
             }
             catch (Exception ex)
             {
-                jsonResponse.Message = ex.Message.Contains("No Activo")
+                jsonResponse.Message = ex.InnerException.Message.Contains("No Activo")
                     ? "No Activo"
-                    : ex.Message.Contains("Activo") ? "Activo" : ex.Message;
+                    : ex.InnerException.Message.Contains("Activo") ? "Activo" : ex.Message;
             }
 
             return Json(jsonResponse, JsonRequestBehavior.AllowGet);

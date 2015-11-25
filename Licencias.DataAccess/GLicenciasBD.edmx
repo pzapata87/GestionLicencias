@@ -684,7 +684,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Comentario" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Comentario" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="Cumplido" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Fiscalizacion" Relationship="GLicenciasBD.FiscalizacionFiscalizacionRequisito" FromRole="FiscalizacionRequisito" ToRole="Fiscalizacion" />
           <Property Name="FiscalizacionId" Type="Int32" Nullable="false" />

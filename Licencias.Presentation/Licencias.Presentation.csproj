@@ -153,11 +153,6 @@
     <Compile Include="Models\SolicitudAnuncioModel.cs" />
     <Compile Include="Models\SolicitudLicenciaModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\Aduanet\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap\css\bootstrap.css" />
@@ -252,12 +247,6 @@
     <Content Include="Images\Licencias\licencia001.jpg" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\_references.js" />
-    <None Include="Service References\Aduanet\configuration91.svcinfo" />
-    <None Include="Service References\Aduanet\configuration.svcinfo" />
-    <None Include="Service References\Aduanet\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -284,7 +273,6 @@
     <Content Include="Views\SolicitudLicencia\Index.cshtml" />
     <Content Include="Views\SolicitudLicencia\FutEdit.cshtml" />
     <Content Include="Views\SolicitudLicencia\Anuncio.cshtml" />
-    <None Include="Service References\Aduanet\ws-ad-pd.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -297,16 +285,14 @@
       <Project>{861f25c9-48cb-4ee2-8f89-b5465538493e}</Project>
       <Name>Licencias.Bussines</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Licencias.Components\Licencias.Components.csproj">
+      <Project>{b4113cdc-061d-4686-a7ad-6dffcea9d3ea}</Project>
+      <Name>Licencias.Components</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Licencias.DataAccess\Licencias.DataAccess.csproj">
       <Project>{D01BBB2B-9F94-45A9-B5CF-22B44B4DD99D}</Project>
       <Name>Licencias.DataAccess</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\Aduanet\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
