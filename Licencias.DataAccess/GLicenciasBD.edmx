@@ -172,7 +172,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Comentario" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Comentario" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Cumplido" Type="bit" Nullable="false" />
     <Property Name="FiscalizacionId" Type="int" Nullable="false" />
     <Property Name="RequisitoId" Type="int" Nullable="false" />

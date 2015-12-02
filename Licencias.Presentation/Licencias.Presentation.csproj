@@ -137,6 +137,7 @@
     <Compile Include="Controllers\FiscalizacionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SolicitudLicenciaController.cs" />
+    <Compile Include="Core\Attributes\DateValidation.cs" />
     <Compile Include="Core\Enums\EstadoFiscalizacion.cs" />
     <Compile Include="Core\JsonResponse.cs" />
     <Compile Include="Core\Utils.cs" />

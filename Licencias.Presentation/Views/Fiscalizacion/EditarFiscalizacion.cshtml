@@ -307,6 +307,9 @@
                     addRemoveLinks: true,
                     uploadMultiple: true,
                     autoProcessQueue: false,
+                    init: function(){
+                        this.on("error", function(file){if (!file.accepted) this.removeFile(file);});
+                    },
                     dictDefaultMessage:
                         '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i> Drop files</span> to upload \
 				    <span class="smaller-80 grey">(or click)</span> <br /> \

@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using Licencias.Presentation.Core;
+using Licencias.Presentation.Core.Attributes;
 
 namespace Licencias.Presentation
 {
@@ -19,6 +20,7 @@ namespace Licencias.Presentation
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             Utils.AsignarEstadoFiscalizacion();
+            DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(DateValidation), typeof(RegularExpressionAttributeAdapter));
         }
     }
 }

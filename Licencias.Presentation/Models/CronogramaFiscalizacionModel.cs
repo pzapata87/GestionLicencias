@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Licencias.Presentation.Core.Attributes;
 
 namespace Licencias.Presentation.Models
 {
@@ -8,6 +9,7 @@ namespace Licencias.Presentation.Models
         public int Id { get; set; }
 
         [Required]
+        [DateValidation(ErrorMessage = "Fecha Inválida (dd/mm/yyyy)")]
         [DisplayName("Fecha Fiscalización")]
         public string FechaFiscalizacion { get; set; }
 

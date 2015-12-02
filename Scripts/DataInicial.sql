@@ -39,7 +39,7 @@ INSERT [dbo].[Requisito] ([Id], [Valor], [CriterioId], [GiroId], [FechaRegistro]
 GO
 INSERT [dbo].[Requisito] ([Id], [Valor], [CriterioId], [GiroId], [FechaRegistro]) VALUES (2, N'REQUISITO 2', 1, 1, GETDATE())
 GO
-SET IDENTITY_INSERT [dbo].[Criterio] OFF
+SET IDENTITY_INSERT [dbo].[Requisito] OFF
 GO
 
 /***[Licencia]***/

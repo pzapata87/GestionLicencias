@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/13/2015 04:17:02
+-- Date Created: 12/02/2015 02:10:38
 -- Generated from EDMX file: D:\Proyectos\Academico - Servicio Web\GestionLicencias\GestionLicencias\Licencias.DataAccess\GLicenciasBD.edmx
 -- --------------------------------------------------
 
@@ -206,7 +206,7 @@ GO
 -- Creating table 'FiscalizacionRequisito'
 CREATE TABLE [dbo].[FiscalizacionRequisito] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Comentario] nvarchar(max)  NOT NULL,
+    [Comentario] nvarchar(max)  NULL,
     [Cumplido] bit  NOT NULL,
     [FiscalizacionId] int  NOT NULL,
     [RequisitoId] int  NOT NULL,

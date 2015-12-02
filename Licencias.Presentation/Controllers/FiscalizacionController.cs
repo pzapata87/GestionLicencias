@@ -303,10 +303,6 @@ namespace Licencias.Presentation.Controllers
 
                 if (model.RequisitoList != null)
                 {
-                    if (entity.Estado == EstadoFiscalizacion.Finalizado.GetStringValue() &&
-                        entity.FiscalizacionRequisitos.All(p => p.Cumplido))
-                        entity.Estado = EstadoFiscalizacion.FinalizadoVerificado.GetStringValue();
-
                     foreach (var requisito in model.RequisitoList)
                     {
                         var fRequisito =
@@ -327,6 +323,10 @@ namespace Licencias.Presentation.Controllers
                             });
                         }
                     }
+
+                    if (entity.Estado == EstadoFiscalizacion.Finalizado.GetStringValue() &&
+                        entity.FiscalizacionRequisitos.All(p => p.Cumplido))
+                        entity.Estado = EstadoFiscalizacion.FinalizadoVerificado.GetStringValue();
                 }
 
                 SaveUploadedFile(entity);
